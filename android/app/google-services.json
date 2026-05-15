@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "965053537355",
+    "project_id": "greenpoints-65949",
+    "storage_bucket": "greenpoints-65949.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:965053537355:android:4c88c8f62f1badad7a01ce",
+        "android_client_info": {
+          "package_name": "com.example.greenpoints"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyChaFX394zuy1hEWxp9yrjoz5MTm4K7R0Y"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
