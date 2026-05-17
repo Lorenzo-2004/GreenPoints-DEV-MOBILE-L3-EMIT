@@ -1,0 +1,34 @@
+import 'package:equatable/equatable.dart';
+import 'level_entity.dart';
+
+class UserEntity extends Equatable {
+  final String id;
+  final String name;
+  final String email;
+  final String? photoUrl;
+  final int totalPoints;
+  final int weeklyPoints;
+  final LevelEntity level;
+  final int streak;
+  final DateTime createdAt;
+  final List<String> completedActionIds;
+
+  const UserEntity({
+    required this.id,
+    required this.name,
+    required this.email,
+    this.photoUrl,
+    required this.totalPoints,
+    required this.weeklyPoints,
+    required this.level,
+    required this.streak,
+    required this.createdAt,
+    required this.completedActionIds,
+  });
+
+  @override
+  List<Object?> get props => [
+        id, name, email, totalPoints,
+        weeklyPoints, streak, createdAt,
+      ];
+}

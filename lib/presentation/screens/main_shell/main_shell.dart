@@ -1,0 +1,176 @@
+import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
+import '../../../core/theme/app_colors.dart';
+
+class MainShell extends StatelessWidget {
+  final Widget child;
+
+  const MainShell({super.key, required this.child});
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      backgroundColor: AppColors.background,
+      body: child,
+      bottomNavigationBar: _BottomNav(),
+    );
+  }
+}
+
+class _BottomNav extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    final location = GoRouterState.of(context).uri.toString();
+
+    return Container(
+      decoration: BoxDecoration(
+        color: AppColors.surface,
+        border: Border(
+          top: BorderSide(color: AppColors.border, width: 1),
+        ),
+        boxShadow: [
+          BoxShadow(
+            color: Colors.black.withValues(alpha: 0.06),
+            blurRadius: 16,
+            offset: const Offset(0, -4),
+          ),
+        ],
+      ),
+      child: SafeArea(
+        child: Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 8),
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.spaceAround,
+            children: [
+              _NavItem(
+                icon: Icons.home_outlined,
+                iconActive: Icons.home,
+                label: 'Accueil',
+                path: '/home',
+                isActive: location == '/home',
+              ),
+              _NavItem(
+                icon: Icons.eco_outlined,
+                iconActive: Icons.eco,
+                label: 'Gestes',
+                path: '/gestes',
+                isActive: location.startsWith('/gestes'),
+              ),
+              _NavItemCenter(
+                isActive: location.startsWith('/valider'),
+              ),
+              _NavItem(
+                icon: Icons.emoji_events_outlined,
+                iconActive: Icons.emoji_events,
+                label: 'Défis',
+                path: '/defis',
+                isActive: location.startsWith('/defis'),
+              ),
+              _NavItem(
+                icon: Icons.person_outline,
+                iconActive: Icons.person,
+                label: 'Profil',
+                path: '/profil',
+                isActive: location.startsWith('/profil'),
+              ),
+            ],
+          ),
+        ),
+      ),
+    );
+  }
+}
+
+class _NavItem extends StatelessWidget {
+  final IconData icon;
+  final IconData iconActive;
+  final String label;
+  final String path;
+  final bool isActive;
+
+  const _NavItem({
+    required this.icon,
+    required this.iconActive,
+    required this.label,
+    required this.path,
+    required this.isActive,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return GestureDetector(
+      onTap: () => context.go(path),
+      behavior: HitTestBehavior.opaque,
+      child: AnimatedContainer(
+        duration: const Duration(milliseconds: 200),
+        padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
+        decoration: BoxDecoration(
+          color: isActive
+              ? AppColors.primaryLight
+              : Colors.transparent,
+          borderRadius: BorderRadius.circular(12),
+        ),
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            Icon(
+              isActive ? iconActive : icon,
+              color: isActive ? AppColors.primary : AppColors.textSecondary,
+              size: 24,
+            ),
+            const SizedBox(height: 2),
+            Text(
+              label,
+              style: TextStyle(
+                fontSize: 11,
+                fontWeight:
+                    isActive ? FontWeight.w600 : FontWeight.w400,
+                color: isActive
+                    ? AppColors.primary
+                    : AppColors.textSecondary,
+              ),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+}
+
+// Bouton central — valider un geste
+class _NavItemCenter extends StatelessWidget {
+  final bool isActive;
+
+  const _NavItemCenter({required this.isActive});
+
+  @override
+  Widget build(BuildContext context) {
+    return GestureDetector(
+      onTap: () => context.go('/valider'),
+      child: Container(
+        width: 56,
+        height: 56,
+        decoration: BoxDecoration(
+          gradient: const LinearGradient(
+            colors: [AppColors.primary, AppColors.accent],
+            begin: Alignment.topLeft,
+            end: Alignment.bottomRight,
+          ),
+          borderRadius: BorderRadius.circular(18),
+          boxShadow: [
+            BoxShadow(
+              color: AppColors.primary.withValues(alpha: 0.4),
+              blurRadius: 12,
+              offset: const Offset(0, 4),
+            ),
+          ],
+        ),
+        child: const Icon(
+          Icons.add,
+          color: Colors.white,
+          size: 28,
+        ),
+      ),
+    );
+  }
+}
