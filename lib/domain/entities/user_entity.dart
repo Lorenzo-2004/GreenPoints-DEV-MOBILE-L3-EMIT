@@ -6,6 +6,7 @@ class UserEntity extends Equatable {
   final String name;
   final String email;
   final String? photoUrl;
+  final String? phoneNumber;
   final int totalPoints;
   final int weeklyPoints;
   final LevelEntity level;
@@ -18,6 +19,7 @@ class UserEntity extends Equatable {
     required this.name,
     required this.email,
     this.photoUrl,
+    this.phoneNumber,
     required this.totalPoints,
     required this.weeklyPoints,
     required this.level,

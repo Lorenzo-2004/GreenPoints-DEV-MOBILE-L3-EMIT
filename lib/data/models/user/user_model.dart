@@ -9,6 +9,7 @@ class UserModel extends UserEntity {
     required super.id,
     required super.name,
     required super.email,
+    super.phoneNumber,
     super.photoUrl,
     required super.totalPoints,
     required super.weeklyPoints,
@@ -24,6 +25,7 @@ class UserModel extends UserEntity {
       id: id,
       name: map['name'] ?? '',
       email: map['email'] ?? '',
+      phoneNumber: map['phoneNumber'],
       photoUrl: map['photoUrl'],
       totalPoints: points,
       weeklyPoints: map['weeklyPoints'] ?? 0,
@@ -41,6 +43,7 @@ class UserModel extends UserEntity {
       'name': name,
       'email': email,
       'photoUrl': photoUrl,
+      'phoneNumber': phoneNumber,
       'totalPoints': totalPoints,
       'weeklyPoints': weeklyPoints,
       'streak': streak,
@@ -53,6 +56,7 @@ class UserModel extends UserEntity {
     String? name,
     String? email,
     String? photoUrl,
+    String? phoneNumber,
     int? totalPoints,
     int? weeklyPoints,
     LevelEntity? level,
@@ -64,6 +68,7 @@ class UserModel extends UserEntity {
       name: name ?? this.name,
       email: email ?? this.email,
       photoUrl: photoUrl ?? this.photoUrl,
+      phoneNumber: phoneNumber ?? this.phoneNumber,
       totalPoints: totalPoints ?? this.totalPoints,
       weeklyPoints: weeklyPoints ?? this.weeklyPoints,
       level: level ?? this.level,
@@ -74,7 +79,6 @@ class UserModel extends UserEntity {
   }
 }
 
-// LevelModel ici car utilisé par UserModel
 class LevelModel extends LevelEntity {
   final Color color;
   final IconData icon;
