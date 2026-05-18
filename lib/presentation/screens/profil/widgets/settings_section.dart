@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
+import 'package:google_fonts/google_fonts.dart';
 import '../../../../core/theme/app_colors.dart';
 
 class SettingsSection extends StatelessWidget {
@@ -10,20 +11,41 @@ class SettingsSection extends StatelessWidget {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        const Text(
-          'Paramètres',
-          style: TextStyle(
-            fontSize: 18,
-            fontWeight: FontWeight.w700,
-            color: AppColors.textPrimary,
-          ),
+        Row(
+          children: [
+            Container(
+              width: 4,
+              height: 20,
+              decoration: BoxDecoration(
+                gradient: AppColors.primaryGradient,
+                borderRadius: BorderRadius.circular(2),
+              ),
+            ),
+            const SizedBox(width: 12),
+            Text(
+              'Paramètres',
+              style: GoogleFonts.poppins(
+                fontSize: 18,
+                fontWeight: FontWeight.w700,
+                color: AppColors.textPrimary,
+                letterSpacing: -0.3,
+              ),
+            ),
+          ],
         ),
-        const SizedBox(height: 12),
+        const SizedBox(height: 16),
         Container(
           decoration: BoxDecoration(
             color: AppColors.surface,
-            borderRadius: BorderRadius.circular(16),
-            border: Border.all(color: AppColors.border),
+            borderRadius: BorderRadius.circular(24),
+            border: Border.all(color: AppColors.border, width: 1.5),
+            boxShadow: [
+              BoxShadow(
+                color: Colors.black.withValues(alpha: 0.06),
+                blurRadius: 16,
+                offset: const Offset(0, 6),
+              ),
+            ],
           ),
           child: Column(
             children: [
@@ -31,6 +53,7 @@ class SettingsSection extends StatelessWidget {
                 icon: Icons.person_outline,
                 iconColor: AppColors.primary,
                 label: 'Modifier le profil',
+                subtitle: 'Informations personnelles',
                 onTap: () {},
               ),
               _Divider(),
@@ -38,6 +61,7 @@ class SettingsSection extends StatelessWidget {
                 icon: Icons.notifications_outlined,
                 iconColor: AppColors.info,
                 label: 'Notifications',
+                subtitle: 'Alertes et rappels',
                 onTap: () {},
               ),
               _Divider(),
@@ -45,6 +69,7 @@ class SettingsSection extends StatelessWidget {
                 icon: Icons.share_outlined,
                 iconColor: AppColors.accent,
                 label: 'Partager l\'app',
+                subtitle: 'Invite tes amis',
                 onTap: () {},
               ),
               _Divider(),
@@ -52,6 +77,7 @@ class SettingsSection extends StatelessWidget {
                 icon: Icons.logout,
                 iconColor: AppColors.error,
                 label: 'Se déconnecter',
+                subtitle: 'Quitter le compte',
                 onTap: () => context.go('/login'),
                 isDestructive: true,
               ),
@@ -67,6 +93,7 @@ class _SettingsTile extends StatelessWidget {
   final IconData icon;
   final Color iconColor;
   final String label;
+  final String subtitle;
   final VoidCallback onTap;
   final bool isDestructive;
 
@@ -74,37 +101,80 @@ class _SettingsTile extends StatelessWidget {
     required this.icon,
     required this.iconColor,
     required this.label,
+    required this.subtitle,
     required this.onTap,
     this.isDestructive = false,
   });
 
   @override
   Widget build(BuildContext context) {
-    return ListTile(
-      onTap: onTap,
-      leading: Container(
-        width: 38,
-        height: 38,
-        decoration: BoxDecoration(
-          color: iconColor.withValues(alpha: 0.12),
-          borderRadius: BorderRadius.circular(10),
+    return Material(
+      color: Colors.transparent,
+      child: InkWell(
+        onTap: onTap,
+        borderRadius: BorderRadius.circular(20),
+        child: Container(
+          padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 14),
+          child: Row(
+            children: [
+              // Icône avec gradient
+              Container(
+                width: 48,
+                height: 48,
+                decoration: BoxDecoration(
+                  gradient: LinearGradient(
+                    colors: [
+                      iconColor.withValues(alpha: 0.15),
+                      iconColor.withValues(alpha: 0.05),
+                    ],
+                  ),
+                  borderRadius: BorderRadius.circular(16),
+                ),
+                child: Icon(icon, color: iconColor, size: 24),
+              ),
+              const SizedBox(width: 16),
+              // Texte
+              Expanded(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      label,
+                      style: GoogleFonts.poppins(
+                        fontSize: 15,
+                        fontWeight: FontWeight.w600,
+                        color: isDestructive ? AppColors.error : AppColors.textPrimary,
+                      ),
+                    ),
+                    const SizedBox(height: 2),
+                    Text(
+                      subtitle,
+                      style: GoogleFonts.poppins(
+                        fontSize: 12,
+                        color: AppColors.textSecondary,
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+              // Flèche
+              if (!isDestructive)
+                Container(
+                  padding: const EdgeInsets.all(6),
+                  decoration: BoxDecoration(
+                    color: AppColors.border.withValues(alpha: 0.3),
+                    borderRadius: BorderRadius.circular(10),
+                  ),
+                  child: Icon(
+                    Icons.chevron_right,
+                    color: AppColors.textSecondary,
+                    size: 18,
+                  ),
+                ),
+            ],
+          ),
         ),
-        child: Icon(icon, color: iconColor, size: 20),
       ),
-      title: Text(
-        label,
-        style: TextStyle(
-          fontSize: 15,
-          fontWeight: FontWeight.w500,
-          color: isDestructive ? AppColors.error : AppColors.textPrimary,
-        ),
-      ),
-      trailing: isDestructive
-          ? null
-          : const Icon(
-              Icons.chevron_right,
-              color: AppColors.textSecondary,
-            ),
     );
   }
 }
@@ -112,10 +182,9 @@ class _SettingsTile extends StatelessWidget {
 class _Divider extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return const Divider(
+    return Container(
+      margin: const EdgeInsets.symmetric(horizontal: 16),
       height: 1,
-      indent: 16,
-      endIndent: 16,
       color: AppColors.border,
     );
   }

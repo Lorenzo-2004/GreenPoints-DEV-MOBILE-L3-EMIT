@@ -44,14 +44,14 @@ class _BottomNav extends StatelessWidget {
             children: [
               _NavItem(
                 icon: Icons.home_outlined,
-                iconActive: Icons.home,
+                iconActive: Icons.home_rounded,
                 label: 'Accueil',
                 path: '/home',
                 isActive: location == '/home',
               ),
               _NavItem(
                 icon: Icons.eco_outlined,
-                iconActive: Icons.eco,
+                iconActive: Icons.eco_rounded,
                 label: 'Gestes',
                 path: '/gestes',
                 isActive: location.startsWith('/gestes'),
@@ -61,14 +61,14 @@ class _BottomNav extends StatelessWidget {
               ),
               _NavItem(
                 icon: Icons.emoji_events_outlined,
-                iconActive: Icons.emoji_events,
+                iconActive: Icons.emoji_events_rounded,
                 label: 'Défis',
                 path: '/defis',
                 isActive: location.startsWith('/defis'),
               ),
               _NavItem(
                 icon: Icons.person_outline,
-                iconActive: Icons.person,
+                iconActive: Icons.person_rounded,
                 label: 'Profil',
                 path: '/profil',
                 isActive: location.startsWith('/profil'),
@@ -103,12 +103,12 @@ class _NavItem extends StatelessWidget {
       behavior: HitTestBehavior.opaque,
       child: AnimatedContainer(
         duration: const Duration(milliseconds: 200),
-        padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
+        padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 8),
         decoration: BoxDecoration(
           color: isActive
               ? AppColors.primaryLight
               : Colors.transparent,
-          borderRadius: BorderRadius.circular(12),
+          borderRadius: BorderRadius.circular(14),
         ),
         child: Column(
           mainAxisSize: MainAxisSize.min,
@@ -116,15 +116,15 @@ class _NavItem extends StatelessWidget {
             Icon(
               isActive ? iconActive : icon,
               color: isActive ? AppColors.primary : AppColors.textSecondary,
-              size: 24,
+              size: 22,
             ),
-            const SizedBox(height: 2),
+            const SizedBox(height: 4),
             Text(
               label,
               style: TextStyle(
                 fontSize: 11,
                 fontWeight:
-                    isActive ? FontWeight.w600 : FontWeight.w400,
+                    isActive ? FontWeight.w600 : FontWeight.w500,
                 color: isActive
                     ? AppColors.primary
                     : AppColors.textSecondary,
@@ -148,15 +148,15 @@ class _NavItemCenter extends StatelessWidget {
     return GestureDetector(
       onTap: () => context.go('/valider'),
       child: Container(
-        width: 56,
-        height: 56,
+        width: 54,
+        height: 54,
         decoration: BoxDecoration(
           gradient: const LinearGradient(
             colors: [AppColors.primary, AppColors.accent],
             begin: Alignment.topLeft,
             end: Alignment.bottomRight,
           ),
-          borderRadius: BorderRadius.circular(18),
+          shape: BoxShape.circle,
           boxShadow: [
             BoxShadow(
               color: AppColors.primary.withValues(alpha: 0.4),
@@ -166,7 +166,7 @@ class _NavItemCenter extends StatelessWidget {
           ],
         ),
         child: const Icon(
-          Icons.add,
+          Icons.add_rounded,
           color: Colors.white,
           size: 28,
         ),

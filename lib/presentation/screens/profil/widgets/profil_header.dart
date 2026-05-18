@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
 import '../../../../core/theme/app_colors.dart';
 import '../../../../data/models/user/user_model.dart';
 
@@ -14,122 +15,268 @@ class ProfilHeader extends StatelessWidget {
         top: MediaQuery.of(context).padding.top + 16,
         left: 20,
         right: 20,
-        bottom: 32,
+        bottom: 24,
       ),
-      decoration: const BoxDecoration(
-        color: AppColors.primary,
-        borderRadius: BorderRadius.only(
+      decoration: BoxDecoration(
+        gradient: AppColors.primaryGradient,
+        borderRadius: const BorderRadius.only(
           bottomLeft: Radius.circular(28),
           bottomRight: Radius.circular(28),
         ),
+        boxShadow: [
+          BoxShadow(
+            color: AppColors.primary.withValues(alpha: 0.3),
+            blurRadius: 20,
+            offset: const Offset(0, 6),
+          ),
+        ],
       ),
       child: Column(
+        crossAxisAlignment: CrossAxisAlignment.center,
         children: [
+          // Header avec titre et settings
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              const Text(
+              Text(
                 'Mon Profil',
-                style: TextStyle(
-                  fontSize: 22,
-                  fontWeight: FontWeight.w700,
+                style: GoogleFonts.poppins(
+                  fontSize: 18,
+                  fontWeight: FontWeight.w600,
                   color: Colors.white,
                 ),
               ),
-              IconButton(
-                onPressed: () {},
-                icon: const Icon(
-                  Icons.settings_outlined,
-                  color: Colors.white,
+              Container(
+                width: 38,
+                height: 38,
+                decoration: BoxDecoration(
+                  gradient: LinearGradient(
+                    colors: [
+                      Colors.white.withValues(alpha: 0.2),
+                      Colors.white.withValues(alpha: 0.08),
+                    ],
+                  ),
+                  borderRadius: BorderRadius.circular(12),
+                  border: Border.all(
+                    color: Colors.white.withValues(alpha: 0.25),
+                  ),
+                ),
+                child: IconButton(
+                  onPressed: () {},
+                  padding: EdgeInsets.zero,
+                  icon: const Icon(
+                    Icons.settings_outlined,
+                    color: Colors.white,
+                    size: 20,
+                  ),
                 ),
               ),
             ],
           ),
+
           const SizedBox(height: 20),
-          Container(
-            width: 80,
-            height: 80,
-            decoration: BoxDecoration(
-              color: Colors.white.withValues(alpha: 0.2),
-              borderRadius: BorderRadius.circular(24),
-            ),
-            child: Center(
-              child: Text(
-                user.level.emoji,
-                style: const TextStyle(fontSize: 42),
+
+          // Avatar + Badge niveau
+          Stack(
+            alignment: Alignment.bottomRight,
+            children: [
+              Container(
+                width: 80,
+                height: 80,
+                decoration: BoxDecoration(
+                  gradient: LinearGradient(
+                    colors: [
+                      Colors.white.withValues(alpha: 0.25),
+                      Colors.white.withValues(alpha: 0.1),
+                    ],
+                  ),
+                  shape: BoxShape.circle,
+                  border: Border.all(
+                    color: Colors.white,
+                    width: 2,
+                  ),
+                  boxShadow: [
+                    BoxShadow(
+                      color: Colors.white.withValues(alpha: 0.2),
+                      blurRadius: 12,
+                      offset: const Offset(0, 4),
+                    ),
+                  ],
+                ),
+                child: Center(
+                  child: Text(
+                    user.level.emoji,
+                    style: const TextStyle(fontSize: 44),
+                  ),
+                ),
               ),
-            ),
+              Container(
+                padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 3),
+                decoration: BoxDecoration(
+                  color: AppColors.warning,
+                  borderRadius: BorderRadius.circular(12),
+                  boxShadow: [
+                    BoxShadow(
+                      color: AppColors.warning.withValues(alpha: 0.4),
+                      blurRadius: 6,
+                    ),
+                  ],
+                ),
+                child: Text(
+                  (user.level as LevelModel).name,
+                  style: GoogleFonts.poppins(
+                    fontSize: 9,
+                    fontWeight: FontWeight.w700,
+                    color: Colors.white,
+                  ),
+                ),
+              ),
+            ],
           ),
+
           const SizedBox(height: 12),
+
+          // Nom
           Text(
             user.name,
-            style: const TextStyle(
-              fontSize: 20,
+            style: GoogleFonts.poppins(
+              fontSize: 18,
               fontWeight: FontWeight.w700,
               color: Colors.white,
+              letterSpacing: -0.3,
             ),
           ),
+
           const SizedBox(height: 4),
-          Text(
-            user.email,
-            style: TextStyle(
-              fontSize: 13,
-              color: Colors.white.withValues(alpha: 0.7),
+
+          // Email
+          Container(
+            padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 3),
+            decoration: BoxDecoration(
+              color: Colors.white.withValues(alpha: 0.1),
+              borderRadius: BorderRadius.circular(16),
             ),
-          ),
-          if (user.phoneNumber != null) ...[
-            const SizedBox(height: 4),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.center,
+            child: Row(
+              mainAxisSize: MainAxisSize.min,
               children: [
                 Icon(
-                  Icons.phone_outlined,
-                  size: 14,
+                  Icons.mail_outline,
+                  size: 10,
                   color: Colors.white.withValues(alpha: 0.7),
                 ),
                 const SizedBox(width: 4),
                 Text(
-                  user.phoneNumber!,
-                  style: TextStyle(
-                    fontSize: 13,
+                  user.email,
+                  style: GoogleFonts.poppins(
+                    fontSize: 10,
                     color: Colors.white.withValues(alpha: 0.7),
                   ),
                 ),
               ],
             ),
-          ],
-          const SizedBox(height: 16),
-          Container(
-            padding: const EdgeInsets.symmetric(
-              horizontal: 20, vertical: 8),
-            decoration: BoxDecoration(
-              color: Colors.white.withValues(alpha: 0.15),
-              borderRadius: BorderRadius.circular(20),
-              border: Border.all(
-                color: Colors.white.withValues(alpha: 0.3),
+          ),
+
+          if (user.phoneNumber != null) ...[
+            const SizedBox(height: 4),
+            Container(
+              padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 3),
+              decoration: BoxDecoration(
+                color: Colors.white.withValues(alpha: 0.1),
+                borderRadius: BorderRadius.circular(16),
+              ),
+              child: Row(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  Icon(
+                    Icons.phone_outlined,
+                    size: 10,
+                    color: Colors.white.withValues(alpha: 0.7),
+                  ),
+                  const SizedBox(width: 4),
+                  Text(
+                    user.phoneNumber!,
+                    style: GoogleFonts.poppins(
+                      fontSize: 10,
+                      color: Colors.white.withValues(alpha: 0.7),
+                    ),
+                  ),
+                ],
               ),
             ),
-            child: Row(
-              mainAxisSize: MainAxisSize.min,
-              children: [
-                const Icon(
-                  Icons.stars_rounded,
-                  color: Color(0xFFF5A800),
-                  size: 20,
-                ),
-                const SizedBox(width: 8),
-                Text(
-                  '${user.totalPoints} points',
-                  style: const TextStyle(
-                    fontSize: 16,
-                    fontWeight: FontWeight.w700,
-                    color: Colors.white,
-                  ),
-                ),
-              ],
-            ),
+          ],
+
+          const SizedBox(height: 16),
+
+          // Cartes stats (3 petites cartes horizontales)
+          Row(
+            children: [
+              _ProfileStat(
+                value: '${user.totalPoints}',
+                label: 'Points',
+              ),
+              const SizedBox(width: 8),
+              _ProfileStat(
+                value: '${user.streak}',
+                label: 'Série',
+              ),
+              const SizedBox(width: 8),
+              _ProfileStat(
+                value: '${user.weeklyPoints}',
+                label: 'Semaine',
+              ),
+            ],
           ),
         ],
+      ),
+    );
+  }
+}
+
+class _ProfileStat extends StatelessWidget {
+  final String value;
+  final String label;
+
+  const _ProfileStat({
+    required this.value,
+    required this.label,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return Expanded(
+      child: Container(
+        padding: const EdgeInsets.symmetric(vertical: 10),
+        decoration: BoxDecoration(
+          gradient: LinearGradient(
+            colors: [
+              Colors.white.withValues(alpha: 0.12),
+              Colors.white.withValues(alpha: 0.05),
+            ],
+          ),
+          borderRadius: BorderRadius.circular(12),
+          border: Border.all(
+            color: Colors.white.withValues(alpha: 0.15),
+          ),
+        ),
+        child: Column(
+          children: [
+            Text(
+              value,
+              style: GoogleFonts.poppins(
+                fontSize: 16,
+                fontWeight: FontWeight.w700,
+                color: Colors.white,
+              ),
+            ),
+            Text(
+              label,
+              style: GoogleFonts.poppins(
+                fontSize: 10,
+                color: Colors.white.withValues(alpha: 0.7),
+              ),
+            ),
+          ],
+        ),
       ),
     );
   }

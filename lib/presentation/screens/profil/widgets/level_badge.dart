@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
+import '../../../../core/theme/app_colors.dart';
 import '../../../../data/models/user/user_model.dart';
 
 class LevelBadge extends StatelessWidget {
@@ -15,49 +17,50 @@ class LevelBadge extends StatelessWidget {
     return Container(
       padding: const EdgeInsets.all(20),
       decoration: BoxDecoration(
-        gradient: LinearGradient(
-          colors: [
-            level.color,
-            level.color.withValues(alpha: 0.7),
-          ],
-          begin: Alignment.topLeft,
-          end: Alignment.bottomRight,
-        ),
+        color: AppColors.surface,
         borderRadius: BorderRadius.circular(20),
+        boxShadow: [
+          BoxShadow(
+            color: Colors.black.withValues(alpha: 0.05),
+            blurRadius: 20,
+            offset: const Offset(0, 4),
+          ),
+        ],
       ),
       child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Row(
             children: [
               Container(
-                width: 56,
-                height: 56,
+                width: 48,
+                height: 48,
                 decoration: BoxDecoration(
-                  color: Colors.white.withValues(alpha: 0.2),
-                  borderRadius: BorderRadius.circular(16),
+                  color: level.color.withValues(alpha: 0.12),
+                  borderRadius: BorderRadius.circular(14),
                 ),
-                child: Icon(level.icon, color: Colors.white, size: 30),
+                child: Icon(level.icon, color: level.color, size: 26),
               ),
-              const SizedBox(width: 16),
+              const SizedBox(width: 14),
               Expanded(
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Text(
                       'Niveau ${level.name}',
-                      style: const TextStyle(
-                        fontSize: 18,
-                        fontWeight: FontWeight.w700,
-                        color: Colors.white,
+                      style: GoogleFonts.poppins(
+                        fontSize: 16,
+                        fontWeight: FontWeight.w600,
+                        color: AppColors.textPrimary,
                       ),
                     ),
                     Text(
                       pointsLeft > 0
-                          ? '$pointsLeft pts pour ${_nextLevelName(level)}'
-                          : 'Niveau maximum ! 🎉',
-                      style: TextStyle(
-                        fontSize: 13,
-                        color: Colors.white.withValues(alpha: 0.85),
+                          ? '$pointsLeft pts pour le niveau suivant'
+                          : 'Niveau maximum atteint',
+                      style: GoogleFonts.poppins(
+                        fontSize: 12,
+                        color: AppColors.textSecondary,
                       ),
                     ),
                   ],
@@ -65,34 +68,39 @@ class LevelBadge extends StatelessWidget {
               ),
               Text(
                 '${(progress * 100).toInt()}%',
-                style: const TextStyle(
-                  fontSize: 22,
+                style: GoogleFonts.poppins(
+                  fontSize: 18,
                   fontWeight: FontWeight.w700,
-                  color: Colors.white,
+                  color: level.color,
                 ),
               ),
             ],
           ),
+
           const SizedBox(height: 16),
-          ClipRRect(
-            borderRadius: BorderRadius.circular(8),
-            child: LinearProgressIndicator(
-              value: progress,
-              backgroundColor: Colors.white.withValues(alpha: 0.3),
-              valueColor: const AlwaysStoppedAnimation<Color>(Colors.white),
-              minHeight: 10,
+
+          // Barre de progression
+          Container(
+            height: 8,
+            decoration: BoxDecoration(
+              color: AppColors.border,
+              borderRadius: BorderRadius.circular(4),
+            ),
+            child: FractionallySizedBox(
+              widthFactor: progress,
+              alignment: Alignment.centerLeft,
+              child: Container(
+                decoration: BoxDecoration(
+                  gradient: LinearGradient(
+                    colors: [level.color, AppColors.accent],
+                  ),
+                  borderRadius: BorderRadius.circular(4),
+                ),
+              ),
             ),
           ),
         ],
       ),
     );
-  }
-
-  String _nextLevelName(LevelModel level) {
-    final index = LevelModel.levels.indexOf(level);
-    if (index < LevelModel.levels.length - 1) {
-      return LevelModel.levels[index + 1].name;
-    }
-    return '';
   }
 }

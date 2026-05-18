@@ -22,18 +22,21 @@ class HomeHeader extends StatelessWidget {
         top: MediaQuery.of(context).padding.top + 20,
         left: 24,
         right: 24,
-        bottom: 28,
+        bottom: 32,
       ),
-      decoration: const BoxDecoration(
-        gradient: LinearGradient(
-          colors: [AppColors.primaryDark, AppColors.primary],
-          begin: Alignment.topLeft,
-          end: Alignment.bottomRight,
-        ),
-        borderRadius: BorderRadius.only(
+      decoration: BoxDecoration(
+        gradient: AppColors.primaryGradient,
+        borderRadius: const BorderRadius.only(
           bottomLeft: Radius.circular(32),
           bottomRight: Radius.circular(32),
         ),
+        boxShadow: [
+          BoxShadow(
+            color: AppColors.primary.withValues(alpha: 0.3),
+            blurRadius: 20,
+            offset: const Offset(0, 6),
+          ),
+        ],
       ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -48,10 +51,11 @@ class HomeHeader extends StatelessWidget {
                     _greeting,
                     style: GoogleFonts.poppins(
                       fontSize: 14,
-                      color: Colors.white.withValues(alpha: 0.75),
-                      fontWeight: FontWeight.w400,
+                      color: Colors.white.withValues(alpha: 0.8),
+                      fontWeight: FontWeight.w500,
                     ),
                   ),
+                  const SizedBox(height: 4),
                   Text(
                     user.name.split(' ').first,
                     style: GoogleFonts.poppins(
@@ -59,17 +63,18 @@ class HomeHeader extends StatelessWidget {
                       fontWeight: FontWeight.w700,
                       color: Colors.white,
                       height: 1.1,
+                      letterSpacing: -0.5,
                     ),
                   ),
                 ],
               ),
-              // Avatar niveau
+              // Avatar niveau avec effet glassmorphisme
               Container(
-                width: 56,
-                height: 56,
+                width: 60,
+                height: 60,
                 decoration: BoxDecoration(
-                  color: Colors.white.withValues(alpha: 0.15),
-                  borderRadius: BorderRadius.circular(16),
+                  color: Colors.white.withValues(alpha: 0.12),
+                  borderRadius: BorderRadius.circular(20),
                   border: Border.all(
                     color: Colors.white.withValues(alpha: 0.25),
                     width: 1.5,
@@ -78,47 +83,56 @@ class HomeHeader extends StatelessWidget {
                 child: Icon(
                   (user.level as LevelModel).icon,
                   color: Colors.white,
-                  size: 28,
+                  size: 32,
                 ),
               ),
             ],
           ),
 
-          const SizedBox(height: 20),
+          const SizedBox(height: 24),
 
-          // Barre stats rapides
+          // Barre stats rapides améliorée
           Container(
-            padding: const EdgeInsets.symmetric(
-              horizontal: 16, vertical: 12),
+            padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 16),
             decoration: BoxDecoration(
-              color: Colors.white.withValues(alpha: 0.12),
-              borderRadius: BorderRadius.circular(16),
+              color: Colors.white.withValues(alpha: 0.1),
+              borderRadius: BorderRadius.circular(24),
               border: Border.all(
-                color: Colors.white.withValues(alpha: 0.2),
+                color: Colors.white.withValues(alpha: 0.15),
               ),
             ),
             child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceAround,
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 _QuickStat(
                   icon: Icons.stars_rounded,
-                  iconColor: const Color(0xFFF5A800),
+                  iconColor: AppColors.warning,
                   value: '${user.totalPoints}',
                   label: 'Points',
                 ),
-                _VerticalDivider(),
+                Container(
+                  width: 1,
+                  height: 30,
+                  color: Colors.white.withValues(alpha: 0.15),
+                ),
                 _QuickStat(
                   icon: Icons.local_fire_department_rounded,
                   iconColor: const Color(0xFFFF6B35),
-                  value: '${user.streak}j',
+                  value: '${user.streak}',
                   label: 'Série',
+                  suffix: 'j',
                 ),
-                _VerticalDivider(),
+                Container(
+                  width: 1,
+                  height: 30,
+                  color: Colors.white.withValues(alpha: 0.15),
+                ),
                 _QuickStat(
                   icon: Icons.trending_up_rounded,
-                  iconColor: const Color(0xFF4ECDC4),
+                  iconColor: AppColors.accent,
                   value: '${user.weeklyPoints}',
                   label: 'Semaine',
+                  suffix: 'pts',
                 ),
               ],
             ),
@@ -134,52 +148,64 @@ class _QuickStat extends StatelessWidget {
   final Color iconColor;
   final String value;
   final String label;
+  final String? suffix;
 
   const _QuickStat({
     required this.icon,
     required this.iconColor,
     required this.value,
     required this.label,
+    this.suffix,
   });
 
   @override
   Widget build(BuildContext context) {
-    return Row(
-      children: [
-        Icon(icon, color: iconColor, size: 18),
-        const SizedBox(width: 6),
-        Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Text(
-              value,
-              style: GoogleFonts.poppins(
-                fontSize: 15,
-                fontWeight: FontWeight.w700,
-                color: Colors.white,
+    return Expanded(
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          Icon(icon, color: iconColor, size: 22),
+          const SizedBox(width: 10),
+          Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Row(
+                crossAxisAlignment: CrossAxisAlignment.end,
+                children: [
+                  Text(
+                    value,
+                    style: GoogleFonts.poppins(
+                      fontSize: 18,
+                      fontWeight: FontWeight.w700,
+                      color: Colors.white,
+                      letterSpacing: -0.3,
+                    ),
+                  ),
+                  if (suffix != null) ...[
+                    const SizedBox(width: 2),
+                    Text(
+                      suffix!,
+                      style: GoogleFonts.poppins(
+                        fontSize: 11,
+                        fontWeight: FontWeight.w500,
+                        color: Colors.white.withValues(alpha: 0.7),
+                      ),
+                    ),
+                  ],
+                ],
               ),
-            ),
-            Text(
-              label,
-              style: GoogleFonts.poppins(
-                fontSize: 10,
-                color: Colors.white.withValues(alpha: 0.7),
+              Text(
+                label,
+                style: GoogleFonts.poppins(
+                  fontSize: 11,
+                  color: Colors.white.withValues(alpha: 0.7),
+                  fontWeight: FontWeight.w500,
+                ),
               ),
-            ),
-          ],
-        ),
-      ],
-    );
-  }
-}
-
-class _VerticalDivider extends StatelessWidget {
-  @override
-  Widget build(BuildContext context) {
-    return Container(
-      width: 1,
-      height: 32,
-      color: Colors.white.withValues(alpha: 0.2),
+            ],
+          ),
+        ],
+      ),
     );
   }
 }

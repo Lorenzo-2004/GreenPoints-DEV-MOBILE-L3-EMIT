@@ -14,14 +14,14 @@ class AppTheme {
       surface: AppColors.surface,
       error: AppColors.error,
     ),
-    textTheme: GoogleFonts.poppinsTextTheme(),
+    textTheme: GoogleFonts.interTextTheme(),
     scaffoldBackgroundColor: AppColors.background,
     appBarTheme: AppBarTheme(
       backgroundColor: AppColors.surface,
       foregroundColor: AppColors.textPrimary,
       elevation: 0,
       centerTitle: true,
-      titleTextStyle: GoogleFonts.poppins(
+      titleTextStyle: GoogleFonts.inter(
         fontSize: 18,
         fontWeight: FontWeight.w600,
         color: AppColors.textPrimary,
@@ -35,7 +35,7 @@ class AppTheme {
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(14),
         ),
-        textStyle: GoogleFonts.poppins(
+        textStyle: GoogleFonts.inter(
           fontSize: 16,
           fontWeight: FontWeight.w600,
         ),

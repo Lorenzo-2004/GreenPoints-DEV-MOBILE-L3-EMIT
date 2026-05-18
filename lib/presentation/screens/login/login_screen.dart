@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_animate/flutter_animate.dart';
 import 'package:go_router/go_router.dart';
+import 'package:google_fonts/google_fonts.dart';
 import '../../../core/theme/app_colors.dart';
 import '../../../data/repositories/auth_repository.dart';
 import '../../blocs/auth/auth_cubit.dart';
@@ -49,214 +50,427 @@ class _LoginViewState extends State<_LoginView> {
             SnackBar(
               content: Text(state.message),
               backgroundColor: AppColors.error,
+              behavior: SnackBarBehavior.floating,
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(12),
+              ),
             ),
           );
         }
       },
       child: Scaffold(
         backgroundColor: AppColors.background,
-        body: SafeArea(
-          child: SingleChildScrollView(
-            padding: const EdgeInsets.all(24),
-            child: Form(
-              key: _formKey,
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  const SizedBox(height: 48),
+        body: Stack(
+          children: [
+            // Décoration de fond
+            Positioned(
+              top: -80,
+              right: -60,
+              child: Container(
+                width: 200,
+                height: 200,
+                decoration: BoxDecoration(
+                  color: AppColors.primary.withValues(alpha: 0.05),
+                  shape: BoxShape.circle,
+                ),
+              ),
+            ),
+            Positioned(
+              bottom: -100,
+              left: -50,
+              child: Container(
+                width: 250,
+                height: 250,
+                decoration: BoxDecoration(
+                  color: AppColors.accent.withValues(alpha: 0.04),
+                  shape: BoxShape.circle,
+                ),
+              ),
+            ),
+            Positioned(
+              top: 200,
+              left: -30,
+              child: Container(
+                width: 120,
+                height: 120,
+                decoration: BoxDecoration(
+                  color: AppColors.warning.withValues(alpha: 0.03),
+                  shape: BoxShape.circle,
+                ),
+              ),
+            ),
+            SafeArea(
+              child: SingleChildScrollView(
+                padding: const EdgeInsets.symmetric(horizontal: 28),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  children: [
+                    const SizedBox(height: 32),
 
-                  // Header
-                  Center(
-                    child: Container(
-                      width: 72,
-                      height: 72,
+                    // Logo animé
+                    Container(
+                      width: 100,
+                      height: 100,
                       decoration: BoxDecoration(
-                        color: AppColors.primaryLight,
-                        borderRadius: BorderRadius.circular(20),
+                        gradient: AppColors.primaryGradient,
+                        borderRadius: BorderRadius.circular(28),
+                        boxShadow: [
+                          BoxShadow(
+                            color: AppColors.primary.withValues(alpha: 0.4),
+                            blurRadius: 25,
+                            offset: const Offset(0, 12),
+                          ),
+                        ],
                       ),
                       child: const Center(
-                        child: Text('🌿', style: TextStyle(fontSize: 36)),
+                        child: Text('🌿', style: TextStyle(fontSize: 50)),
                       ),
+                    ).animate().scale(
+                      duration: 700.ms,
+                      curve: Curves.elasticOut,
                     ),
-                  ).animate().scale(duration: 500.ms, curve: Curves.elasticOut),
 
-                  const SizedBox(height: 24),
+                    const SizedBox(height: 32),
 
-                  Center(
-                    child: RichText(
-                      text: const TextSpan(
+                    // Titre
+                    Text(
+                      'Bienvenue\nsur',
+                      textAlign: TextAlign.center,
+                      style: GoogleFonts.poppins(
+                        fontSize: 28,
+                        fontWeight: FontWeight.w600,
+                        color: AppColors.textSecondary,
+                        letterSpacing: -0.5,
+                        height: 1.3,
+                      ),
+                    ).animate(delay: 100.ms).fadeIn().slideY(begin: 0.2, end: 0),
+
+                    const SizedBox(height: 8),
+
+                    RichText(
+                      text: TextSpan(
                         children: [
                           TextSpan(
                             text: 'Green',
-                            style: TextStyle(
-                              fontSize: 28,
-                              fontWeight: FontWeight.w700,
+                            style: GoogleFonts.poppins(
+                              fontSize: 42,
+                              fontWeight: FontWeight.w800,
                               color: AppColors.primary,
+                              letterSpacing: -1,
                             ),
                           ),
                           TextSpan(
                             text: 'Points',
-                            style: TextStyle(
-                              fontSize: 28,
-                              fontWeight: FontWeight.w700,
-                              color: Color(0xFFF5A800),
+                            style: GoogleFonts.poppins(
+                              fontSize: 42,
+                              fontWeight: FontWeight.w800,
+                              color: AppColors.warning,
+                              letterSpacing: -1,
                             ),
                           ),
                         ],
                       ),
-                    ),
-                  ).animate(delay: 200.ms).fadeIn().slideY(begin: 0.3, end: 0),
+                    ).animate(delay: 150.ms).fadeIn().scale(begin: const Offset(0.95, 0.95)),
 
-                  const SizedBox(height: 8),
+                    const SizedBox(height: 48),
 
-                  Center(
-                    child: Text(
-                      'Bon retour parmi nous 👋',
-                      style: TextStyle(
-                        fontSize: 15,
-                        color: AppColors.textSecondary,
-                      ),
-                    ),
-                  ).animate(delay: 300.ms).fadeIn(),
+                    // Formulaire
+                    Form(
+                      key: _formKey,
+                      child: Column(
+                        children: [
+                          // Email
+                          _buildModernInput(
+                            controller: _emailCtrl,
+                            label: 'Email',
+                            icon: Icons.email_outlined,
+                            hint: 'exemple@greenpoints.com',
+                            keyboardType: TextInputType.emailAddress,
+                            validator: (v) => v == null || !v.contains('@') ? 'Email invalide' : null,
+                            delay: 250.ms,
+                          ),
 
-                  const SizedBox(height: 40),
+                          const SizedBox(height: 20),
 
-                  // Email
-                  _buildLabel('Email'),
-                  const SizedBox(height: 8),
-                  TextFormField(
-                    controller: _emailCtrl,
-                    keyboardType: TextInputType.emailAddress,
-                    decoration: _inputDecoration('votre@email.com'),
-                    validator: (v) =>
-                        v == null || !v.contains('@') ? 'Email invalide' : null,
-                  ).animate(delay: 400.ms).fadeIn().slideX(begin: -0.1, end: 0),
-
-                  const SizedBox(height: 20),
-
-                  // Password
-                  _buildLabel('Mot de passe'),
-                  const SizedBox(height: 8),
-                  TextFormField(
-                    controller: _passCtrl,
-                    obscureText: _obscure,
-                    decoration: _inputDecoration('••••••••').copyWith(
-                      suffixIcon: IconButton(
-                        icon: Icon(
-                          _obscure ? Icons.visibility_off : Icons.visibility,
-                          color: AppColors.textSecondary,
-                        ),
-                        onPressed: () => setState(() => _obscure = !_obscure),
-                      ),
-                    ),
-                    validator: (v) =>
-                        v == null || v.length < 6 ? 'Min. 6 caractères' : null,
-                  ).animate(delay: 500.ms).fadeIn().slideX(begin: -0.1, end: 0),
-
-                  const SizedBox(height: 32),
-
-                  // Bouton login
-                  BlocBuilder<AuthCubit, AuthState>(
-                    builder: (context, state) {
-                      return ElevatedButton(
-                        onPressed: state is AuthLoading
-                            ? null
-                            : () {
-                                if (_formKey.currentState!.validate()) {
-                                  context.read<AuthCubit>().login(
-                                        _emailCtrl.text,
-                                        _passCtrl.text,
-                                      );
-                                }
-                              },
-                        child: state is AuthLoading
-                            ? const SizedBox(
-                                height: 20,
-                                width: 20,
-                                child: CircularProgressIndicator(
-                                  color: Colors.white,
-                                  strokeWidth: 2,
-                                ),
-                              )
-                            : const Text(
-                                'Se connecter',
-                                style: TextStyle(
-                                  fontSize: 16,
-                                  fontWeight: FontWeight.w600,
-                                ),
+                          // Mot de passe
+                          _buildModernInput(
+                            controller: _passCtrl,
+                            label: 'Mot de passe',
+                            icon: Icons.lock_outline,
+                            hint: 'Ton mot de passe',
+                            obscure: _obscure,
+                            suffixIcon: IconButton(
+                              icon: Icon(
+                                _obscure ? Icons.visibility_off : Icons.visibility,
+                                color: AppColors.textSecondary,
+                                size: 20,
                               ),
-                      );
-                    },
-                  ).animate(delay: 600.ms).fadeIn(),
-
-                  const SizedBox(height: 16),
-
-                  // Lien inscription
-                  Center(
-                    child: TextButton(
-                      onPressed: () => context.go('/register'),
-                      child: RichText(
-                        text: const TextSpan(
-                          children: [
-                            TextSpan(
-                              text: 'Pas encore de compte ? ',
-                              style: TextStyle(color: AppColors.textSecondary),
+                              onPressed: () => setState(() => _obscure = !_obscure),
                             ),
-                            TextSpan(
-                              text: "S'inscrire",
-                              style: TextStyle(
+                            validator: (v) => v == null || v.length < 6 ? 'Min. 6 caractères' : null,
+                            delay: 300.ms,
+                          ),
+                        ],
+                      ),
+                    ),
+
+                    const SizedBox(height: 16),
+
+                    // Mot de passe oublié
+                    Align(
+                      alignment: Alignment.centerRight,
+                      child: TextButton(
+                        onPressed: () {},
+                        style: TextButton.styleFrom(
+                          padding: EdgeInsets.zero,
+                          minimumSize: const Size(0, 32),
+                        ),
+                        child: Text(
+                          'Mot de passe oublié ?',
+                          style: GoogleFonts.poppins(
+                            fontSize: 13,
+                            color: AppColors.primary,
+                            fontWeight: FontWeight.w500,
+                          ),
+                        ),
+                      ),
+                    ).animate(delay: 350.ms).fadeIn(),
+
+                    const SizedBox(height: 24),
+
+                    // Bouton connexion
+                    BlocBuilder<AuthCubit, AuthState>(
+                      builder: (context, state) {
+                        return SizedBox(
+                          width: double.infinity,
+                          height: 58,
+                          child: ElevatedButton(
+                            onPressed: state is AuthLoading
+                                ? null
+                                : () {
+                                    if (_formKey.currentState!.validate()) {
+                                      context.read<AuthCubit>().login(
+                                            _emailCtrl.text,
+                                            _passCtrl.text,
+                                          );
+                                    }
+                                  },
+                            style: ElevatedButton.styleFrom(
+                              backgroundColor: AppColors.primary,
+                              foregroundColor: Colors.white,
+                              shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(20),
+                              ),
+                              elevation: 0,
+                            ),
+                            child: state is AuthLoading
+                                ? const SizedBox(
+                                    height: 24,
+                                    width: 24,
+                                    child: CircularProgressIndicator(
+                                      color: Colors.white,
+                                      strokeWidth: 2.5,
+                                    ),
+                                  )
+                                : Text(
+                                    'Se connecter',
+                                    style: GoogleFonts.poppins(
+                                      fontSize: 17,
+                                      fontWeight: FontWeight.w600,
+                                    ),
+                                  ),
+                          ),
+                        );
+                      },
+                    ).animate(delay: 400.ms).fadeIn().slideY(begin: 0.1, end: 0),
+
+                    const SizedBox(height: 24),
+
+                    // Séparateur
+                    Row(
+                      children: [
+                        Expanded(child: Divider(color: AppColors.border, thickness: 1)),
+                        Padding(
+                          padding: const EdgeInsets.symmetric(horizontal: 16),
+                          child: Text(
+                            'ou',
+                            style: GoogleFonts.poppins(
+                              color: AppColors.textSecondary,
+                              fontSize: 13,
+                              fontWeight: FontWeight.w500,
+                            ),
+                          ),
+                        ),
+                        Expanded(child: Divider(color: AppColors.border, thickness: 1)),
+                      ],
+                    ).animate(delay: 450.ms).fadeIn(),
+
+                    const SizedBox(height: 24),
+
+                    // Boutons sociaux
+                    Row(
+                      children: [
+                        Expanded(
+                          child: _buildModernSocialButton(
+                            icon: 'G',
+                            color: Colors.red.shade600,
+                            label: 'Google',
+                            delay: 500.ms,
+                          ),
+                        ),
+                        const SizedBox(width: 14),
+                        Expanded(
+                          child: _buildModernSocialButton(
+                            icon: 'f',
+                            color: Colors.blue.shade700,
+                            label: 'Facebook',
+                            delay: 550.ms,
+                          ),
+                        ),
+                      ],
+                    ),
+
+                    const SizedBox(height: 32),
+
+                    // Lien inscription
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Text(
+                          'Nouveau ici ? ',
+                          style: GoogleFonts.poppins(
+                            color: AppColors.textSecondary,
+                            fontSize: 14,
+                          ),
+                        ),
+                        GestureDetector(
+                          onTap: () => context.go('/register'),
+                          child: Container(
+                            padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
+                            child: Text(
+                              'Créer un compte',
+                              style: GoogleFonts.poppins(
                                 color: AppColors.primary,
-                                fontWeight: FontWeight.w600,
+                                fontWeight: FontWeight.w700,
+                                fontSize: 14,
                               ),
                             ),
-                          ],
+                          ),
                         ),
-                      ),
-                    ),
-                  ).animate(delay: 700.ms).fadeIn(),
-                ],
+                      ],
+                    ).animate(delay: 600.ms).fadeIn(),
+
+                    const SizedBox(height: 40),
+                  ],
+                ),
               ),
             ),
-          ),
+          ],
         ),
       ),
     );
   }
 
-  Widget _buildLabel(String text) {
-    return Text(
-      text,
-      style: const TextStyle(
-        fontSize: 14,
-        fontWeight: FontWeight.w500,
-        color: AppColors.textPrimary,
-      ),
-    );
+  Widget _buildModernInput({
+    required TextEditingController controller,
+    required String label,
+    required IconData icon,
+    required String hint,
+    bool obscure = false,
+    Widget? suffixIcon,
+    TextInputType? keyboardType,
+    String? Function(String?)? validator,
+    required Duration delay,
+  }) {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Text(
+          label,
+          style: GoogleFonts.poppins(
+            fontSize: 13,
+            fontWeight: FontWeight.w600,
+            color: AppColors.textPrimary,
+          ),
+        ),
+        const SizedBox(height: 8),
+        TextFormField(
+          controller: controller,
+          obscureText: obscure,
+          keyboardType: keyboardType,
+          validator: validator,
+          style: GoogleFonts.poppins(fontSize: 15),
+          decoration: InputDecoration(
+            hintText: hint,
+            hintStyle: GoogleFonts.poppins(
+              color: AppColors.textSecondary,
+              fontSize: 14,
+            ),
+            prefixIcon: Icon(icon, color: AppColors.primary, size: 22),
+            suffixIcon: suffixIcon,
+            filled: true,
+            fillColor: AppColors.surface,
+            contentPadding: const EdgeInsets.symmetric(horizontal: 16, vertical: 16),
+            border: OutlineInputBorder(
+              borderRadius: BorderRadius.circular(18),
+              borderSide: BorderSide.none,
+            ),
+            enabledBorder: OutlineInputBorder(
+              borderRadius: BorderRadius.circular(18),
+              borderSide: BorderSide.none,
+            ),
+            focusedBorder: OutlineInputBorder(
+              borderRadius: BorderRadius.circular(18),
+              borderSide: BorderSide(color: AppColors.primary, width: 1.5),
+            ),
+            errorBorder: OutlineInputBorder(
+              borderRadius: BorderRadius.circular(18),
+              borderSide: BorderSide(color: AppColors.error, width: 1),
+            ),
+          ),
+        ),
+      ],
+    ).animate(delay: delay).fadeIn().slideY(begin: 0.1, end: 0);
   }
 
-  InputDecoration _inputDecoration(String hint) {
-    return InputDecoration(
-      hintText: hint,
-      hintStyle: const TextStyle(color: AppColors.textSecondary),
-      filled: true,
-      fillColor: AppColors.surface,
-      contentPadding: const EdgeInsets.symmetric(horizontal: 16, vertical: 16),
-      border: OutlineInputBorder(
-        borderRadius: BorderRadius.circular(14),
-        borderSide: const BorderSide(color: AppColors.border),
+  Widget _buildModernSocialButton({
+    required String icon,
+    required Color color,
+    required String label,
+    required Duration delay,
+  }) {
+    return OutlinedButton(
+      onPressed: () {},
+      style: OutlinedButton.styleFrom(
+        padding: const EdgeInsets.symmetric(vertical: 14),
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(18),
+        ),
+        side: BorderSide(color: AppColors.border),
+        backgroundColor: AppColors.surface,
       ),
-      enabledBorder: OutlineInputBorder(
-        borderRadius: BorderRadius.circular(14),
-        borderSide: const BorderSide(color: AppColors.border),
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          Text(
+            icon,
+            style: TextStyle(
+              fontSize: 20,
+              fontWeight: FontWeight.bold,
+              color: color,
+            ),
+          ),
+          const SizedBox(width: 8),
+          Text(
+            label,
+            style: GoogleFonts.poppins(
+              fontSize: 14,
+              fontWeight: FontWeight.w500,
+              color: AppColors.textPrimary,
+            ),
+          ),
+        ],
       ),
-      focusedBorder: OutlineInputBorder(
-        borderRadius: BorderRadius.circular(14),
-        borderSide: const BorderSide(color: AppColors.primary, width: 2),
-      ),
-      errorBorder: OutlineInputBorder(
-        borderRadius: BorderRadius.circular(14),
-        borderSide: const BorderSide(color: AppColors.error),
-      ),
-    );
+    ).animate(delay: delay).fadeIn().slideY(begin: 0.1, end: 0);
   }
 }

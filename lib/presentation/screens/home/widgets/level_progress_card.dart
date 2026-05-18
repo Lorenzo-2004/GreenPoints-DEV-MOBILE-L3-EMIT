@@ -13,17 +13,18 @@ class LevelProgressCard extends StatelessWidget {
     final level = user.level as LevelModel;
     final progress = level.progressTo(user.totalPoints);
     final pointsLeft = level.pointsToNext(user.totalPoints);
+    final nextLevel = _getNextLevel(level);
 
     return Container(
       padding: const EdgeInsets.all(20),
       decoration: BoxDecoration(
-        color: AppColors.surface,
-        borderRadius: BorderRadius.circular(20),
+        color: Colors.white,
+        borderRadius: BorderRadius.circular(24),
         boxShadow: [
           BoxShadow(
-            color: Colors.black.withValues(alpha: 0.05),
-            blurRadius: 20,
-            offset: const Offset(0, 4),
+            color: level.color.withValues(alpha: 0.1),
+            blurRadius: 24,
+            offset: const Offset(0, 8),
           ),
         ],
       ),
@@ -32,14 +33,29 @@ class LevelProgressCard extends StatelessWidget {
         children: [
           Row(
             children: [
+              // Icône niveau avec gradient
               Container(
-                width: 48,
-                height: 48,
+                width: 52,
+                height: 52,
                 decoration: BoxDecoration(
-                  color: level.color.withValues(alpha: 0.12),
-                  borderRadius: BorderRadius.circular(14),
+                  gradient: LinearGradient(
+                    colors: [
+                      level.color,
+                      level.color.withValues(alpha: 0.7),
+                    ],
+                    begin: Alignment.topLeft,
+                    end: Alignment.bottomRight,
+                  ),
+                  borderRadius: BorderRadius.circular(16),
+                  boxShadow: [
+                    BoxShadow(
+                      color: level.color.withValues(alpha: 0.4),
+                      blurRadius: 12,
+                      offset: const Offset(0, 4),
+                    ),
+                  ],
                 ),
-                child: Icon(level.icon, color: level.color, size: 26),
+                child: Icon(level.icon, color: Colors.white, size: 26),
               ),
               const SizedBox(width: 14),
               Expanded(
@@ -50,112 +66,167 @@ class LevelProgressCard extends StatelessWidget {
                       'Niveau ${level.name}',
                       style: GoogleFonts.poppins(
                         fontSize: 16,
-                        fontWeight: FontWeight.w600,
-                        color: AppColors.textPrimary,
+                        fontWeight: FontWeight.w700,
+                        color: const Color(0xFF1A1A2E),
+                        letterSpacing: -0.3,
                       ),
                     ),
                     Text(
                       pointsLeft > 0
-                          ? '$pointsLeft pts pour le niveau suivant'
+                          ? '$pointsLeft pts → ${nextLevel?.name ?? ""}'
                           : 'Niveau maximum atteint',
                       style: GoogleFonts.poppins(
                         fontSize: 12,
-                        color: AppColors.textSecondary,
+                        color: const Color(0xFF9CA3AF),
+                        fontWeight: FontWeight.w400,
                       ),
                     ),
                   ],
                 ),
               ),
-              Text(
-                '${(progress * 100).toInt()}%',
-                style: GoogleFonts.poppins(
-                  fontSize: 18,
-                  fontWeight: FontWeight.w700,
-                  color: level.color,
+              // Pourcentage
+              Container(
+                padding: const EdgeInsets.symmetric(
+                  horizontal: 10, vertical: 5),
+                decoration: BoxDecoration(
+                  color: level.color.withValues(alpha: 0.1),
+                  borderRadius: BorderRadius.circular(10),
+                ),
+                child: Text(
+                  '${(progress * 100).toInt()}%',
+                  style: GoogleFonts.poppins(
+                    fontSize: 14,
+                    fontWeight: FontWeight.w700,
+                    color: level.color,
+                  ),
                 ),
               ),
             ],
           ),
 
-          const SizedBox(height: 16),
+          const SizedBox(height: 20),
 
-          // Barre de progression
-          Container(
-            height: 8,
-            decoration: BoxDecoration(
-              color: AppColors.border,
-              borderRadius: BorderRadius.circular(4),
-            ),
-            child: FractionallySizedBox(
-              widthFactor: progress,
-              alignment: Alignment.centerLeft,
-              child: Container(
+          // Barre de progression premium
+          Stack(
+            children: [
+              Container(
+                height: 10,
                 decoration: BoxDecoration(
-                  gradient: LinearGradient(
-                    colors: [level.color, AppColors.accent],
-                  ),
-                  borderRadius: BorderRadius.circular(4),
+                  color: const Color(0xFFF3F4F6),
+                  borderRadius: BorderRadius.circular(10),
                 ),
               ),
-            ),
+              FractionallySizedBox(
+                widthFactor: progress,
+                child: Container(
+                  height: 10,
+                  decoration: BoxDecoration(
+                    gradient: LinearGradient(
+                      colors: [level.color, AppColors.accent],
+                    ),
+                    borderRadius: BorderRadius.circular(10),
+                    boxShadow: [
+                      BoxShadow(
+                        color: level.color.withValues(alpha: 0.4),
+                        blurRadius: 6,
+                        offset: const Offset(0, 2),
+                      ),
+                    ],
+                  ),
+                ),
+              ),
+            ],
           ),
 
-          const SizedBox(height: 16),
+          const SizedBox(height: 20),
 
-          // Niveaux mini
+          // Niveaux mini premium
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: LevelModel.levels.map((l) {
               final isReached = user.totalPoints >= l.minPoints;
               final isCurrent = l.type == level.type;
-              return Column(
-                children: [
-                  Container(
-                    width: 36,
-                    height: 36,
-                    decoration: BoxDecoration(
-                      color: isReached
-                          ? l.color.withValues(alpha: 0.15)
-                          : const Color(0xFFF0EDE8),
-                      borderRadius: BorderRadius.circular(10),
-                      border: isCurrent
-                          ? Border.all(color: l.color, width: 2)
-                          : null,
-                      boxShadow: isCurrent
-                          ? [
-                              BoxShadow(
-                                color: l.color.withValues(alpha: 0.3),
-                                blurRadius: 8,
-                                offset: const Offset(0, 2),
-                              ),
-                            ]
-                          : null,
-                    ),
-                    child: Icon(
-                      l.icon,
-                      size: 18,
-                      color: isReached ? l.color : AppColors.textSecondary,
-                    ),
-                  ),
-                  const SizedBox(height: 4),
-                  Text(
-                    l.name,
-                    style: GoogleFonts.poppins(
-                      fontSize: 9,
-                      color: isReached
-                          ? AppColors.textPrimary
-                          : AppColors.textSecondary,
-                      fontWeight: isCurrent
-                          ? FontWeight.w600
-                          : FontWeight.w400,
-                    ),
-                  ),
-                ],
+              return _LevelDot(
+                level: l,
+                isReached: isReached,
+                isCurrent: isCurrent,
               );
             }).toList(),
           ),
         ],
       ),
+    );
+  }
+
+  LevelModel? _getNextLevel(LevelModel current) {
+    final index = LevelModel.levels.indexOf(current);
+    if (index < LevelModel.levels.length - 1) {
+      return LevelModel.levels[index + 1];
+    }
+    return null;
+  }
+}
+
+class _LevelDot extends StatelessWidget {
+  final LevelModel level;
+  final bool isReached;
+  final bool isCurrent;
+
+  const _LevelDot({
+    required this.level,
+    required this.isReached,
+    required this.isCurrent,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return Column(
+      children: [
+        AnimatedContainer(
+          duration: const Duration(milliseconds: 300),
+          width: isCurrent ? 44 : 38,
+          height: isCurrent ? 44 : 38,
+          decoration: BoxDecoration(
+            gradient: isReached
+                ? LinearGradient(
+                    colors: [level.color, level.color.withValues(alpha: 0.7)],
+                    begin: Alignment.topLeft,
+                    end: Alignment.bottomRight,
+                  )
+                : null,
+            color: isReached ? null : const Color(0xFFF3F4F6),
+            borderRadius: BorderRadius.circular(isCurrent ? 14 : 11),
+            border: isCurrent
+                ? Border.all(color: level.color, width: 2.5)
+                : null,
+            boxShadow: isCurrent
+                ? [
+                    BoxShadow(
+                      color: level.color.withValues(alpha: 0.4),
+                      blurRadius: 12,
+                      offset: const Offset(0, 4),
+                    ),
+                  ]
+                : null,
+          ),
+          child: Icon(
+            level.icon,
+            size: isCurrent ? 22 : 18,
+            color: isReached ? Colors.white : const Color(0xFFD1D5DB),
+          ),
+        ),
+        const SizedBox(height: 6),
+        Text(
+          level.name,
+          style: GoogleFonts.poppins(
+            fontSize: 9,
+            color: isReached
+                ? const Color(0xFF374151)
+                : const Color(0xFF9CA3AF),
+            fontWeight: isCurrent ? FontWeight.w700 : FontWeight.w400,
+          ),
+        ),
+      ],
     );
   }
 }
