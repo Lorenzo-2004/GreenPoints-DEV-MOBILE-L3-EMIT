@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:go_router/go_router.dart';
 import '../../../../core/theme/app_colors.dart';
 import '../../../../data/models/user/user_model.dart';
@@ -24,19 +25,20 @@ class DailyGestesSection extends StatelessWidget {
         Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
-            const Text(
+            Text(
               'Gestes du jour',
-              style: TextStyle(
+              style: GoogleFonts.poppins(
                 fontSize: 18,
-                fontWeight: FontWeight.w700,
+                fontWeight: FontWeight.w600,
                 color: AppColors.textPrimary,
               ),
             ),
-            TextButton(
-              onPressed: () => context.go('/gestes'),
-              child: const Text(
+            GestureDetector(
+              onTap: () => context.go('/gestes'),
+              child: Text(
                 'Voir tout',
-                style: TextStyle(
+                style: GoogleFonts.poppins(
+                  fontSize: 13,
                   color: AppColors.primary,
                   fontWeight: FontWeight.w600,
                 ),
@@ -67,25 +69,34 @@ class _GesteCard extends StatelessWidget {
       padding: const EdgeInsets.all(14),
       decoration: BoxDecoration(
         color: isDone
-            ? AppColors.primaryLight
+            ? AppColors.primary.withValues(alpha: 0.05)
             : AppColors.surface,
         borderRadius: BorderRadius.circular(16),
-        border: Border.all(
-          color: isDone ? AppColors.accent : AppColors.border,
-        ),
+        boxShadow: [
+          BoxShadow(
+            color: Colors.black.withValues(alpha: 0.04),
+            blurRadius: 12,
+            offset: const Offset(0, 3),
+          ),
+        ],
+        border: isDone
+            ? Border.all(color: AppColors.primary.withValues(alpha: 0.2))
+            : null,
       ),
       child: Row(
         children: [
           Container(
-            width: 44,
-            height: 44,
+            width: 46,
+            height: 46,
             decoration: BoxDecoration(
-              color: geste.category.color.withValues(alpha: 0.15),
-              borderRadius: BorderRadius.circular(12),
+              color: isDone
+                  ? AppColors.primary.withValues(alpha: 0.1)
+                  : geste.category.color.withValues(alpha: 0.1),
+              borderRadius: BorderRadius.circular(13),
             ),
             child: Icon(
-              geste.category.icon,
-              color: geste.category.color,
+              isDone ? Icons.check_circle_rounded : geste.category.icon,
+              color: isDone ? AppColors.primary : geste.category.color,
               size: 22,
             ),
           ),
@@ -96,20 +107,21 @@ class _GesteCard extends StatelessWidget {
               children: [
                 Text(
                   geste.title,
-                  style: TextStyle(
+                  style: GoogleFonts.poppins(
                     fontSize: 14,
-                    fontWeight: FontWeight.w600,
+                    fontWeight: FontWeight.w500,
                     color: isDone
-                        ? AppColors.primary
+                        ? AppColors.textSecondary
                         : AppColors.textPrimary,
                     decoration: isDone
                         ? TextDecoration.lineThrough
                         : null,
+                    decorationColor: AppColors.textSecondary,
                   ),
                 ),
                 Text(
                   geste.description,
-                  style: const TextStyle(
+                  style: GoogleFonts.poppins(
                     fontSize: 12,
                     color: AppColors.textSecondary,
                   ),
@@ -119,23 +131,23 @@ class _GesteCard extends StatelessWidget {
               ],
             ),
           ),
-          const SizedBox(width: 8),
+          const SizedBox(width: 10),
           Container(
             padding: const EdgeInsets.symmetric(
-              horizontal: 8, vertical: 4),
+              horizontal: 10, vertical: 5),
             decoration: BoxDecoration(
               color: isDone
-                  ? AppColors.primary
-                  : const Color(0xFFF5A800).withValues(alpha: 0.15),
+                  ? AppColors.primary.withValues(alpha: 0.1)
+                  : const Color(0xFFFFF8E7),
               borderRadius: BorderRadius.circular(8),
             ),
             child: Text(
-              isDone ? '✓' : '+${geste.points}',
-              style: TextStyle(
+              isDone ? 'Fait' : '+${geste.points}',
+              style: GoogleFonts.poppins(
                 fontSize: 12,
-                fontWeight: FontWeight.w700,
+                fontWeight: FontWeight.w600,
                 color: isDone
-                    ? Colors.white
+                    ? AppColors.primary
                     : const Color(0xFFF5A800),
               ),
             ),

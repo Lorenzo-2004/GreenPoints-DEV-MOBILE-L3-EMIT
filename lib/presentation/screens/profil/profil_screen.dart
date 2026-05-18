@@ -2,16 +2,18 @@ import 'package:flutter/material.dart';
 import 'package:flutter_animate/flutter_animate.dart';
 import '../../../core/theme/app_colors.dart';
 import '../../../data/models/user/user_model.dart';
-import 'widgets/home_header.dart';
-import 'widgets/level_progress_card.dart';
-import 'widgets/daily_gestes_section.dart';
+import 'widgets/profil_header.dart';
+import 'widgets/level_badge.dart';
+import 'widgets/stats_grid.dart';
+import 'widgets/settings_section.dart';
 
-class HomeScreen extends StatelessWidget {
-  const HomeScreen({super.key});
+class ProfilScreen extends StatelessWidget {
+  const ProfilScreen({super.key});
 
   static final _mockUser = UserModel.fromMap({
-    'name': 'Lorenzo',
+    'name': 'Lorenzo Rakoto',
     'email': 'lorenzo@email.com',
+    'phoneNumber': '+261 34 00 000 00',
     'totalPoints': 340,
     'weeklyPoints': 85,
     'streak': 5,
@@ -26,21 +28,26 @@ class HomeScreen extends StatelessWidget {
       body: CustomScrollView(
         slivers: [
           SliverToBoxAdapter(
-            child: HomeHeader(user: _mockUser)
+            child: ProfilHeader(user: _mockUser)
               .animate()
               .fadeIn(duration: 400.ms),
           ),
           SliverPadding(
-            padding: const EdgeInsets.fromLTRB(16, 20, 16, 0),
+            padding: const EdgeInsets.all(16),
             sliver: SliverList(
               delegate: SliverChildListDelegate([
-                LevelProgressCard(user: _mockUser)
+                LevelBadge(user: _mockUser)
                   .animate(delay: 100.ms)
                   .fadeIn()
                   .slideY(begin: 0.2, end: 0),
-                const SizedBox(height: 20),
-                DailyGestesSection(user: _mockUser)
+                const SizedBox(height: 16),
+                StatsGrid(user: _mockUser)
                   .animate(delay: 200.ms)
+                  .fadeIn()
+                  .slideY(begin: 0.2, end: 0),
+                const SizedBox(height: 16),
+                const SettingsSection()
+                  .animate(delay: 300.ms)
                   .fadeIn()
                   .slideY(begin: 0.2, end: 0),
                 const SizedBox(height: 80),

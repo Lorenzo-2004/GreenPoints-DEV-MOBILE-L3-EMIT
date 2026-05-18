@@ -2,7 +2,7 @@
 
 # greenpoints
 
-A new Flutter project.
+A new Flutter project.git add README.md
 
 ## Getting Started
 

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
 import '../../../../core/theme/app_colors.dart';
 import '../../../../data/models/user/user_model.dart';
 
@@ -18,7 +19,13 @@ class LevelProgressCard extends StatelessWidget {
       decoration: BoxDecoration(
         color: AppColors.surface,
         borderRadius: BorderRadius.circular(20),
-        border: Border.all(color: AppColors.border),
+        boxShadow: [
+          BoxShadow(
+            color: Colors.black.withValues(alpha: 0.05),
+            blurRadius: 20,
+            offset: const Offset(0, 4),
+          ),
+        ],
       ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -26,32 +33,32 @@ class LevelProgressCard extends StatelessWidget {
           Row(
             children: [
               Container(
-                width: 44,
-                height: 44,
+                width: 48,
+                height: 48,
                 decoration: BoxDecoration(
-                  color: level.color.withValues(alpha: 0.15),
-                  borderRadius: BorderRadius.circular(12),
+                  color: level.color.withValues(alpha: 0.12),
+                  borderRadius: BorderRadius.circular(14),
                 ),
-                child: Icon(level.icon, color: level.color, size: 24),
+                child: Icon(level.icon, color: level.color, size: 26),
               ),
-              const SizedBox(width: 12),
+              const SizedBox(width: 14),
               Expanded(
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Text(
                       'Niveau ${level.name}',
-                      style: const TextStyle(
+                      style: GoogleFonts.poppins(
                         fontSize: 16,
-                        fontWeight: FontWeight.w700,
+                        fontWeight: FontWeight.w600,
                         color: AppColors.textPrimary,
                       ),
                     ),
                     Text(
                       pointsLeft > 0
                           ? '$pointsLeft pts pour le niveau suivant'
-                          : 'Niveau maximum atteint 🎉',
-                      style: const TextStyle(
+                          : 'Niveau maximum atteint',
+                      style: GoogleFonts.poppins(
                         fontSize: 12,
                         color: AppColors.textSecondary,
                       ),
@@ -61,7 +68,7 @@ class LevelProgressCard extends StatelessWidget {
               ),
               Text(
                 '${(progress * 100).toInt()}%',
-                style: TextStyle(
+                style: GoogleFonts.poppins(
                   fontSize: 18,
                   fontWeight: FontWeight.w700,
                   color: level.color,
@@ -73,17 +80,27 @@ class LevelProgressCard extends StatelessWidget {
           const SizedBox(height: 16),
 
           // Barre de progression
-          ClipRRect(
-            borderRadius: BorderRadius.circular(8),
-            child: LinearProgressIndicator(
-              value: progress,
-              backgroundColor: AppColors.border,
-              valueColor: AlwaysStoppedAnimation<Color>(level.color),
-              minHeight: 10,
+          Container(
+            height: 8,
+            decoration: BoxDecoration(
+              color: AppColors.border,
+              borderRadius: BorderRadius.circular(4),
+            ),
+            child: FractionallySizedBox(
+              widthFactor: progress,
+              alignment: Alignment.centerLeft,
+              child: Container(
+                decoration: BoxDecoration(
+                  gradient: LinearGradient(
+                    colors: [level.color, AppColors.accent],
+                  ),
+                  borderRadius: BorderRadius.circular(4),
+                ),
+              ),
             ),
           ),
 
-          const SizedBox(height: 12),
+          const SizedBox(height: 16),
 
           // Niveaux mini
           Row(
@@ -94,30 +111,36 @@ class LevelProgressCard extends StatelessWidget {
               return Column(
                 children: [
                   Container(
-                    width: 32,
-                    height: 32,
+                    width: 36,
+                    height: 36,
                     decoration: BoxDecoration(
                       color: isReached
-                          ? l.color.withValues(alpha: 0.2)
-                          : AppColors.border,
-                      borderRadius: BorderRadius.circular(8),
+                          ? l.color.withValues(alpha: 0.15)
+                          : const Color(0xFFF0EDE8),
+                      borderRadius: BorderRadius.circular(10),
                       border: isCurrent
                           ? Border.all(color: l.color, width: 2)
                           : null,
+                      boxShadow: isCurrent
+                          ? [
+                              BoxShadow(
+                                color: l.color.withValues(alpha: 0.3),
+                                blurRadius: 8,
+                                offset: const Offset(0, 2),
+                              ),
+                            ]
+                          : null,
                     ),
-                    child: Center(
-                      child: Text(
-                        l.emoji,
-                        style: TextStyle(
-                          fontSize: isReached ? 16 : 12,
-                        ),
-                      ),
+                    child: Icon(
+                      l.icon,
+                      size: 18,
+                      color: isReached ? l.color : AppColors.textSecondary,
                     ),
                   ),
                   const SizedBox(height: 4),
                   Text(
                     l.name,
-                    style: TextStyle(
+                    style: GoogleFonts.poppins(
                       fontSize: 9,
                       color: isReached
                           ? AppColors.textPrimary

@@ -5,6 +5,8 @@ import '../../presentation/screens/login/login_screen.dart';
 import '../../presentation/screens/register/register_screen.dart';
 import '../../presentation/screens/main_shell/main_shell.dart';
 import '../../presentation/screens/home/home_screen.dart';
+import '../../presentation/screens/gestes/gestes_screen.dart';
+import '../../presentation/screens/profil/profil_screen.dart';
 
 final appRouter = GoRouter(
   initialLocation: '/',
@@ -31,9 +33,7 @@ final appRouter = GoRouter(
         ),
         GoRoute(
           path: '/gestes',
-          builder: (context, state) => const Scaffold(
-            body: Center(child: Text('Gestes — à venir')),
-          ),
+          builder: (context, state) => const GestesScreen(),
         ),
         GoRoute(
           path: '/valider',
@@ -49,9 +49,7 @@ final appRouter = GoRouter(
         ),
         GoRoute(
           path: '/profil',
-          builder: (context, state) => const Scaffold(
-            body: Center(child: Text('Profil — à venir')),
-          ),
+          builder: (context, state) => const ProfilScreen(),
         ),
       ],
     ),
