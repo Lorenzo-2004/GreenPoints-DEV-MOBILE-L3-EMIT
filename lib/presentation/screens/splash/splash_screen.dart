@@ -20,6 +20,7 @@ class _SplashScreenState extends State<SplashScreen> {
   }
 
   Future<void> _navigate() async {
+    // Délai pour laisser l'animation se jouer
     await Future.delayed(const Duration(milliseconds: 2800));
     if (!mounted) return;
 
@@ -51,28 +52,26 @@ class _SplashScreenState extends State<SplashScreen> {
             children: [
               const Spacer(),
 
-              // Icône avec effet de glow
+              // LOGO ACTUALISÉ
               Container(
-                width: 120,
-                height: 120,
+                width: 240,
+                height: 240,
                 decoration: BoxDecoration(
-                  gradient: LinearGradient(
-                    colors: [
-                      Colors.white.withValues(alpha: 0.2),
-                      Colors.white.withValues(alpha: 0.05),
-                    ],
-                  ),
                   borderRadius: BorderRadius.circular(35),
                   boxShadow: [
                     BoxShadow(
-                      color: Colors.white.withValues(alpha: 0.15),
-                      blurRadius: 30,
+                      color: const Color.fromARGB(255, 7, 30, 243).withValues(alpha: 0.2),
+                      blurRadius: 25,
                       offset: const Offset(0, 10),
                     ),
                   ],
                 ),
-                child: const Center(
-                  child: Text('🌿', style: TextStyle(fontSize: 64)),
+                child: ClipRRect(
+                  borderRadius: BorderRadius.circular(35),
+                  child: Image.asset(
+                    'assets/images/logo/logo.png',
+                    fit: BoxFit.cover,
+                  ),
                 ),
               ).animate()
                 .scale(
@@ -115,7 +114,7 @@ class _SplashScreenState extends State<SplashScreen> {
 
               const Spacer(),
 
-              // Loader original qui fonctionne
+              // Loader
               _LoadingDots()
                 .animate(delay: 800.ms)
                 .fadeIn(duration: 400.ms),

@@ -37,44 +37,54 @@ class _BottomNav extends StatelessWidget {
         ],
       ),
       child: SafeArea(
-        child: Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 8),
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.spaceAround,
-            children: [
-              _NavItem(
-                icon: Icons.home_outlined,
-                iconActive: Icons.home_rounded,
-                label: 'Accueil',
-                path: '/home',
-                isActive: location == '/home',
+        child: Stack(
+          clipBehavior: Clip.none,
+          alignment: Alignment.center,
+          children: [
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 8),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceAround,
+                children: [
+                  _NavItem(
+                    icon: Icons.home_outlined,
+                    iconActive: Icons.home_rounded,
+                    label: 'Accueil',
+                    path: '/home',
+                    isActive: location == '/home',
+                  ),
+                  _NavItem(
+                    icon: Icons.eco_outlined,
+                    iconActive: Icons.eco_rounded,
+                    label: 'Gestes',
+                    path: '/gestes',
+                    isActive: location.startsWith('/gestes'),
+                  ),
+                  const SizedBox(width: 54),
+                  _NavItem(
+                    icon: Icons.emoji_events_outlined,
+                    iconActive: Icons.emoji_events_rounded,
+                    label: 'Défis',
+                    path: '/defis',
+                    isActive: location.startsWith('/defis'),
+                  ),
+                  _NavItem(
+                    icon: Icons.person_outline,
+                    iconActive: Icons.person_rounded,
+                    label: 'Profil',
+                    path: '/profil',
+                    isActive: location.startsWith('/profil'),
+                  ),
+                ],
               ),
-              _NavItem(
-                icon: Icons.eco_outlined,
-                iconActive: Icons.eco_rounded,
-                label: 'Gestes',
-                path: '/gestes',
-                isActive: location.startsWith('/gestes'),
-              ),
-              _NavItemCenter(
+            ),
+            Positioned(
+              top: -24,
+              child: _NavItemCenter(
                 isActive: location.startsWith('/valider'),
               ),
-              _NavItem(
-                icon: Icons.emoji_events_outlined,
-                iconActive: Icons.emoji_events_rounded,
-                label: 'Défis',
-                path: '/defis',
-                isActive: location.startsWith('/defis'),
-              ),
-              _NavItem(
-                icon: Icons.person_outline,
-                iconActive: Icons.person_rounded,
-                label: 'Profil',
-                path: '/profil',
-                isActive: location.startsWith('/profil'),
-              ),
-            ],
-          ),
+            ),
+          ],
         ),
       ),
     );
@@ -137,7 +147,6 @@ class _NavItem extends StatelessWidget {
   }
 }
 
-// Bouton central — valider un geste
 class _NavItemCenter extends StatelessWidget {
   final bool isActive;
 

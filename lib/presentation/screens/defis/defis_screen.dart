@@ -139,25 +139,13 @@ class _DefisScreenState extends State<DefisScreen> {
                         final defi = _filtered[index];
                         return Padding(
                           padding: const EdgeInsets.only(bottom: 12),
-                          child: Container(
-                            decoration: BoxDecoration(
-                              borderRadius: BorderRadius.circular(20),
-                              boxShadow: [
-                                BoxShadow(
-                                  color: Colors.black.withValues(alpha: 0.08),
-                                  blurRadius: 12,
-                                  offset: const Offset(0, 4),
-                                ),
-                              ],
-                            ),
-                            child: DefiCard(
-                              defi: defi,
-                              onTap: () {},
-                            ),
-                          ).animate(delay: (200 + index * 50).ms)
-                            .fadeIn()
-                            .slideY(begin: 0.2, end: 0),
-                        );
+                          child: DefiCard(
+                            defi: defi,
+                            onTap: () {},
+                          ),
+                        ).animate(delay: (200 + index * 50).ms)
+                          .fadeIn()
+                          .slideY(begin: 0.2, end: 0);
                       },
                       childCount: _filtered.length,
                     ),

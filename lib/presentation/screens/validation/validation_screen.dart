@@ -532,7 +532,7 @@ class _QRSection extends StatelessWidget {
           ),
           const SizedBox(height: 16),
           Text(
-            '📷 Caméra requise',
+            'Caméra requise',
             style: GoogleFonts.poppins(
               fontSize: 12,
               color: AppColors.textSecondary,

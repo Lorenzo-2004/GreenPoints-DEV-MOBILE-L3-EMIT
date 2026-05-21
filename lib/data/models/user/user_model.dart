@@ -101,7 +101,7 @@ class LevelModel extends LevelEntity {
       icon: Icons.grass,
       minPoints: 0,
       maxPoints: 99,
-      color: AppColors.levelGraine,
+      color: AppColors.level1,
     ),
     LevelModel(
       type: LevelType.pousse,
@@ -110,7 +110,7 @@ class LevelModel extends LevelEntity {
       icon: Icons.eco,
       minPoints: 100,
       maxPoints: 299,
-      color: AppColors.levelPousse,
+      color: AppColors.level2,
     ),
     LevelModel(
       type: LevelType.rameau,
@@ -119,7 +119,7 @@ class LevelModel extends LevelEntity {
       icon: Icons.park,
       minPoints: 300,
       maxPoints: 699,
-      color: AppColors.levelRameau,
+      color: AppColors.level3,
     ),
     LevelModel(
       type: LevelType.arbre,
@@ -128,7 +128,7 @@ class LevelModel extends LevelEntity {
       icon: Icons.nature,
       minPoints: 700,
       maxPoints: 1499,
-      color: AppColors.levelArbre,
+      color: AppColors.level4,
     ),
     LevelModel(
       type: LevelType.foret,
@@ -137,7 +137,7 @@ class LevelModel extends LevelEntity {
       icon: Icons.forest,
       minPoints: 1500,
       maxPoints: 2999,
-      color: AppColors.levelForet,
+      color: AppColors.level5,
     ),
     LevelModel(
       type: LevelType.gardien,
@@ -146,7 +146,7 @@ class LevelModel extends LevelEntity {
       icon: Icons.public,
       minPoints: 3000,
       maxPoints: 999999,
-      color: AppColors.levelGardien,
+      color: AppColors.primary,
     ),
   ];
 

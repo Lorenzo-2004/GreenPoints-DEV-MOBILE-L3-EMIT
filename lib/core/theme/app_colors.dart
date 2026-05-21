@@ -3,55 +3,63 @@ import 'package:flutter/material.dart';
 class AppColors {
   AppColors._();
 
-  // Primaires Emerald Modern
-  static const Color primary       = Color(0xFF059669);
-  static const Color primaryDark   = Color(0xFF064E3B);
-  static const Color primaryLight  = Color(0xFFD1FAE5);
-  static const Color accent        = Color(0xFF34D399);
+  static const Color primary       = Color(0xFF2563EB);
+  static const Color primaryDark   = Color(0xFF1D4ED8);
+  static const Color primaryLight  = Color(0xFFDBEAFE);
 
-  // Gradients
+  static const Color accent        = Color(0xFF3B82F6);
+
+  static const Color night         = Color(0xFF111827);
+  static const Color darkSurface   = Color(0xFF1F2937);
+
+  static const Color white         = Color(0xFFFFFFFF);
+  static const Color softWhite     = Color(0xFFF9FAFB);
+  static const Color cardWhite     = Color(0xFFFFFFFF);
+
   static const LinearGradient primaryGradient = LinearGradient(
-    colors: [Color(0xFF064E3B), Color(0xFF059669)],
+    colors: [Color(0xFF1D4ED8), Color(0xFF2563EB)],
     begin: Alignment.topLeft,
     end: Alignment.bottomRight,
   );
 
   static const LinearGradient accentGradient = LinearGradient(
-    colors: [Color(0xFF059669), Color(0xFF34D399)],
+    colors: [Color(0xFF2563EB), Color(0xFFDBEAFE)],
     begin: Alignment.topLeft,
     end: Alignment.bottomRight,
   );
 
-  static const LinearGradient goldGradient = LinearGradient(
-    colors: [Color(0xFFF59E0B), Color(0xFFFBBF24)],
-    begin: Alignment.topLeft,
-    end: Alignment.bottomRight,
+  static const LinearGradient darkGradient = LinearGradient(
+    colors: [Color(0xFF111827), Color(0xFF1F2937)],
+    begin: Alignment.topCenter,
+    end: Alignment.bottomCenter,
   );
 
   static const LinearGradient cardGradient = LinearGradient(
-    colors: [Color(0xFF059669), Color(0xFF0D9488)],
+    colors: [Color(0xFFFFFFFF), Color(0xFFF3F4F6)],
     begin: Alignment.topLeft,
     end: Alignment.bottomRight,
   );
 
-  // Niveaux
-  static const Color levelGraine   = Color(0xFFD1FAE5);
-  static const Color levelPousse   = Color(0xFF6EE7B7);
-  static const Color levelRameau   = Color(0xFF34D399);
-  static const Color levelArbre    = Color(0xFF059669);
-  static const Color levelForet    = Color(0xFF047857);
-  static const Color levelGardien  = Color(0xFF064E3B);
+  static const Color level1 = Color(0xFFDBEAFE);
+  static const Color level2 = Color(0xFFBFDBFE);
+  static const Color level3 = Color(0xFF93C5FD);
+  static const Color level4 = Color(0xFF60A5FA);
+  static const Color level5 = Color(0xFF3B82F6);
 
-  // Sémantiques
-  static const Color success       = Color(0xFF059669);
-  static const Color warning       = Color(0xFFF59E0B);
-  static const Color error         = Color(0xFFDC2626);
-  static const Color info          = Color(0xFF0C447C);
+  static const Color success = Color(0xFF10B981);
+  static const Color warning = Color(0xFFF59E0B);
+  static const Color error   = Color(0xFFEF4444);
+  static const Color info    = Color(0xFF3B82F6);
 
-  // Neutres
-  static const Color background    = Color(0xFFF8FAFC);
-  static const Color surface       = Color(0xFFFFFFFF);
-  static const Color textPrimary   = Color(0xFF1A1A18);
-  static const Color textSecondary = Color(0xFF6B6B67);
-  static const Color border        = Color(0xFFE2DFD8);
+  static const Color background = Color(0xFFF9FAFB);
+  static const Color surface    = Color(0xFFFFFFFF);
+
+  static const Color textPrimary   = Color(0xFF111827);
+  static const Color textSecondary = Color(0xFF6B7280);
+
+  static const Color border = Color(0xFFE5E7EB);
+
+  static const Color shadow = Color(0x1A000000);
+
+  static const Color glass = Color(0x33FFFFFF);
 }

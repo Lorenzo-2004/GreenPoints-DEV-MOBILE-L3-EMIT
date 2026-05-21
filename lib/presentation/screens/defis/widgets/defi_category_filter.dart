@@ -15,19 +15,19 @@ class DefiCategoryFilter extends StatelessWidget {
 
   final List<Map<String, dynamic>> categories = const [
     {'label': 'Tous', 'icon': Icons.all_inclusive, 'color': AppColors.primary},
-    {'label': 'Quotidien', 'icon': Icons.today, 'color': Color(0xFF10B981)},
-    {'label': 'Hebdomadaire', 'icon': Icons.calendar_today, 'color': Color(0xFF3B82F6)},
-    {'label': 'Transport', 'icon': Icons.directions_bus, 'color': Color(0xFFF59E0B)},
-    {'label': 'Alimentation', 'icon': Icons.restaurant, 'color': Color(0xFFEF4444)},
+    {'label': 'Quotidien', 'icon': Icons.today, 'color': AppColors.success},
+    {'label': 'Hebdomadaire', 'icon': Icons.calendar_today, 'color': AppColors.info},
+    {'label': 'Transport', 'icon': Icons.directions_bus, 'color': AppColors.warning},
+    {'label': 'Alimentation', 'icon': Icons.restaurant, 'color': AppColors.error},
   ];
 
   Color _getColor(String label) {
     switch (label) {
       case 'Tous': return AppColors.primary;
-      case 'Quotidien': return const Color(0xFF10B981);
-      case 'Hebdomadaire': return const Color(0xFF3B82F6);
-      case 'Transport': return const Color(0xFFF59E0B);
-      case 'Alimentation': return const Color(0xFFEF4444);
+      case 'Quotidien': return AppColors.success;
+      case 'Hebdomadaire': return AppColors.info;
+      case 'Transport': return AppColors.warning;
+      case 'Alimentation': return AppColors.error;
       default: return AppColors.primary;
     }
   }

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import '../../../../core/theme/app_colors.dart';
 
 class DefiCard extends StatelessWidget {
   final Map<String, dynamic> defi;
@@ -11,10 +12,47 @@ class DefiCard extends StatelessWidget {
     required this.onTap,
   });
 
+  IconData _getIconFromString(String iconName) {
+    switch (iconName) {
+      case 'eco':
+        return Icons.eco_rounded;
+      case 'directions_bike':
+        return Icons.directions_bike_rounded;
+      case 'recycling':
+        return Icons.recycling_rounded;
+      case 'restaurant':
+        return Icons.restaurant_rounded;
+      case 'water_drop':
+        return Icons.water_drop_rounded;
+      default:
+        return Icons.emoji_events_rounded;
+    }
+  }
+
+  Color _getColorFromHex(String hexColor) {
+    String hex = hexColor.toUpperCase().replaceAll('#', '');
+    if (hex.length == 6) {
+      hex = 'FF$hex';
+    }
+    return Color(int.parse(hex, radix: 16));
+  }
+
   @override
   Widget build(BuildContext context) {
-    final color = defi['color'] as Color;
-    final progress = defi['progress'] as double;
+    final iconString = defi['icon'] as String? ?? 'eco';
+    final iconData = _getIconFromString(iconString);
+    
+    final rawColor = defi['color'];
+    Color color;
+    if (rawColor is Color) {
+      color = rawColor;
+    } else if (rawColor is String) {
+      color = _getColorFromHex(rawColor);
+    } else {
+      color = AppColors.primary;
+    }
+    
+    final progress = (defi['progress'] as num?)?.toDouble() ?? 0.0;
     final isCompleted = progress >= 1.0;
 
     return GestureDetector(
@@ -22,7 +60,7 @@ class DefiCard extends StatelessWidget {
       child: Container(
         margin: const EdgeInsets.only(bottom: 12),
         decoration: BoxDecoration(
-          color: Colors.white,
+          color: AppColors.surface,
           borderRadius: BorderRadius.circular(24),
           boxShadow: [
             BoxShadow(
@@ -41,7 +79,6 @@ class DefiCard extends StatelessWidget {
                 children: [
                   Row(
                     children: [
-                      // Icône
                       Container(
                         width: 52,
                         height: 52,
@@ -60,11 +97,7 @@ class DefiCard extends StatelessWidget {
                             ),
                           ],
                         ),
-                        child: Icon(
-                          defi['icon'] as IconData,
-                          color: Colors.white,
-                          size: 26,
-                        ),
+                        child: Icon(iconData, color: Colors.white, size: 26),
                       ),
                       const SizedBox(width: 14),
                       Expanded(
@@ -72,20 +105,20 @@ class DefiCard extends StatelessWidget {
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
                             Text(
-                              defi['title'] as String,
+                              defi['title'] as String? ?? '',
                               style: GoogleFonts.poppins(
                                 fontSize: 16,
                                 fontWeight: FontWeight.w700,
-                                color: const Color(0xFF1A1A2E),
+                                color: AppColors.textPrimary,
                                 letterSpacing: -0.3,
                               ),
                             ),
                             const SizedBox(height: 3),
                             Text(
-                              defi['subtitle'] as String,
+                              defi['subtitle'] as String? ?? '',
                               style: GoogleFonts.poppins(
                                 fontSize: 12,
-                                color: const Color(0xFF9CA3AF),
+                                color: AppColors.textSecondary,
                               ),
                               maxLines: 2,
                               overflow: TextOverflow.ellipsis,
@@ -93,29 +126,23 @@ class DefiCard extends StatelessWidget {
                           ],
                         ),
                       ),
-                      // Points badge
                       Container(
-                        padding: const EdgeInsets.symmetric(
-                          horizontal: 10, vertical: 6),
+                        padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 6),
                         decoration: BoxDecoration(
-                          color: const Color(0xFFFFFBEB),
+                          color: AppColors.warning.withValues(alpha: 0.12),
                           borderRadius: BorderRadius.circular(12),
                         ),
                         child: Row(
                           mainAxisSize: MainAxisSize.min,
                           children: [
-                            const Icon(
-                              Icons.stars_rounded,
-                              size: 14,
-                              color: Color(0xFFF59E0B),
-                            ),
+                            const Icon(Icons.stars_rounded, size: 14, color: AppColors.warning),
                             const SizedBox(width: 4),
                             Text(
                               '+${defi['points']}',
                               style: GoogleFonts.poppins(
                                 fontSize: 13,
                                 fontWeight: FontWeight.w700,
-                                color: const Color(0xFFF59E0B),
+                                color: AppColors.warning,
                               ),
                             ),
                           ],
@@ -123,10 +150,7 @@ class DefiCard extends StatelessWidget {
                       ),
                     ],
                   ),
-
                   const SizedBox(height: 16),
-
-                  // Barre de progression
                   Row(
                     children: [
                       Expanded(
@@ -134,22 +158,17 @@ class DefiCard extends StatelessWidget {
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
                             Row(
-                              mainAxisAlignment:
-                                  MainAxisAlignment.spaceBetween,
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
                               children: [
                                 Row(
                                   children: [
-                                    Icon(
-                                      Icons.access_time_rounded,
-                                      size: 12,
-                                      color: const Color(0xFF9CA3AF),
-                                    ),
+                                    Icon(Icons.access_time_rounded, size: 12, color: AppColors.textSecondary),
                                     const SizedBox(width: 4),
                                     Text(
                                       '${defi['daysLeft']}j restants',
                                       style: GoogleFonts.poppins(
                                         fontSize: 11,
-                                        color: const Color(0xFF9CA3AF),
+                                        color: AppColors.textSecondary,
                                       ),
                                     ),
                                   ],
@@ -165,40 +184,24 @@ class DefiCard extends StatelessWidget {
                               ],
                             ),
                             const SizedBox(height: 8),
-                            Stack(
-                              children: [
-                                Container(
-                                  height: 8,
+                            Container(
+                              height: 8,
+                              decoration: BoxDecoration(
+                                color: AppColors.border,
+                                borderRadius: BorderRadius.circular(8),
+                              ),
+                              child: FractionallySizedBox(
+                                widthFactor: progress,
+                                alignment: Alignment.centerLeft,
+                                child: Container(
                                   decoration: BoxDecoration(
-                                    color: const Color(0xFFF3F4F6),
+                                    gradient: LinearGradient(
+                                      colors: [color, color.withValues(alpha: 0.7)],
+                                    ),
                                     borderRadius: BorderRadius.circular(8),
                                   ),
                                 ),
-                                FractionallySizedBox(
-                                  widthFactor: progress,
-                                  child: Container(
-                                    height: 8,
-                                    decoration: BoxDecoration(
-                                      gradient: LinearGradient(
-                                        colors: [
-                                          color,
-                                          color.withValues(alpha: 0.7),
-                                        ],
-                                      ),
-                                      borderRadius:
-                                          BorderRadius.circular(8),
-                                      boxShadow: [
-                                        BoxShadow(
-                                          color:
-                                              color.withValues(alpha: 0.4),
-                                          blurRadius: 6,
-                                          offset: const Offset(0, 2),
-                                        ),
-                                      ],
-                                    ),
-                                  ),
-                                ),
-                              ],
+                              ),
                             ),
                           ],
                         ),
@@ -208,11 +211,8 @@ class DefiCard extends StatelessWidget {
                 ],
               ),
             ),
-
-            // Footer
             Container(
-              padding: const EdgeInsets.symmetric(
-                horizontal: 18, vertical: 12),
+              padding: const EdgeInsets.symmetric(horizontal: 18, vertical: 12),
               decoration: BoxDecoration(
                 color: color.withValues(alpha: 0.05),
                 borderRadius: const BorderRadius.only(
@@ -223,14 +223,13 @@ class DefiCard extends StatelessWidget {
               child: Row(
                 children: [
                   Container(
-                    padding: const EdgeInsets.symmetric(
-                      horizontal: 10, vertical: 4),
+                    padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 4),
                     decoration: BoxDecoration(
                       color: color.withValues(alpha: 0.1),
                       borderRadius: BorderRadius.circular(8),
                     ),
                     child: Text(
-                      defi['category'] as String,
+                      defi['category'] as String? ?? '',
                       style: GoogleFonts.poppins(
                         fontSize: 11,
                         fontWeight: FontWeight.w600,
@@ -249,9 +248,7 @@ class DefiCard extends StatelessWidget {
                   ),
                   const SizedBox(width: 4),
                   Icon(
-                    isCompleted
-                        ? Icons.check_circle_rounded
-                        : Icons.arrow_forward_ios_rounded,
+                    isCompleted ? Icons.check_circle_rounded : Icons.arrow_forward_ios_rounded,
                     size: 14,
                     color: color,
                   ),
