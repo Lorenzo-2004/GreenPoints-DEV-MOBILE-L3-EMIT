@@ -1,4 +1,3 @@
-// lib/presentation/blocs/user/user_cubit.dart
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import '../../../data/models/user/user_model.dart';
@@ -8,17 +7,23 @@ class UserCubit extends Cubit<UserModel?> {
   final UserService _userService = UserService();
 
   UserCubit() : super(null) {
-    _listenToAuthChanges();
+    _loadMockUser();
   }
 
-  void _listenToAuthChanges() {
-    FirebaseAuth.instance.authStateChanges().listen((user) async {
-      if (user != null) {
-        await loadUser(user.uid);
-      } else {
-        emit(null);
-      }
-    });
+  void _loadMockUser() {
+    final mockUser = UserModel(
+      id: 'mock_1',
+      name: 'Lorenzo Rakoto',
+      email: 'lorenzo@greenpoints.com',
+      phoneNumber: '+261 38 94 088 53',
+      totalPoints: 340,
+      weeklyPoints: 85,
+      streak: 5,
+      completedActionIds: ['repas_vege', 'douche_courte'],
+      createdAt: DateTime.now(),
+      level: LevelModel.fromPoints(340),
+    );
+    emit(mockUser);
   }
 
   Future<void> loadUser(String userId) async {

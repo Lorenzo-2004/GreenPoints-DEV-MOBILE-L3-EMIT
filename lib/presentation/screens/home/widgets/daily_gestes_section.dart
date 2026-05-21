@@ -38,7 +38,7 @@ class DailyGestesSection extends StatelessWidget {
                   style: GoogleFonts.poppins(
                     fontSize: 17,
                     fontWeight: FontWeight.w700,
-                    color: const Color(0xFF1A1A2E),
+                    color: AppColors.textPrimary,
                     letterSpacing: -0.3,
                   ),
                 ),
@@ -46,7 +46,7 @@ class DailyGestesSection extends StatelessWidget {
                   '$doneCount / ${gestes.length} complétés',
                   style: GoogleFonts.poppins(
                     fontSize: 12,
-                    color: const Color(0xFF9CA3AF),
+                    color: AppColors.textSecondary,
                   ),
                 ),
               ],
@@ -100,20 +100,20 @@ class _GesteCard extends StatelessWidget {
         padding: const EdgeInsets.all(16),
         decoration: BoxDecoration(
           color: isDone
-              ? const Color(0xFFF0FDF4)
-              : Colors.white,
+              ? AppColors.success.withValues(alpha: 0.05)
+              : AppColors.surface,
           borderRadius: BorderRadius.circular(20),
           border: Border.all(
             color: isDone
-                ? const Color(0xFF86EFAC)
-                : const Color(0xFFF3F4F6),
+                ? AppColors.success.withValues(alpha: 0.3)
+                : AppColors.border,
             width: 1.5,
           ),
           boxShadow: [
             BoxShadow(
               color: isDone
-                  ? AppColors.primary.withValues(alpha: 0.06)
-                  : Colors.black.withValues(alpha: 0.04),
+                  ? AppColors.success.withValues(alpha: 0.08)
+                  : Colors.black.withValues(alpha: 0.03),
               blurRadius: 16,
               offset: const Offset(0, 4),
             ),
@@ -121,13 +121,12 @@ class _GesteCard extends StatelessWidget {
         ),
         child: Row(
           children: [
-            // Icône
             Container(
               width: 50,
               height: 50,
               decoration: BoxDecoration(
                 color: isDone
-                    ? AppColors.primary.withValues(alpha: 0.1)
+                    ? AppColors.success.withValues(alpha: 0.1)
                     : geste.category.color.withValues(alpha: 0.1),
                 borderRadius: BorderRadius.circular(15),
               ),
@@ -136,13 +135,12 @@ class _GesteCard extends StatelessWidget {
                     ? Icons.check_circle_outline_rounded
                     : geste.category.icon,
                 color: isDone
-                    ? AppColors.primary
+                    ? AppColors.success
                     : geste.category.color,
                 size: 24,
               ),
             ),
             const SizedBox(width: 14),
-            // Texte
             Expanded(
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
@@ -153,12 +151,12 @@ class _GesteCard extends StatelessWidget {
                       fontSize: 14,
                       fontWeight: FontWeight.w600,
                       color: isDone
-                          ? const Color(0xFF6B7280)
-                          : const Color(0xFF1A1A2E),
+                          ? AppColors.textSecondary
+                          : AppColors.textPrimary,
                       decoration: isDone
                           ? TextDecoration.lineThrough
                           : null,
-                      decorationColor: const Color(0xFF6B7280),
+                      decorationColor: AppColors.textSecondary,
                       letterSpacing: -0.2,
                     ),
                   ),
@@ -167,7 +165,7 @@ class _GesteCard extends StatelessWidget {
                     geste.description,
                     style: GoogleFonts.poppins(
                       fontSize: 11,
-                      color: const Color(0xFF9CA3AF),
+                      color: AppColors.textSecondary,
                       fontWeight: FontWeight.w400,
                     ),
                     maxLines: 1,
@@ -177,14 +175,13 @@ class _GesteCard extends StatelessWidget {
               ),
             ),
             const SizedBox(width: 10),
-            // Badge
             Container(
               padding: const EdgeInsets.symmetric(
                 horizontal: 10, vertical: 6),
               decoration: BoxDecoration(
                 color: isDone
-                    ? AppColors.primary.withValues(alpha: 0.1)
-                    : const Color(0xFFFFFBEB),
+                    ? AppColors.success.withValues(alpha: 0.1)
+                    : AppColors.warning.withValues(alpha: 0.1),
                 borderRadius: BorderRadius.circular(10),
               ),
               child: Text(
@@ -193,8 +190,8 @@ class _GesteCard extends StatelessWidget {
                   fontSize: 12,
                   fontWeight: FontWeight.w700,
                   color: isDone
-                      ? AppColors.primary
-                      : const Color(0xFFF59E0B),
+                      ? AppColors.success
+                      : AppColors.warning,
                 ),
               ),
             ),

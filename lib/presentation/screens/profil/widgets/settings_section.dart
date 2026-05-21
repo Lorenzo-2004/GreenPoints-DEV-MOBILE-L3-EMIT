@@ -59,7 +59,7 @@ class SettingsSection extends StatelessWidget {
               _Divider(),
               _SettingsTile(
                 icon: Icons.notifications_outlined,
-                iconColor: AppColors.info,
+                iconColor: AppColors.accent, // Changé : AppColors.info → AppColors.accent
                 label: 'Notifications',
                 subtitle: 'Alertes et rappels',
                 onTap: () {},
@@ -67,7 +67,7 @@ class SettingsSection extends StatelessWidget {
               _Divider(),
               _SettingsTile(
                 icon: Icons.share_outlined,
-                iconColor: AppColors.accent,
+                iconColor: AppColors.primary, // Changé : AppColors.accent → AppColors.primary
                 label: 'Partager l\'app',
                 subtitle: 'Invite tes amis',
                 onTap: () {},
@@ -117,7 +117,6 @@ class _SettingsTile extends StatelessWidget {
           padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 14),
           child: Row(
             children: [
-              // Icône avec gradient
               Container(
                 width: 48,
                 height: 48,
@@ -133,7 +132,6 @@ class _SettingsTile extends StatelessWidget {
                 child: Icon(icon, color: iconColor, size: 24),
               ),
               const SizedBox(width: 16),
-              // Texte
               Expanded(
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
@@ -157,7 +155,6 @@ class _SettingsTile extends StatelessWidget {
                   ],
                 ),
               ),
-              // Flèche
               if (!isDestructive)
                 Container(
                   padding: const EdgeInsets.all(6),

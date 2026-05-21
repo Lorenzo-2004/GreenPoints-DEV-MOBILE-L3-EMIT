@@ -62,7 +62,6 @@ class _LoginViewState extends State<_LoginView> {
         backgroundColor: AppColors.background,
         body: Stack(
           children: [
-            // Décoration de fond
             Positioned(
               top: -80,
               right: -60,
@@ -107,7 +106,6 @@ class _LoginViewState extends State<_LoginView> {
                   children: [
                     const SizedBox(height: 32),
 
-                    // Logo animé
                     Container(
                       width: 100,
                       height: 100,
@@ -122,8 +120,14 @@ class _LoginViewState extends State<_LoginView> {
                           ),
                         ],
                       ),
-                      child: const Center(
-                        child: Text('🌿', style: TextStyle(fontSize: 50)),
+                      child: ClipRRect(
+                        borderRadius: BorderRadius.circular(28),
+                        child: Image.asset(
+                          'assets/images/logo/logo.png',
+                          width: 100,
+                          height: 100,
+                          fit: BoxFit.cover,
+                        ),
                       ),
                     ).animate().scale(
                       duration: 700.ms,
@@ -132,7 +136,6 @@ class _LoginViewState extends State<_LoginView> {
 
                     const SizedBox(height: 32),
 
-                    // Titre
                     Text(
                       'Bienvenue\nsur',
                       textAlign: TextAlign.center,
@@ -174,12 +177,10 @@ class _LoginViewState extends State<_LoginView> {
 
                     const SizedBox(height: 48),
 
-                    // Formulaire
                     Form(
                       key: _formKey,
                       child: Column(
                         children: [
-                          // Email
                           _buildModernInput(
                             controller: _emailCtrl,
                             label: 'Email',
@@ -189,10 +190,7 @@ class _LoginViewState extends State<_LoginView> {
                             validator: (v) => v == null || !v.contains('@') ? 'Email invalide' : null,
                             delay: 250.ms,
                           ),
-
                           const SizedBox(height: 20),
-
-                          // Mot de passe
                           _buildModernInput(
                             controller: _passCtrl,
                             label: 'Mot de passe',
@@ -216,7 +214,6 @@ class _LoginViewState extends State<_LoginView> {
 
                     const SizedBox(height: 16),
 
-                    // Mot de passe oublié
                     Align(
                       alignment: Alignment.centerRight,
                       child: TextButton(
@@ -238,7 +235,6 @@ class _LoginViewState extends State<_LoginView> {
 
                     const SizedBox(height: 24),
 
-                    // Bouton connexion
                     BlocBuilder<AuthCubit, AuthState>(
                       builder: (context, state) {
                         return SizedBox(
@@ -286,7 +282,6 @@ class _LoginViewState extends State<_LoginView> {
 
                     const SizedBox(height: 24),
 
-                    // Séparateur
                     Row(
                       children: [
                         Expanded(child: Divider(color: AppColors.border, thickness: 1)),
@@ -307,7 +302,6 @@ class _LoginViewState extends State<_LoginView> {
 
                     const SizedBox(height: 24),
 
-                    // Boutons sociaux
                     Row(
                       children: [
                         Expanded(
@@ -332,7 +326,6 @@ class _LoginViewState extends State<_LoginView> {
 
                     const SizedBox(height: 32),
 
-                    // Lien inscription
                     Row(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [

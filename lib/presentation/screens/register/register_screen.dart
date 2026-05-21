@@ -67,7 +67,6 @@ class _RegisterViewState extends State<_RegisterView> {
         backgroundColor: AppColors.background,
         body: Stack(
           children: [
-            // Décoration de fond
             Positioned(
               top: -100,
               right: -50,
@@ -100,7 +99,6 @@ class _RegisterViewState extends State<_RegisterView> {
                   children: [
                     const SizedBox(height: 40),
 
-                    // Illustration animée
                     Container(
                       width: 100,
                       height: 100,
@@ -115,8 +113,14 @@ class _RegisterViewState extends State<_RegisterView> {
                           ),
                         ],
                       ),
-                      child: const Center(
-                        child: Text('🌱', style: TextStyle(fontSize: 52)),
+                      child: ClipRRect(
+                        borderRadius: BorderRadius.circular(30),
+                        child: Image.asset(
+                          'assets/images/logo/logo.png',
+                          width: 100,
+                          height: 100,
+                          fit: BoxFit.cover,
+                        ),
                       ),
                     ).animate().scale(
                       duration: 600.ms,
@@ -125,7 +129,6 @@ class _RegisterViewState extends State<_RegisterView> {
 
                     const SizedBox(height: 32),
 
-                    // Titre
                     Text(
                       'Créer un compte',
                       textAlign: TextAlign.center,
@@ -140,12 +143,10 @@ class _RegisterViewState extends State<_RegisterView> {
 
                     const SizedBox(height: 48),
 
-                    // Formulaire
                     Form(
                       key: _formKey,
                       child: Column(
                         children: [
-                          // Nom
                           _buildInputField(
                             controller: _nameCtrl,
                             label: 'Nom complet',
@@ -153,10 +154,7 @@ class _RegisterViewState extends State<_RegisterView> {
                             hint: 'Jean Dupont',
                             delay: 200.ms,
                           ),
-
                           const SizedBox(height: 18),
-
-                          // Email
                           _buildInputField(
                             controller: _emailCtrl,
                             label: 'Email',
@@ -166,10 +164,7 @@ class _RegisterViewState extends State<_RegisterView> {
                             validator: (v) => v == null || !v.contains('@') ? 'Email invalide' : null,
                             delay: 250.ms,
                           ),
-
                           const SizedBox(height: 18),
-
-                          // Mot de passe
                           _buildInputField(
                             controller: _passCtrl,
                             label: 'Mot de passe',
@@ -187,10 +182,7 @@ class _RegisterViewState extends State<_RegisterView> {
                             validator: (v) => v == null || v.length < 6 ? 'Min. 6 caractères' : null,
                             delay: 300.ms,
                           ),
-
                           const SizedBox(height: 18),
-
-                          // Confirmation
                           _buildInputField(
                             controller: _confirmCtrl,
                             label: 'Confirmer',
@@ -214,7 +206,6 @@ class _RegisterViewState extends State<_RegisterView> {
 
                     const SizedBox(height: 32),
 
-                    // Bouton inscription
                     BlocBuilder<AuthCubit, AuthState>(
                       builder: (context, state) {
                         return SizedBox(
@@ -263,7 +254,6 @@ class _RegisterViewState extends State<_RegisterView> {
 
                     const SizedBox(height: 24),
 
-                    // Séparateur
                     Row(
                       children: [
                         Expanded(child: Divider(color: AppColors.border)),
@@ -283,7 +273,6 @@ class _RegisterViewState extends State<_RegisterView> {
 
                     const SizedBox(height: 24),
 
-                    // Boutons sociaux
                     Row(
                       children: [
                         Expanded(
@@ -308,7 +297,6 @@ class _RegisterViewState extends State<_RegisterView> {
 
                     const SizedBox(height: 32),
 
-                    // Lien connexion
                     Row(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [

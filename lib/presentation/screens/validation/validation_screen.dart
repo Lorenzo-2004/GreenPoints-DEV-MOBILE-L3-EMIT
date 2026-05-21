@@ -5,9 +5,12 @@ import 'package:flutter_animate/flutter_animate.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:go_router/go_router.dart';
 import '../../../core/theme/app_colors.dart';
 import '../../../data/models/geste/geste_model.dart';
+import '../../../data/models/notification/notification_model.dart';
 import '../../../data/services/geste_service.dart';
+import '../../../data/services/notification_service.dart';
 import '../../../domain/enums/action_category.dart';
 import '../../blocs/user/user_cubit.dart';
 
@@ -20,6 +23,7 @@ class ValidationScreen extends StatefulWidget {
 
 class _ValidationScreenState extends State<ValidationScreen> {
   final GesteService _gesteService = GesteService();
+  final NotificationService _notificationService = NotificationService();
   int _selectedMethod = 0;
   GesteModel? _selectedGeste;
   List<GesteModel> _gestes = [];
@@ -58,6 +62,15 @@ class _ValidationScreenState extends State<ValidationScreen> {
       });
       
       await _updateStreak(userId);
+      
+      // Ajouter une notification
+      await _notificationService.addNotification(
+        title: 'Geste validé !',
+        message: 'Tu as gagné ${_selectedGeste!.points} points pour "${_selectedGeste!.title}"',
+        type: NotificationType.points,
+        data: {'points': _selectedGeste!.points, 'gesteId': _selectedGeste!.id},
+      );
+      
       if (mounted) {
         context.read<UserCubit>().refresh();
       }
@@ -157,7 +170,9 @@ class _ValidationScreenState extends State<ValidationScreen> {
                           ],
                         ),
                         GestureDetector(
-                          onTap: () => Navigator.of(context).pop(),
+                          onTap: () {
+                            context.go('/home');
+                          },
                           child: Container(
                             width: 44,
                             height: 44,
@@ -332,7 +347,6 @@ class _ManualSection extends StatelessWidget {
         ...gestes.map((g) {
           final isSelected = selectedGeste?.id == g.id;
           final isDone = completedIds.contains(g.id);
-          // Utilisation directe des getters de l'enum
           final categoryColor = g.category.color;
           final categoryIcon = g.category.icon;
           

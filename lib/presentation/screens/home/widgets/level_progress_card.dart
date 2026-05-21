@@ -18,7 +18,7 @@ class LevelProgressCard extends StatelessWidget {
     return Container(
       padding: const EdgeInsets.all(20),
       decoration: BoxDecoration(
-        color: Colors.white,
+        color: AppColors.surface,
         borderRadius: BorderRadius.circular(24),
         boxShadow: [
           BoxShadow(
@@ -33,7 +33,6 @@ class LevelProgressCard extends StatelessWidget {
         children: [
           Row(
             children: [
-              // Icône niveau avec gradient
               Container(
                 width: 52,
                 height: 52,
@@ -67,7 +66,7 @@ class LevelProgressCard extends StatelessWidget {
                       style: GoogleFonts.poppins(
                         fontSize: 16,
                         fontWeight: FontWeight.w700,
-                        color: const Color(0xFF1A1A2E),
+                        color: AppColors.textPrimary,
                         letterSpacing: -0.3,
                       ),
                     ),
@@ -77,14 +76,13 @@ class LevelProgressCard extends StatelessWidget {
                           : 'Niveau maximum atteint',
                       style: GoogleFonts.poppins(
                         fontSize: 12,
-                        color: const Color(0xFF9CA3AF),
+                        color: AppColors.textSecondary,
                         fontWeight: FontWeight.w400,
                       ),
                     ),
                   ],
                 ),
               ),
-              // Pourcentage
               Container(
                 padding: const EdgeInsets.symmetric(
                   horizontal: 10, vertical: 5),
@@ -106,13 +104,12 @@ class LevelProgressCard extends StatelessWidget {
 
           const SizedBox(height: 20),
 
-          // Barre de progression premium
           Stack(
             children: [
               Container(
                 height: 10,
                 decoration: BoxDecoration(
-                  color: const Color(0xFFF3F4F6),
+                  color: AppColors.border,
                   borderRadius: BorderRadius.circular(10),
                 ),
               ),
@@ -140,7 +137,6 @@ class LevelProgressCard extends StatelessWidget {
 
           const SizedBox(height: 20),
 
-          // Niveaux mini premium
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: LevelModel.levels.map((l) {
@@ -194,7 +190,7 @@ class _LevelDot extends StatelessWidget {
                     end: Alignment.bottomRight,
                   )
                 : null,
-            color: isReached ? null : const Color(0xFFF3F4F6),
+            color: isReached ? null : AppColors.border,
             borderRadius: BorderRadius.circular(isCurrent ? 14 : 11),
             border: isCurrent
                 ? Border.all(color: level.color, width: 2.5)
@@ -212,7 +208,7 @@ class _LevelDot extends StatelessWidget {
           child: Icon(
             level.icon,
             size: isCurrent ? 22 : 18,
-            color: isReached ? Colors.white : const Color(0xFFD1D5DB),
+            color: isReached ? Colors.white : AppColors.textSecondary,
           ),
         ),
         const SizedBox(height: 6),
@@ -221,8 +217,8 @@ class _LevelDot extends StatelessWidget {
           style: GoogleFonts.poppins(
             fontSize: 9,
             color: isReached
-                ? const Color(0xFF374151)
-                : const Color(0xFF9CA3AF),
+                ? AppColors.textPrimary
+                : AppColors.textSecondary,
             fontWeight: isCurrent ? FontWeight.w700 : FontWeight.w400,
           ),
         ),

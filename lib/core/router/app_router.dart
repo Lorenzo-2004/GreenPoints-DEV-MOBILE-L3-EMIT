@@ -1,3 +1,4 @@
+// lib/core/router/app_router.dart
 import 'package:go_router/go_router.dart';
 import '../../presentation/screens/splash/splash_screen.dart';
 import '../../presentation/screens/login/login_screen.dart';
@@ -8,6 +9,9 @@ import '../../presentation/screens/gestes/gestes_screen.dart';
 import '../../presentation/screens/profil/profil_screen.dart';
 import '../../presentation/screens/defis/defis_screen.dart';
 import '../../presentation/screens/validation/validation_screen.dart';
+import '../../presentation/screens/notifications/notifications_screen.dart';
+import '../../presentation/screens/badges/badges_screen.dart';
+import '../../presentation/screens/onboarding/onboarding_screen.dart';  // Ajout
 
 final appRouter = GoRouter(
   initialLocation: '/',
@@ -16,6 +20,11 @@ final appRouter = GoRouter(
       path: '/',
       name: 'splash',
       builder: (context, state) => const SplashScreen(),
+    ),
+    GoRoute(
+      path: '/onboarding',  // Nouvelle route avant login
+      name: 'onboarding',
+      builder: (context, state) => const OnboardingScreen(),
     ),
     GoRoute(
       path: '/login',
@@ -55,6 +64,16 @@ final appRouter = GoRouter(
           path: '/profil',
           name: 'profil',
           builder: (context, state) => const ProfilScreen(),
+        ),
+        GoRoute(
+          path: '/notifications',
+          name: 'notifications',
+          builder: (context, state) => const NotificationsScreen(),
+        ),
+        GoRoute(
+          path: '/badges',
+          name: 'badges',
+          builder: (context, state) => const BadgesScreen(),
         ),
       ],
     ),

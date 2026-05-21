@@ -68,7 +68,6 @@ class HomeHeader extends StatelessWidget {
                   ),
                 ],
               ),
-              // Avatar niveau avec effet glassmorphisme
               Container(
                 width: 60,
                 height: 60,
@@ -91,7 +90,6 @@ class HomeHeader extends StatelessWidget {
 
           const SizedBox(height: 24),
 
-          // Barre stats rapides améliorée
           Container(
             padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 16),
             decoration: BoxDecoration(
@@ -117,7 +115,7 @@ class HomeHeader extends StatelessWidget {
                 ),
                 _QuickStat(
                   icon: Icons.local_fire_department_rounded,
-                  iconColor: const Color(0xFFFF6B35),
+                  iconColor: AppColors.warning, 
                   value: '${user.streak}',
                   label: 'Série',
                   suffix: 'j',

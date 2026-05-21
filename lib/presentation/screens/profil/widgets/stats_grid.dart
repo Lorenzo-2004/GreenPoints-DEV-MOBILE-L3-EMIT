@@ -52,7 +52,7 @@ class StatsGrid extends StatelessWidget {
             ),
             _StatTile(
               icon: Icons.local_fire_department_rounded,
-              iconColor: const Color(0xFFFF6B35),
+              iconColor: AppColors.warning, // Changé : utilise AppColors.warning
               label: 'Série actuelle',
               value: '${user.streak}',
               suffix: 'j',

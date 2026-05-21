@@ -3,7 +3,7 @@ import 'package:flutter_animate/flutter_animate.dart';
 import 'package:go_router/go_router.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import '../../../core/theme/app_colors.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class SplashScreen extends StatefulWidget {
   const SplashScreen({super.key});
@@ -20,11 +20,23 @@ class _SplashScreenState extends State<SplashScreen> {
   }
 
   Future<void> _navigate() async {
-    // Délai pour laisser l'animation se jouer
     await Future.delayed(const Duration(milliseconds: 2800));
+    
     if (!mounted) return;
 
+    final prefs = await SharedPreferences.getInstance();
+    final onboardingCompleted = prefs.getBool('onboarding_completed') ?? false;
+    
+    if (!mounted) return;
+    
+    if (!onboardingCompleted) {
+      context.go('/onboarding');
+      return;
+    }
+
     final user = FirebaseAuth.instance.currentUser;
+    if (!mounted) return;
+    
     if (user != null) {
       context.go('/home');
     } else {
@@ -36,31 +48,21 @@ class _SplashScreenState extends State<SplashScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       body: Container(
-        decoration: BoxDecoration(
-          gradient: LinearGradient(
-            begin: Alignment.topLeft,
-            end: Alignment.bottomRight,
-            colors: [
-              AppColors.primary,
-              AppColors.primaryDark,
-            ],
-          ),
-        ),
+        color: Colors.black,
         child: Center(
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
               const Spacer(),
 
-              // LOGO ACTUALISÉ
               Container(
-                width: 240,
-                height: 240,
+                width: 180,
+                height: 180,
                 decoration: BoxDecoration(
                   borderRadius: BorderRadius.circular(35),
                   boxShadow: [
                     BoxShadow(
-                      color: const Color.fromARGB(255, 7, 30, 243).withValues(alpha: 0.2),
+                      color: Colors.white.withValues(alpha: 0.15),
                       blurRadius: 25,
                       offset: const Offset(0, 10),
                     ),
@@ -82,51 +84,19 @@ class _SplashScreenState extends State<SplashScreen> {
                 )
                 .fadeIn(duration: 500.ms),
 
-              const SizedBox(height: 32),
-
-              // Titre principal
-              RichText(
-                text: TextSpan(
-                  children: [
-                    TextSpan(
-                      text: 'Green',
-                      style: GoogleFonts.poppins(
-                        fontSize: 44,
-                        fontWeight: FontWeight.w800,
-                        color: Colors.white,
-                        letterSpacing: -1,
-                      ),
-                    ),
-                    TextSpan(
-                      text: 'Points',
-                      style: GoogleFonts.poppins(
-                        fontSize: 44,
-                        fontWeight: FontWeight.w800,
-                        color: AppColors.warning,
-                        letterSpacing: -1,
-                      ),
-                    ),
-                  ],
-                ),
-              ).animate(delay: 250.ms)
-                .fadeIn(duration: 600.ms)
-                .slideY(begin: 0.4, end: 0),
-
               const Spacer(),
 
-              // Loader
               _LoadingDots()
                 .animate(delay: 800.ms)
                 .fadeIn(duration: 400.ms),
 
               const SizedBox(height: 48),
 
-              // Version
               Text(
                 'Version 1.0.0',
                 style: GoogleFonts.poppins(
                   fontSize: 11,
-                  color: Colors.white.withValues(alpha: 0.4),
+                  color: Colors.white.withValues(alpha: 0.3),
                   fontWeight: FontWeight.w500,
                 ),
               ).animate(delay: 800.ms)
