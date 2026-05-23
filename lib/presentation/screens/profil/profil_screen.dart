@@ -1,15 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_animate/flutter_animate.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:go_router/go_router.dart';
 import '../../../core/theme/app_colors.dart';
-import 'package:google_fonts/google_fonts.dart';
-import '../../../data/models/user/user_model.dart';  
+import '../../../data/models/user/user_model.dart';
 import '../../blocs/user/user_cubit.dart';
 import 'widgets/profil_header.dart';
 import 'widgets/level_badge.dart';
 import 'widgets/stats_grid.dart';
-import 'widgets/settings_section.dart';
 
 class ProfilScreen extends StatelessWidget {
   const ProfilScreen({super.key});
@@ -50,13 +49,7 @@ class ProfilScreen extends StatelessWidget {
                       .fadeIn()
                       .slideY(begin: 0.2, end: 0),
                     const SizedBox(height: 20),
-                    // Badges et Notifications
                     _buildMenuSection(context, user),
-                    const SizedBox(height: 20),
-                    const SettingsSection()
-                      .animate(delay: 300.ms)
-                      .fadeIn()
-                      .slideY(begin: 0.2, end: 0),
                     const SizedBox(height: 80),
                   ]),
                 ),
@@ -79,6 +72,14 @@ class ProfilScreen extends StatelessWidget {
       child: Column(
         children: [
           _MenuTile(
+            icon: Icons.shopping_bag_outlined,
+            iconColor: AppColors.success,
+            label: 'Boutique',
+            subtitle: 'Échange tes points contre des récompenses',
+            onTap: () => context.go('/marketplace'),
+          ),
+          const _Divider(),
+          _MenuTile(
             icon: Icons.emoji_events_outlined,
             iconColor: AppColors.warning,
             label: 'Mes badges',
@@ -92,6 +93,29 @@ class ProfilScreen extends StatelessWidget {
             label: 'Notifications',
             subtitle: 'Historique des alertes',
             onTap: () => context.go('/notifications'),
+          ),
+          const _Divider(),
+          _MenuTile(
+            icon: Icons.history_rounded,
+            iconColor: AppColors.info,
+            label: 'Historique des points',
+            subtitle: 'Voir toutes tes transactions',
+            onTap: () => context.go('/points'),
+          ),
+          const _Divider(),
+          _MenuTile(
+            icon: Icons.settings_outlined,
+            iconColor: AppColors.primary,
+            label: 'Paramètres',
+            subtitle: 'Personnaliser l\'application',
+            onTap: () => context.go('/settings'),
+          ),
+          _MenuTile(
+            icon: Icons.people_outlined,
+            iconColor: AppColors.info,
+            label: 'Social',
+            subtitle: 'Classement et amis',
+            onTap: () => context.go('/social'),
           ),
         ],
       ),
@@ -129,7 +153,7 @@ class _MenuTile extends StatelessWidget {
       ),
       title: Text(
         label,
-        style: GoogleFonts.inter(
+        style: GoogleFonts.poppins(
           fontSize: 15,
           fontWeight: FontWeight.w600,
           color: AppColors.textPrimary,
@@ -137,7 +161,7 @@ class _MenuTile extends StatelessWidget {
       ),
       subtitle: Text(
         subtitle,
-        style: GoogleFonts.inter(
+        style: GoogleFonts.poppins(
           fontSize: 12,
           color: AppColors.textSecondary,
         ),

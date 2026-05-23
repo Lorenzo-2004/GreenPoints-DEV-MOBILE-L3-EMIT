@@ -239,7 +239,7 @@ class DefiCard extends StatelessWidget {
                   ),
                   const Spacer(),
                   Text(
-                    isCompleted ? 'Terminé !' : 'Continuer',
+                    isCompleted ? 'Termine !' : 'Continuer',
                     style: GoogleFonts.poppins(
                       fontSize: 13,
                       fontWeight: FontWeight.w600,

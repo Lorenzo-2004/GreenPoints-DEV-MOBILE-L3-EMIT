@@ -40,7 +40,6 @@ class GesteCard extends StatelessWidget {
         ),
         child: Row(
           children: [
-            // Icône catégorie
             Container(
               width: 56,
               height: 56,
@@ -64,10 +63,7 @@ class GesteCard extends StatelessWidget {
                 ],
               ),
             ),
-
             const SizedBox(width: 16),
-
-            // Texte
             Expanded(
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
@@ -80,20 +76,15 @@ class GesteCard extends StatelessWidget {
                           style: GoogleFonts.poppins(
                             fontSize: 15,
                             fontWeight: FontWeight.w600,
-                            color: isDone
-                                ? AppColors.primary
-                                : AppColors.textPrimary,
-                            decoration: isDone
-                                ? TextDecoration.lineThrough
-                                : null,
+                            color: isDone ? AppColors.primary : AppColors.textPrimary,
+                            decoration: isDone ? TextDecoration.lineThrough : null,
                             letterSpacing: -0.3,
                           ),
                         ),
                       ),
                       if (geste.isDaily)
                         Container(
-                          padding: const EdgeInsets.symmetric(
-                            horizontal: 8, vertical: 4),
+                          padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
                           decoration: BoxDecoration(
                             color: AppColors.primaryLight,
                             borderRadius: BorderRadius.circular(8),
@@ -122,11 +113,7 @@ class GesteCard extends StatelessWidget {
                   const SizedBox(height: 10),
                   Row(
                     children: [
-                      Icon(
-                        Icons.stars_rounded,
-                        size: 16,
-                        color: AppColors.warning,
-                      ),
+                      Icon(Icons.stars_rounded, size: 16, color: AppColors.warning),
                       const SizedBox(width: 6),
                       Text(
                         '+${geste.points} points',
@@ -138,8 +125,7 @@ class GesteCard extends StatelessWidget {
                       ),
                       const Spacer(),
                       Container(
-                        padding: const EdgeInsets.symmetric(
-                          horizontal: 10, vertical: 4),
+                        padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 4),
                         decoration: BoxDecoration(
                           color: geste.category.color.withValues(alpha: 0.12),
                           borderRadius: BorderRadius.circular(12),
@@ -158,24 +144,17 @@ class GesteCard extends StatelessWidget {
                 ],
               ),
             ),
-
             const SizedBox(width: 12),
-
-            // Bouton valider
             Container(
               width: 42,
               height: 42,
               decoration: BoxDecoration(
                 gradient: isDone
-                    ? LinearGradient(
-                        colors: [AppColors.primary, AppColors.accent],
-                      )
+                    ? LinearGradient(colors: [AppColors.primary, AppColors.accent])
                     : null,
                 color: isDone ? null : AppColors.primaryLight,
                 borderRadius: BorderRadius.circular(14),
-                border: isDone
-                    ? null
-                    : Border.all(color: AppColors.accent, width: 1.5),
+                border: isDone ? null : Border.all(color: AppColors.accent, width: 1.5),
               ),
               child: Icon(
                 isDone ? Icons.check_rounded : Icons.add_rounded,

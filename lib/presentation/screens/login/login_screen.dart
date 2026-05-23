@@ -185,7 +185,7 @@ class _LoginViewState extends State<_LoginView> {
                             controller: _emailCtrl,
                             label: 'Email',
                             icon: Icons.email_outlined,
-                            hint: 'exemple@greenpoints.com',
+                            hint: 'exemple@gmail.com',
                             keyboardType: TextInputType.emailAddress,
                             validator: (v) => v == null || !v.contains('@') ? 'Email invalide' : null,
                             delay: 250.ms,

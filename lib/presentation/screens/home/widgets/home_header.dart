@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:share_plus/share_plus.dart';
 import '../../../../core/theme/app_colors.dart';
 import '../../../../data/models/user/user_model.dart';
 
@@ -13,6 +14,17 @@ class HomeHeader extends StatelessWidget {
     if (hour < 12) return 'Bonjour';
     if (hour < 18) return 'Bon après-midi';
     return 'Bonsoir';
+  }
+
+  void _shareProgress(BuildContext context) {
+    Share.share(
+      '🌱 GreenPoints - Ma progression !\n\n'
+      '👤 ${user.name}\n'
+      '⭐ ${user.totalPoints} points\n'
+      '🔥 ${user.streak} jours de serie\n'
+      '📊 ${user.weeklyPoints} points cette semaine\n\n'
+      'Telecharge GreenPoints et deviens eco-responsable !',
+    );
   }
 
   @override
@@ -68,36 +80,45 @@ class HomeHeader extends StatelessWidget {
                   ),
                 ],
               ),
-              Container(
-                width: 60,
-                height: 60,
-                decoration: BoxDecoration(
-                  color: Colors.white.withValues(alpha: 0.12),
-                  borderRadius: BorderRadius.circular(20),
-                  border: Border.all(
-                    color: Colors.white.withValues(alpha: 0.25),
-                    width: 1.5,
+              Row(
+                children: [
+                  GestureDetector(
+                    onTap: () => _shareProgress(context),
+                    child: Container(
+                      width: 40,
+                      height: 40,
+                      decoration: BoxDecoration(
+                        color: Colors.white.withValues(alpha: 0.12),
+                        borderRadius: BorderRadius.circular(12),
+                      ),
+                      child: const Icon(Icons.share_rounded, color: Colors.white, size: 20),
+                    ),
                   ),
-                ),
-                child: Icon(
-                  (user.level as LevelModel).icon,
-                  color: Colors.white,
-                  size: 32,
-                ),
+                  const SizedBox(width: 8),
+                  Container(
+                    width: 56,
+                    height: 56,
+                    decoration: BoxDecoration(
+                      color: Colors.white.withValues(alpha: 0.12),
+                      borderRadius: BorderRadius.circular(16),
+                    ),
+                    child: Icon(
+                      (user.level as LevelModel).icon,
+                      color: Colors.white,
+                      size: 28,
+                    ),
+                  ),
+                ],
               ),
             ],
           ),
-
           const SizedBox(height: 24),
-
           Container(
             padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 16),
             decoration: BoxDecoration(
               color: Colors.white.withValues(alpha: 0.1),
               borderRadius: BorderRadius.circular(24),
-              border: Border.all(
-                color: Colors.white.withValues(alpha: 0.15),
-              ),
+              border: Border.all(color: Colors.white.withValues(alpha: 0.15)),
             ),
             child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -108,23 +129,15 @@ class HomeHeader extends StatelessWidget {
                   value: '${user.totalPoints}',
                   label: 'Points',
                 ),
-                Container(
-                  width: 1,
-                  height: 30,
-                  color: Colors.white.withValues(alpha: 0.15),
-                ),
+                Container(width: 1, height: 30, color: Colors.white.withValues(alpha: 0.15)),
                 _QuickStat(
                   icon: Icons.local_fire_department_rounded,
-                  iconColor: AppColors.warning, 
+                  iconColor: AppColors.warning,
                   value: '${user.streak}',
                   label: 'Série',
                   suffix: 'j',
                 ),
-                Container(
-                  width: 1,
-                  height: 30,
-                  color: Colors.white.withValues(alpha: 0.15),
-                ),
+                Container(width: 1, height: 30, color: Colors.white.withValues(alpha: 0.15)),
                 _QuickStat(
                   icon: Icons.trending_up_rounded,
                   iconColor: AppColors.accent,

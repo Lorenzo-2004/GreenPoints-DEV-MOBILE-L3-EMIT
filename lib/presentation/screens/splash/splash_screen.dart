@@ -56,8 +56,8 @@ class _SplashScreenState extends State<SplashScreen> {
               const Spacer(),
 
               Container(
-                width: 180,
-                height: 180,
+                width: 150,
+                height: 150,
                 decoration: BoxDecoration(
                   borderRadius: BorderRadius.circular(35),
                   boxShadow: [

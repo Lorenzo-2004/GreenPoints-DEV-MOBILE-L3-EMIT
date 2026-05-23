@@ -16,7 +16,7 @@ class DefiCategoryFilter extends StatelessWidget {
   final List<Map<String, dynamic>> categories = const [
     {'label': 'Tous', 'icon': Icons.all_inclusive, 'color': AppColors.primary},
     {'label': 'Quotidien', 'icon': Icons.today, 'color': AppColors.success},
-    {'label': 'Hebdomadaire', 'icon': Icons.calendar_today, 'color': AppColors.accent}, // Changé : info → accent
+    {'label': 'Hebdomadaire', 'icon': Icons.calendar_today, 'color': AppColors.accent},
     {'label': 'Transport', 'icon': Icons.directions_bus, 'color': AppColors.warning},
     {'label': 'Alimentation', 'icon': Icons.restaurant, 'color': AppColors.error},
   ];
@@ -25,7 +25,7 @@ class DefiCategoryFilter extends StatelessWidget {
     switch (label) {
       case 'Tous': return AppColors.primary;
       case 'Quotidien': return AppColors.success;
-      case 'Hebdomadaire': return AppColors.accent; // Changé : info → accent
+      case 'Hebdomadaire': return AppColors.accent;
       case 'Transport': return AppColors.warning;
       case 'Alimentation': return AppColors.error;
       default: return AppColors.primary;

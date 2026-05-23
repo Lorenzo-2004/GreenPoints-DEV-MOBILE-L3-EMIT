@@ -27,8 +27,7 @@ class CategoryFilter extends StatelessWidget {
             child: AnimatedContainer(
               duration: const Duration(milliseconds: 200),
               margin: const EdgeInsets.only(right: 10),
-              padding: const EdgeInsets.symmetric(
-                horizontal: 16, vertical: 9),
+              padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 9),
               decoration: BoxDecoration(
                 gradient: isSelected
                     ? LinearGradient(
@@ -65,9 +64,7 @@ class CategoryFilter extends StatelessWidget {
                   Icon(
                     cat.icon,
                     size: 18,
-                    color: isSelected
-                        ? Colors.white
-                        : AppColors.textSecondary,
+                    color: isSelected ? Colors.white : AppColors.textSecondary,
                   ),
                   const SizedBox(width: 8),
                   Text(
@@ -75,9 +72,7 @@ class CategoryFilter extends StatelessWidget {
                     style: GoogleFonts.poppins(
                       fontSize: 13,
                       fontWeight: FontWeight.w600,
-                      color: isSelected
-                          ? Colors.white
-                          : AppColors.textSecondary,
+                      color: isSelected ? Colors.white : AppColors.textSecondary,
                       letterSpacing: -0.2,
                     ),
                   ),

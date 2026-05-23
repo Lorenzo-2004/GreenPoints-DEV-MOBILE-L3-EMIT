@@ -54,8 +54,7 @@ class DailyGestesSection extends StatelessWidget {
             GestureDetector(
               onTap: () => context.go('/gestes'),
               child: Container(
-                padding: const EdgeInsets.symmetric(
-                  horizontal: 14, vertical: 7),
+                padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 7),
                 decoration: BoxDecoration(
                   color: AppColors.primary.withValues(alpha: 0.08),
                   borderRadius: BorderRadius.circular(20),
@@ -92,28 +91,25 @@ class _GesteCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
-      onTap: () {
-        HapticFeedback.lightImpact();
-      },
+      onTap: isDone 
+          ? null 
+          : () {
+              HapticFeedback.lightImpact();
+              context.go('/valider', extra: geste);
+            },
       child: Container(
         margin: const EdgeInsets.only(bottom: 10),
         padding: const EdgeInsets.all(16),
         decoration: BoxDecoration(
-          color: isDone
-              ? AppColors.success.withValues(alpha: 0.05)
-              : AppColors.surface,
+          color: isDone ? AppColors.success.withValues(alpha: 0.05) : AppColors.surface,
           borderRadius: BorderRadius.circular(20),
           border: Border.all(
-            color: isDone
-                ? AppColors.success.withValues(alpha: 0.3)
-                : AppColors.border,
+            color: isDone ? AppColors.success.withValues(alpha: 0.3) : AppColors.border,
             width: 1.5,
           ),
           boxShadow: [
             BoxShadow(
-              color: isDone
-                  ? AppColors.success.withValues(alpha: 0.08)
-                  : Colors.black.withValues(alpha: 0.03),
+              color: isDone ? AppColors.success.withValues(alpha: 0.08) : Colors.black.withValues(alpha: 0.03),
               blurRadius: 16,
               offset: const Offset(0, 4),
             ),
@@ -125,18 +121,12 @@ class _GesteCard extends StatelessWidget {
               width: 50,
               height: 50,
               decoration: BoxDecoration(
-                color: isDone
-                    ? AppColors.success.withValues(alpha: 0.1)
-                    : geste.category.color.withValues(alpha: 0.1),
+                color: isDone ? AppColors.success.withValues(alpha: 0.1) : geste.category.color.withValues(alpha: 0.1),
                 borderRadius: BorderRadius.circular(15),
               ),
               child: Icon(
-                isDone
-                    ? Icons.check_circle_outline_rounded
-                    : geste.category.icon,
-                color: isDone
-                    ? AppColors.success
-                    : geste.category.color,
+                isDone ? Icons.check_circle_outline_rounded : geste.category.icon,
+                color: isDone ? AppColors.success : geste.category.color,
                 size: 24,
               ),
             ),
@@ -150,12 +140,8 @@ class _GesteCard extends StatelessWidget {
                     style: GoogleFonts.poppins(
                       fontSize: 14,
                       fontWeight: FontWeight.w600,
-                      color: isDone
-                          ? AppColors.textSecondary
-                          : AppColors.textPrimary,
-                      decoration: isDone
-                          ? TextDecoration.lineThrough
-                          : null,
+                      color: isDone ? AppColors.textSecondary : AppColors.textPrimary,
+                      decoration: isDone ? TextDecoration.lineThrough : null,
                       decorationColor: AppColors.textSecondary,
                       letterSpacing: -0.2,
                     ),
@@ -176,12 +162,9 @@ class _GesteCard extends StatelessWidget {
             ),
             const SizedBox(width: 10),
             Container(
-              padding: const EdgeInsets.symmetric(
-                horizontal: 10, vertical: 6),
+              padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 6),
               decoration: BoxDecoration(
-                color: isDone
-                    ? AppColors.success.withValues(alpha: 0.1)
-                    : AppColors.warning.withValues(alpha: 0.1),
+                color: isDone ? AppColors.success.withValues(alpha: 0.1) : AppColors.warning.withValues(alpha: 0.1),
                 borderRadius: BorderRadius.circular(10),
               ),
               child: Text(
@@ -189,9 +172,7 @@ class _GesteCard extends StatelessWidget {
                 style: GoogleFonts.poppins(
                   fontSize: 12,
                   fontWeight: FontWeight.w700,
-                  color: isDone
-                      ? AppColors.success
-                      : AppColors.warning,
+                  color: isDone ? AppColors.success : AppColors.warning,
                 ),
               ),
             ),

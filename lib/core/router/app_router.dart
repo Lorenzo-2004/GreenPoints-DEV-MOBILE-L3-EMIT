@@ -1,4 +1,3 @@
-// lib/core/router/app_router.dart
 import 'package:go_router/go_router.dart';
 import '../../presentation/screens/splash/splash_screen.dart';
 import '../../presentation/screens/login/login_screen.dart';
@@ -11,18 +10,24 @@ import '../../presentation/screens/defis/defis_screen.dart';
 import '../../presentation/screens/validation/validation_screen.dart';
 import '../../presentation/screens/notifications/notifications_screen.dart';
 import '../../presentation/screens/badges/badges_screen.dart';
-import '../../presentation/screens/onboarding/onboarding_screen.dart';  // Ajout
+import '../../presentation/screens/onboarding/onboarding_screen.dart';
+import '../../presentation/screens/points/points_screen.dart';
+import '../../presentation/screens/settings/settings_screen.dart';
+import '../../presentation/screens/marketplace/marketplace_screen.dart';
+import '../../presentation/screens/social/social_screen.dart';
+import '../../data/models/geste/geste_model.dart';
 
 final appRouter = GoRouter(
   initialLocation: '/',
   routes: [
+    // Routes sans shell
     GoRoute(
       path: '/',
       name: 'splash',
       builder: (context, state) => const SplashScreen(),
     ),
     GoRoute(
-      path: '/onboarding',  // Nouvelle route avant login
+      path: '/onboarding',
       name: 'onboarding',
       builder: (context, state) => const OnboardingScreen(),
     ),
@@ -37,6 +42,7 @@ final appRouter = GoRouter(
       builder: (context, state) => const RegisterScreen(),
     ),
 
+    // Routes avec shell (application principale)
     ShellRoute(
       builder: (context, state, child) => MainShell(child: child),
       routes: [
@@ -51,10 +57,13 @@ final appRouter = GoRouter(
           builder: (context, state) => const GestesScreen(),
         ),
         GoRoute(
-          path: '/valider',
-          name: 'validation',
-          builder: (context, state) => const ValidationScreen(),
-        ),
+  path: '/valider',
+  name: 'validation',
+  builder: (context, state) {
+    final extra = state.extra;
+    return ValidationScreen(initialGeste: extra is GesteModel ? extra : null);
+  },
+),
         GoRoute(
           path: '/defis',
           name: 'defis',
@@ -74,6 +83,26 @@ final appRouter = GoRouter(
           path: '/badges',
           name: 'badges',
           builder: (context, state) => const BadgesScreen(),
+        ),
+        GoRoute(
+          path: '/points',
+          name: 'points',
+          builder: (context, state) => const PointsScreen(),
+        ),
+        GoRoute(
+          path: '/settings',
+          name: 'settings',
+          builder: (context, state) => const SettingsScreen(),
+        ),
+        GoRoute(
+          path: '/marketplace',
+          name: 'marketplace',
+          builder: (context, state) => const MarketplaceScreen(),
+        ),
+        GoRoute(
+          path: '/social',
+          name: 'social',
+          builder: (context, state) => const SocialScreen(),
         ),
       ],
     ),

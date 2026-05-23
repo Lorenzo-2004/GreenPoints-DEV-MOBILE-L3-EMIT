@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:go_router/go_router.dart';
+import 'package:google_fonts/google_fonts.dart';
 import '../../../core/theme/app_colors.dart';
 
 class MainShell extends StatelessWidget {
@@ -23,26 +25,38 @@ class _BottomNav extends StatelessWidget {
     final location = GoRouterState.of(context).uri.toString();
 
     return Container(
-      decoration: BoxDecoration(
-        color: AppColors.surface,
-        border: Border(
-          top: BorderSide(color: AppColors.border, width: 1),
-        ),
-        boxShadow: [
-          BoxShadow(
-            color: Colors.black.withValues(alpha: 0.06),
-            blurRadius: 16,
-            offset: const Offset(0, -4),
-          ),
-        ],
+      color: Colors.transparent,
+      padding: EdgeInsets.only(
+        left: 16,
+        right: 16,
+        bottom: MediaQuery.of(context).padding.bottom + 10,
+        top: 8,
       ),
-      child: SafeArea(
+      child: Container(
+        decoration: BoxDecoration(
+          color: AppColors.surface,
+          borderRadius: BorderRadius.circular(28),
+          border: Border.all(color: AppColors.border),
+          boxShadow: [
+            BoxShadow(
+              color: AppColors.shadow,
+              blurRadius: 24,
+              offset: const Offset(0, 8),
+            ),
+            BoxShadow(
+              color: AppColors.glassShadow,
+              blurRadius: 40,
+              offset: const Offset(0, 4),
+            ),
+          ],
+        ),
         child: Stack(
           clipBehavior: Clip.none,
           alignment: Alignment.center,
           children: [
             Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 8),
+              padding: const EdgeInsets.symmetric(
+                horizontal: 8, vertical: 10),
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceAround,
                 children: [
@@ -79,7 +93,7 @@ class _BottomNav extends StatelessWidget {
               ),
             ),
             Positioned(
-              top: -24,
+              top: -22,
               child: _NavItemCenter(
                 isActive: location.startsWith('/valider'),
               ),
@@ -109,29 +123,39 @@ class _NavItem extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
-      onTap: () => context.go(path),
+      onTap: () {
+        HapticFeedback.selectionClick();
+        context.go(path);
+      },
       behavior: HitTestBehavior.opaque,
       child: AnimatedContainer(
         duration: const Duration(milliseconds: 200),
         padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 8),
         decoration: BoxDecoration(
-          color: isActive
-              ? AppColors.primaryLight
-              : Colors.transparent,
+          color: isActive ? AppColors.surfaceAlt : Colors.transparent,
           borderRadius: BorderRadius.circular(14),
+          border: isActive
+              ? Border.all(color: AppColors.borderSubtle)
+              : null,
         ),
         child: Column(
           mainAxisSize: MainAxisSize.min,
           children: [
-            Icon(
-              isActive ? iconActive : icon,
-              color: isActive ? AppColors.primary : AppColors.textSecondary,
-              size: 22,
+            AnimatedSwitcher(
+              duration: const Duration(milliseconds: 200),
+              child: Icon(
+                isActive ? iconActive : icon,
+                key: ValueKey(isActive),
+                color: isActive
+                    ? AppColors.primary
+                    : AppColors.textSecondary,
+                size: 22,
+              ),
             ),
             const SizedBox(height: 4),
             Text(
               label,
-              style: TextStyle(
+              style: GoogleFonts.poppins(
                 fontSize: 11,
                 fontWeight:
                     isActive ? FontWeight.w600 : FontWeight.w500,
@@ -155,22 +179,21 @@ class _NavItemCenter extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
-      onTap: () => context.go('/valider'),
+      onTap: () {
+        HapticFeedback.mediumImpact();
+        context.go('/valider');
+      },
       child: Container(
         width: 54,
         height: 54,
         decoration: BoxDecoration(
-          gradient: const LinearGradient(
-            colors: [AppColors.primary, AppColors.accent],
-            begin: Alignment.topLeft,
-            end: Alignment.bottomRight,
-          ),
+          gradient: AppColors.primaryGradient,
           shape: BoxShape.circle,
           boxShadow: [
             BoxShadow(
-              color: AppColors.primary.withValues(alpha: 0.4),
-              blurRadius: 12,
-              offset: const Offset(0, 4),
+              color: AppColors.glassShadowDeep,
+              blurRadius: 16,
+              offset: const Offset(0, 6),
             ),
           ],
         ),

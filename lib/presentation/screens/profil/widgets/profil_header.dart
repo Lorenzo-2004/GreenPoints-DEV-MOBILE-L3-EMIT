@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:go_router/go_router.dart';
 import '../../../../core/theme/app_colors.dart';
 import '../../../../data/models/user/user_model.dart';
 
@@ -34,7 +35,6 @@ class ProfilHeader extends StatelessWidget {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.center,
         children: [
-          // Header avec titre et settings
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
@@ -46,25 +46,24 @@ class ProfilHeader extends StatelessWidget {
                   color: Colors.white,
                 ),
               ),
-              Container(
-                width: 38,
-                height: 38,
-                decoration: BoxDecoration(
-                  gradient: LinearGradient(
-                    colors: [
-                      Colors.white.withValues(alpha: 0.2),
-                      Colors.white.withValues(alpha: 0.08),
-                    ],
+              GestureDetector(
+                onTap: () => context.go('/settings'),
+                child: Container(
+                  width: 38,
+                  height: 38,
+                  decoration: BoxDecoration(
+                    gradient: LinearGradient(
+                      colors: [
+                        Colors.white.withValues(alpha: 0.2),
+                        Colors.white.withValues(alpha: 0.08),
+                      ],
+                    ),
+                    borderRadius: BorderRadius.circular(12),
+                    border: Border.all(
+                      color: Colors.white.withValues(alpha: 0.25),
+                    ),
                   ),
-                  borderRadius: BorderRadius.circular(12),
-                  border: Border.all(
-                    color: Colors.white.withValues(alpha: 0.25),
-                  ),
-                ),
-                child: IconButton(
-                  onPressed: () {},
-                  padding: EdgeInsets.zero,
-                  icon: const Icon(
+                  child: const Icon(
                     Icons.settings_outlined,
                     color: Colors.white,
                     size: 20,
@@ -76,13 +75,12 @@ class ProfilHeader extends StatelessWidget {
 
           const SizedBox(height: 20),
 
-          // Avatar + Badge niveau
           Stack(
             alignment: Alignment.bottomRight,
             children: [
               Container(
-                width: 80,
-                height: 80,
+                width: 100,
+                height: 100,
                 decoration: BoxDecoration(
                   gradient: LinearGradient(
                     colors: [
@@ -93,20 +91,20 @@ class ProfilHeader extends StatelessWidget {
                   shape: BoxShape.circle,
                   border: Border.all(
                     color: Colors.white,
-                    width: 2,
+                    width: 2.5,
                   ),
                   boxShadow: [
                     BoxShadow(
-                      color: Colors.white.withValues(alpha: 0.2),
-                      blurRadius: 12,
-                      offset: const Offset(0, 4),
+                      color: Colors.white.withValues(alpha: 0.25),
+                      blurRadius: 16,
+                      offset: const Offset(0, 6),
                     ),
                   ],
                 ),
                 child: Center(
                   child: Text(
                     user.level.emoji,
-                    style: const TextStyle(fontSize: 44),
+                    style: const TextStyle(fontSize: 52),
                   ),
                 ),
               ),
@@ -134,24 +132,22 @@ class ProfilHeader extends StatelessWidget {
             ],
           ),
 
-          const SizedBox(height: 12),
+          const SizedBox(height: 16),
 
-          // Nom
           Text(
             user.name,
             style: GoogleFonts.poppins(
-              fontSize: 18,
+              fontSize: 20,
               fontWeight: FontWeight.w700,
               color: Colors.white,
               letterSpacing: -0.3,
             ),
           ),
 
-          const SizedBox(height: 4),
+          const SizedBox(height: 6),
 
-          // Email
           Container(
-            padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 3),
+            padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 4),
             decoration: BoxDecoration(
               color: Colors.white.withValues(alpha: 0.1),
               borderRadius: BorderRadius.circular(16),
@@ -161,14 +157,14 @@ class ProfilHeader extends StatelessWidget {
               children: [
                 Icon(
                   Icons.mail_outline,
-                  size: 10,
+                  size: 12,
                   color: Colors.white.withValues(alpha: 0.7),
                 ),
                 const SizedBox(width: 4),
                 Text(
                   user.email,
                   style: GoogleFonts.poppins(
-                    fontSize: 10,
+                    fontSize: 11,
                     color: Colors.white.withValues(alpha: 0.7),
                   ),
                 ),
@@ -179,7 +175,7 @@ class ProfilHeader extends StatelessWidget {
           if (user.phoneNumber != null) ...[
             const SizedBox(height: 4),
             Container(
-              padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 3),
+              padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 4),
               decoration: BoxDecoration(
                 color: Colors.white.withValues(alpha: 0.1),
                 borderRadius: BorderRadius.circular(16),
@@ -189,14 +185,14 @@ class ProfilHeader extends StatelessWidget {
                 children: [
                   Icon(
                     Icons.phone_outlined,
-                    size: 10,
+                    size: 12,
                     color: Colors.white.withValues(alpha: 0.7),
                   ),
                   const SizedBox(width: 4),
                   Text(
                     user.phoneNumber!,
                     style: GoogleFonts.poppins(
-                      fontSize: 10,
+                      fontSize: 11,
                       color: Colors.white.withValues(alpha: 0.7),
                     ),
                   ),
@@ -205,9 +201,8 @@ class ProfilHeader extends StatelessWidget {
             ),
           ],
 
-          const SizedBox(height: 16),
+          const SizedBox(height: 20),
 
-          // Cartes stats (3 petites cartes horizontales)
           Row(
             children: [
               _ProfileStat(
@@ -245,7 +240,7 @@ class _ProfileStat extends StatelessWidget {
   Widget build(BuildContext context) {
     return Expanded(
       child: Container(
-        padding: const EdgeInsets.symmetric(vertical: 10),
+        padding: const EdgeInsets.symmetric(vertical: 12),
         decoration: BoxDecoration(
           gradient: LinearGradient(
             colors: [
@@ -263,15 +258,16 @@ class _ProfileStat extends StatelessWidget {
             Text(
               value,
               style: GoogleFonts.poppins(
-                fontSize: 16,
+                fontSize: 18,
                 fontWeight: FontWeight.w700,
                 color: Colors.white,
               ),
             ),
+            const SizedBox(height: 2),
             Text(
               label,
               style: GoogleFonts.poppins(
-                fontSize: 10,
+                fontSize: 11,
                 color: Colors.white.withValues(alpha: 0.7),
               ),
             ),
