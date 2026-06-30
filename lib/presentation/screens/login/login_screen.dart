@@ -7,6 +7,7 @@ import '../../../core/theme/app_colors.dart';
 import '../../../data/repositories/auth_repository.dart';
 import '../../blocs/auth/auth_cubit.dart';
 import '../../blocs/auth/auth_state.dart';
+import '../../blocs/user/user_cubit.dart';
 
 class LoginScreen extends StatelessWidget {
   const LoginScreen({super.key});
@@ -40,11 +41,27 @@ class _LoginViewState extends State<_LoginView> {
     super.dispose();
   }
 
+  void _handleLogin() {
+    if (_formKey.currentState!.validate()) {
+      context.read<AuthCubit>().login(
+        _emailCtrl.text.trim(),
+        _passCtrl.text,
+      );
+    }
+  }
+
+  void _handleGoogleLogin() {
+    context.read<AuthCubit>().signInWithGoogle();
+  }
+
   @override
   Widget build(BuildContext context) {
-    return BlocListener<AuthCubit, AuthState>(
+    return BlocConsumer<AuthCubit, AuthState>(
       listener: (context, state) {
-        if (state is AuthSuccess) context.go('/home');
+        if (state is AuthSuccess) {
+          context.read<UserCubit>().refresh();
+          context.go('/home');
+        }
         if (state is AuthFailure) {
           ScaffoldMessenger.of(context).showSnackBar(
             SnackBar(
@@ -58,309 +75,325 @@ class _LoginViewState extends State<_LoginView> {
           );
         }
       },
-      child: Scaffold(
-        backgroundColor: AppColors.background,
-        body: Stack(
-          children: [
-            Positioned(
-              top: -80,
-              right: -60,
-              child: Container(
-                width: 200,
-                height: 200,
-                decoration: BoxDecoration(
-                  color: AppColors.primary.withValues(alpha: 0.05),
-                  shape: BoxShape.circle,
-                ),
-              ),
-            ),
-            Positioned(
-              bottom: -100,
-              left: -50,
-              child: Container(
-                width: 250,
-                height: 250,
-                decoration: BoxDecoration(
-                  color: AppColors.accent.withValues(alpha: 0.04),
-                  shape: BoxShape.circle,
-                ),
-              ),
-            ),
-            Positioned(
-              top: 200,
-              left: -30,
-              child: Container(
-                width: 120,
-                height: 120,
-                decoration: BoxDecoration(
-                  color: AppColors.warning.withValues(alpha: 0.03),
-                  shape: BoxShape.circle,
-                ),
-              ),
-            ),
-            SafeArea(
-              child: SingleChildScrollView(
-                padding: const EdgeInsets.symmetric(horizontal: 28),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.center,
-                  children: [
-                    const SizedBox(height: 32),
+      builder: (context, state) {
+        final isLoading = state is AuthLoading;
 
-                    Container(
-                      width: 100,
-                      height: 100,
-                      decoration: BoxDecoration(
-                        gradient: AppColors.primaryGradient,
-                        borderRadius: BorderRadius.circular(28),
-                        boxShadow: [
-                          BoxShadow(
-                            color: AppColors.primary.withValues(alpha: 0.4),
-                            blurRadius: 25,
-                            offset: const Offset(0, 12),
-                          ),
-                        ],
-                      ),
-                      child: ClipRRect(
-                        borderRadius: BorderRadius.circular(28),
-                        child: Image.asset(
-                          'assets/images/logo/logo.png',
-                          width: 100,
-                          height: 100,
-                          fit: BoxFit.cover,
+        return Scaffold(
+          backgroundColor: AppColors.background,
+          body: Stack(
+            children: [
+              // Décoration de fond
+              Positioned(
+                top: -80,
+                right: -60,
+                child: Container(
+                  width: 200,
+                  height: 200,
+                  decoration: BoxDecoration(
+                    color: AppColors.primary.withValues(alpha: 0.05),
+                    shape: BoxShape.circle,
+                  ),
+                ),
+              ),
+              Positioned(
+                bottom: -100,
+                left: -50,
+                child: Container(
+                  width: 250,
+                  height: 250,
+                  decoration: BoxDecoration(
+                    color: AppColors.accent.withValues(alpha: 0.04),
+                    shape: BoxShape.circle,
+                  ),
+                ),
+              ),
+              Positioned(
+                top: 200,
+                left: -30,
+                child: Container(
+                  width: 120,
+                  height: 120,
+                  decoration: BoxDecoration(
+                    color: AppColors.warning.withValues(alpha: 0.03),
+                    shape: BoxShape.circle,
+                  ),
+                ),
+              ),
+              SafeArea(
+                child: SingleChildScrollView(
+                  padding: const EdgeInsets.symmetric(horizontal: 28),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    children: [
+                      const SizedBox(height: 32),
+
+                      // Logo
+                      Container(
+                        width: 100,
+                        height: 100,
+                        decoration: BoxDecoration(
+                          gradient: AppColors.primaryGradient,
+                          borderRadius: BorderRadius.circular(28),
+                          boxShadow: [
+                            BoxShadow(
+                              color: AppColors.primary.withValues(alpha: 0.4),
+                              blurRadius: 25,
+                              offset: const Offset(0, 12),
+                            ),
+                          ],
                         ),
-                      ),
-                    ).animate().scale(
-                      duration: 700.ms,
-                      curve: Curves.elasticOut,
-                    ),
-
-                    const SizedBox(height: 32),
-
-                    Text(
-                      'Bienvenue\nsur',
-                      textAlign: TextAlign.center,
-                      style: GoogleFonts.poppins(
-                        fontSize: 28,
-                        fontWeight: FontWeight.w600,
-                        color: AppColors.textSecondary,
-                        letterSpacing: -0.5,
-                        height: 1.3,
-                      ),
-                    ).animate(delay: 100.ms).fadeIn().slideY(begin: 0.2, end: 0),
-
-                    const SizedBox(height: 8),
-
-                    RichText(
-                      text: TextSpan(
-                        children: [
-                          TextSpan(
-                            text: 'Green',
-                            style: GoogleFonts.poppins(
-                              fontSize: 42,
-                              fontWeight: FontWeight.w800,
-                              color: AppColors.primary,
-                              letterSpacing: -1,
-                            ),
+                        child: ClipRRect(
+                          borderRadius: BorderRadius.circular(28),
+                          child: Image.asset(
+                            'assets/images/logo/logo.png',
+                            width: 100,
+                            height: 100,
+                            fit: BoxFit.cover,
                           ),
-                          TextSpan(
-                            text: 'Points',
-                            style: GoogleFonts.poppins(
-                              fontSize: 42,
-                              fontWeight: FontWeight.w800,
-                              color: AppColors.warning,
-                              letterSpacing: -1,
-                            ),
-                          ),
-                        ],
+                        ),
+                      ).animate().scale(
+                        duration: 700.ms,
+                        curve: Curves.elasticOut,
                       ),
-                    ).animate(delay: 150.ms).fadeIn().scale(begin: const Offset(0.95, 0.95)),
 
-                    const SizedBox(height: 48),
+                      const SizedBox(height: 32),
 
-                    Form(
-                      key: _formKey,
-                      child: Column(
-                        children: [
-                          _buildModernInput(
-                            controller: _emailCtrl,
-                            label: 'Email',
-                            icon: Icons.email_outlined,
-                            hint: 'exemple@gmail.com',
-                            keyboardType: TextInputType.emailAddress,
-                            validator: (v) => v == null || !v.contains('@') ? 'Email invalide' : null,
-                            delay: 250.ms,
-                          ),
-                          const SizedBox(height: 20),
-                          _buildModernInput(
-                            controller: _passCtrl,
-                            label: 'Mot de passe',
-                            icon: Icons.lock_outline,
-                            hint: 'Ton mot de passe',
-                            obscure: _obscure,
-                            suffixIcon: IconButton(
-                              icon: Icon(
-                                _obscure ? Icons.visibility_off : Icons.visibility,
-                                color: AppColors.textSecondary,
-                                size: 20,
+                      // Titre
+                      Text(
+                        'Bienvenue\nsur',
+                        textAlign: TextAlign.center,
+                        style: GoogleFonts.poppins(
+                          fontSize: 28,
+                          fontWeight: FontWeight.w600,
+                          color: AppColors.textSecondary,
+                          letterSpacing: -0.5,
+                          height: 1.3,
+                        ),
+                      ).animate(delay: 100.ms).fadeIn().slideY(begin: 0.2, end: 0),
+
+                      const SizedBox(height: 8),
+
+                      RichText(
+                        text: TextSpan(
+                          children: [
+                            TextSpan(
+                              text: 'Green',
+                              style: GoogleFonts.poppins(
+                                fontSize: 42,
+                                fontWeight: FontWeight.w800,
+                                color: AppColors.primary,
+                                letterSpacing: -1,
                               ),
-                              onPressed: () => setState(() => _obscure = !_obscure),
                             ),
-                            validator: (v) => v == null || v.length < 6 ? 'Min. 6 caractères' : null,
-                            delay: 300.ms,
-                          ),
-                        ],
-                      ),
-                    ),
-
-                    const SizedBox(height: 16),
-
-                    Align(
-                      alignment: Alignment.centerRight,
-                      child: TextButton(
-                        onPressed: () {},
-                        style: TextButton.styleFrom(
-                          padding: EdgeInsets.zero,
-                          minimumSize: const Size(0, 32),
-                        ),
-                        child: Text(
-                          'Mot de passe oublié ?',
-                          style: GoogleFonts.poppins(
-                            fontSize: 13,
-                            color: AppColors.primary,
-                            fontWeight: FontWeight.w500,
-                          ),
-                        ),
-                      ),
-                    ).animate(delay: 350.ms).fadeIn(),
-
-                    const SizedBox(height: 24),
-
-                    BlocBuilder<AuthCubit, AuthState>(
-                      builder: (context, state) {
-                        return SizedBox(
-                          width: double.infinity,
-                          height: 58,
-                          child: ElevatedButton(
-                            onPressed: state is AuthLoading
-                                ? null
-                                : () {
-                                    if (_formKey.currentState!.validate()) {
-                                      context.read<AuthCubit>().login(
-                                            _emailCtrl.text,
-                                            _passCtrl.text,
-                                          );
-                                    }
-                                  },
-                            style: ElevatedButton.styleFrom(
-                              backgroundColor: AppColors.primary,
-                              foregroundColor: Colors.white,
-                              shape: RoundedRectangleBorder(
-                                borderRadius: BorderRadius.circular(20),
+                            TextSpan(
+                              text: 'Points',
+                              style: GoogleFonts.poppins(
+                                fontSize: 42,
+                                fontWeight: FontWeight.w800,
+                                color: AppColors.warning,
+                                letterSpacing: -1,
                               ),
-                              elevation: 0,
                             ),
-                            child: state is AuthLoading
-                                ? const SizedBox(
-                                    height: 24,
-                                    width: 24,
-                                    child: CircularProgressIndicator(
-                                      color: Colors.white,
-                                      strokeWidth: 2.5,
-                                    ),
-                                  )
-                                : Text(
-                                    'Se connecter',
-                                    style: GoogleFonts.poppins(
-                                      fontSize: 17,
-                                      fontWeight: FontWeight.w600,
-                                    ),
-                                  ),
+                          ],
+                        ),
+                      ).animate(delay: 150.ms).fadeIn().scale(begin: const Offset(0.95, 0.95)),
+
+                      const SizedBox(height: 48),
+
+                      // Formulaire
+                      Form(
+                        key: _formKey,
+                        child: Column(
+                          children: [
+                            // Email
+                            _buildModernInput(
+                              controller: _emailCtrl,
+                              label: 'Email',
+                              icon: Icons.email_outlined,
+                              hint: 'exemple@gmail.com',
+                              keyboardType: TextInputType.emailAddress,
+                              validator: (v) => v == null || !v.contains('@') ? 'Email invalide' : null,
+                              delay: 250.ms,
+                            ),
+                            const SizedBox(height: 20),
+                            // Mot de passe
+                            _buildModernInput(
+                              controller: _passCtrl,
+                              label: 'Mot de passe',
+                              icon: Icons.lock_outline,
+                              hint: 'Ton mot de passe',
+                              obscure: _obscure,
+                              suffixIcon: IconButton(
+                                icon: Icon(
+                                  _obscure ? Icons.visibility_off : Icons.visibility,
+                                  color: AppColors.textSecondary,
+                                  size: 20,
+                                ),
+                                onPressed: () => setState(() => _obscure = !_obscure),
+                              ),
+                              validator: (v) => v == null || v.length < 6 ? 'Min. 6 caractères' : null,
+                              delay: 300.ms,
+                            ),
+                          ],
+                        ),
+                      ),
+
+                      const SizedBox(height: 16),
+
+                      // Mot de passe oublié
+                      Align(
+                        alignment: Alignment.centerRight,
+                        child: TextButton(
+                          onPressed: () {},
+                          style: TextButton.styleFrom(
+                            padding: EdgeInsets.zero,
+                            minimumSize: const Size(0, 32),
                           ),
-                        );
-                      },
-                    ).animate(delay: 400.ms).fadeIn().slideY(begin: 0.1, end: 0),
-
-                    const SizedBox(height: 24),
-
-                    Row(
-                      children: [
-                        Expanded(child: Divider(color: AppColors.border, thickness: 1)),
-                        Padding(
-                          padding: const EdgeInsets.symmetric(horizontal: 16),
                           child: Text(
-                            'ou',
+                            'Mot de passe oublié ?',
                             style: GoogleFonts.poppins(
-                              color: AppColors.textSecondary,
                               fontSize: 13,
+                              color: AppColors.primary,
                               fontWeight: FontWeight.w500,
                             ),
                           ),
                         ),
-                        Expanded(child: Divider(color: AppColors.border, thickness: 1)),
-                      ],
-                    ).animate(delay: 450.ms).fadeIn(),
+                      ).animate(delay: 350.ms).fadeIn(),
 
-                    const SizedBox(height: 24),
+                      const SizedBox(height: 24),
 
-                    Row(
-                      children: [
-                        Expanded(
-                          child: _buildModernSocialButton(
-                            icon: 'G',
-                            color: Colors.red.shade600,
-                            label: 'Google',
-                            delay: 500.ms,
+                      // Bouton connexion
+                      SizedBox(
+                        width: double.infinity,
+                        height: 58,
+                        child: ElevatedButton(
+                          onPressed: isLoading ? null : _handleLogin,
+                          style: ElevatedButton.styleFrom(
+                            backgroundColor: AppColors.primary,
+                            foregroundColor: Colors.white,
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(20),
+                            ),
+                            elevation: 0,
                           ),
+                          child: isLoading
+                              ? const SizedBox(
+                                  height: 24,
+                                  width: 24,
+                                  child: CircularProgressIndicator(
+                                    color: Colors.white,
+                                    strokeWidth: 2.5,
+                                  ),
+                                )
+                              : Text(
+                                  'Se connecter',
+                                  style: GoogleFonts.poppins(
+                                    fontSize: 17,
+                                    fontWeight: FontWeight.w600,
+                                  ),
+                                ),
                         ),
-                        const SizedBox(width: 14),
-                        Expanded(
-                          child: _buildModernSocialButton(
-                            icon: 'f',
-                            color: Colors.blue.shade700,
-                            label: 'Facebook',
-                            delay: 550.ms,
-                          ),
-                        ),
-                      ],
-                    ),
+                      ).animate(delay: 400.ms).fadeIn().slideY(begin: 0.1, end: 0),
 
-                    const SizedBox(height: 32),
+                      const SizedBox(height: 24),
 
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        Text(
-                          'Nouveau ici ? ',
-                          style: GoogleFonts.poppins(
-                            color: AppColors.textSecondary,
-                            fontSize: 14,
-                          ),
-                        ),
-                        GestureDetector(
-                          onTap: () => context.go('/register'),
-                          child: Container(
-                            padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
+                      // Séparateur
+                      Row(
+                        children: [
+                          Expanded(child: Divider(color: AppColors.border, thickness: 1)),
+                          Padding(
+                            padding: const EdgeInsets.symmetric(horizontal: 16),
                             child: Text(
-                              'Créer un compte',
+                              'ou',
                               style: GoogleFonts.poppins(
-                                color: AppColors.primary,
-                                fontWeight: FontWeight.w700,
-                                fontSize: 14,
+                                color: AppColors.textSecondary,
+                                fontSize: 13,
+                                fontWeight: FontWeight.w500,
                               ),
                             ),
                           ),
-                        ),
-                      ],
-                    ).animate(delay: 600.ms).fadeIn(),
+                          Expanded(child: Divider(color: AppColors.border, thickness: 1)),
+                        ],
+                      ).animate(delay: 450.ms).fadeIn(),
 
-                    const SizedBox(height: 40),
-                  ],
+                      const SizedBox(height: 24),
+
+                      // ✅ BOUTON GOOGLE AVEC VRAI LOGO (depuis assets)
+                      SizedBox(
+                        width: double.infinity,
+                        height: 54,
+                        child: OutlinedButton(
+                          onPressed: isLoading ? null : _handleGoogleLogin,
+                          style: OutlinedButton.styleFrom(
+                            side: BorderSide(color: AppColors.border),
+                            backgroundColor: AppColors.surface,
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(18),
+                            ),
+                          ),
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              // ✅ VRAI LOGO GOOGLE depuis assets
+                              Image.asset(
+                                'assets/images/logo/google_logo.png',
+                                width: 48,
+                                height: 48,
+                                fit: BoxFit.contain,
+                              ),
+                              const SizedBox(width: 12),
+                              Text(
+                                isLoading ? 'Connexion...' : 'Continuer avec Google',
+                                style: GoogleFonts.poppins(
+                                  fontSize: 15,
+                                  fontWeight: FontWeight.w500,
+                                  color: AppColors.textPrimary,
+                                ),
+                              ),
+                            ],
+                          ),
+                        ),
+                      ).animate(delay: 500.ms).fadeIn().slideY(begin: 0.1, end: 0),
+
+                      const SizedBox(height: 32),
+
+                      // Lien inscription
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          Text(
+                            'Nouveau ici ? ',
+                            style: GoogleFonts.poppins(
+                              color: AppColors.textSecondary,
+                              fontSize: 14,
+                            ),
+                          ),
+                          GestureDetector(
+                            onTap: () => context.go('/register'),
+                            child: Container(
+                              padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
+                              child: Text(
+                                'Créer un compte',
+                                style: GoogleFonts.poppins(
+                                  color: AppColors.primary,
+                                  fontWeight: FontWeight.w700,
+                                  fontSize: 14,
+                                ),
+                              ),
+                            ),
+                          ),
+                        ],
+                      ).animate(delay: 600.ms).fadeIn(),
+
+                      const SizedBox(height: 40),
+                    ],
+                  ),
                 ),
               ),
-            ),
-          ],
-        ),
-      ),
+            ],
+          ),
+        );
+      },
     );
   }
 
@@ -423,47 +456,6 @@ class _LoginViewState extends State<_LoginView> {
           ),
         ),
       ],
-    ).animate(delay: delay).fadeIn().slideY(begin: 0.1, end: 0);
-  }
-
-  Widget _buildModernSocialButton({
-    required String icon,
-    required Color color,
-    required String label,
-    required Duration delay,
-  }) {
-    return OutlinedButton(
-      onPressed: () {},
-      style: OutlinedButton.styleFrom(
-        padding: const EdgeInsets.symmetric(vertical: 14),
-        shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(18),
-        ),
-        side: BorderSide(color: AppColors.border),
-        backgroundColor: AppColors.surface,
-      ),
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: [
-          Text(
-            icon,
-            style: TextStyle(
-              fontSize: 20,
-              fontWeight: FontWeight.bold,
-              color: color,
-            ),
-          ),
-          const SizedBox(width: 8),
-          Text(
-            label,
-            style: GoogleFonts.poppins(
-              fontSize: 14,
-              fontWeight: FontWeight.w500,
-              color: AppColors.textPrimary,
-            ),
-          ),
-        ],
-      ),
     ).animate(delay: delay).fadeIn().slideY(begin: 0.1, end: 0);
   }
 }

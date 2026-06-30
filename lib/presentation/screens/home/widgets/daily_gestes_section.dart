@@ -5,7 +5,9 @@ import 'package:go_router/go_router.dart';
 import '../../../../core/theme/app_colors.dart';
 import '../../../../data/models/user/user_model.dart';
 import '../../../../data/models/geste/geste_model.dart';
+import '../../../../data/services/geste_service.dart';
 import '../../../../domain/enums/action_category.dart';
+import '../../../../l10n/app_localizations.dart';
 
 class DailyGestesSection extends StatelessWidget {
   final UserModel user;
@@ -14,70 +16,79 @@ class DailyGestesSection extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final gestes = GesteModel.defaults
-        .where((g) => g['isDaily'] == true)
-        .take(4)
-        .map((g) => GesteModel.fromMap(g, g['id']))
-        .toList();
+    final l10n = AppLocalizations.of(context)!;
+    final theme = Theme.of(context);
 
-    final doneCount = gestes
-        .where((g) => user.completedActionIds.contains(g.id))
-        .length;
+    return FutureBuilder<List<GesteModel>>(
+      future: GesteService().getAllGestes(),
+      builder: (context, snapshot) {
+        if (snapshot.connectionState == ConnectionState.waiting) {
+          return const Center(child: CircularProgressIndicator());
+        }
 
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        Row(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        final allGestes = snapshot.data ?? [];
+        final gestes = allGestes.where((g) => g.isDaily).take(4).toList();
+
+        final doneCount = gestes
+            .where((g) => user.completedActionIds.contains(g.id))
+            .length;
+
+        return Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                Text(
-                  'Gestes du jour',
-                  style: GoogleFonts.poppins(
-                    fontSize: 17,
-                    fontWeight: FontWeight.w700,
-                    color: AppColors.textPrimary,
-                    letterSpacing: -0.3,
-                  ),
+                Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      l10n.home_gestures_of_day,
+                      style: GoogleFonts.poppins(
+                        fontSize: 17,
+                        fontWeight: FontWeight.w700,
+                        color: theme.colorScheme.onSurface,
+                        letterSpacing: -0.3,
+                      ),
+                    ),
+                    Text(
+                      '$doneCount / ${gestes.length} ${l10n.home_completed}',
+                      style: GoogleFonts.poppins(
+                        fontSize: 12,
+                        color: theme.colorScheme.onSurface.withValues(alpha: 0.6),
+                      ),
+                    ),
+                  ],
                 ),
-                Text(
-                  '$doneCount / ${gestes.length} complétés',
-                  style: GoogleFonts.poppins(
-                    fontSize: 12,
-                    color: AppColors.textSecondary,
+                GestureDetector(
+                  onTap: () => context.go('/gestes'),
+                  child: Container(
+                    padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 7),
+                    decoration: BoxDecoration(
+                      color: AppColors.primary.withValues(alpha: 0.08),
+                      borderRadius: BorderRadius.circular(20),
+                    ),
+                    child: Text(
+                      l10n.home_see_all,
+                      style: GoogleFonts.poppins(
+                        fontSize: 12,
+                        color: AppColors.primary,
+                        fontWeight: FontWeight.w600,
+                      ),
+                    ),
                   ),
                 ),
               ],
             ),
-            GestureDetector(
-              onTap: () => context.go('/gestes'),
-              child: Container(
-                padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 7),
-                decoration: BoxDecoration(
-                  color: AppColors.primary.withValues(alpha: 0.08),
-                  borderRadius: BorderRadius.circular(20),
-                ),
-                child: Text(
-                  'Voir tout',
-                  style: GoogleFonts.poppins(
-                    fontSize: 12,
-                    color: AppColors.primary,
-                    fontWeight: FontWeight.w600,
-                  ),
-                ),
-              ),
-            ),
+            const SizedBox(height: 14),
+            ...gestes.asMap().entries.map((entry) {
+              final geste = entry.value;
+              final isDone = user.completedActionIds.contains(geste.id);
+              return _GesteCard(geste: geste, isDone: isDone);
+            }),
           ],
-        ),
-        const SizedBox(height: 14),
-        ...gestes.asMap().entries.map((entry) {
-          final geste = entry.value;
-          final isDone = user.completedActionIds.contains(geste.id);
-          return _GesteCard(geste: geste, isDone: isDone);
-        }),
-      ],
+        );
+      }
     );
   }
 }
@@ -90,6 +101,10 @@ class _GesteCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final theme = Theme.of(context);
+    final isDark = theme.brightness == Brightness.dark;
+    final l10n = AppLocalizations.of(context)!;
+
     return GestureDetector(
       onTap: isDone 
           ? null 
@@ -101,10 +116,14 @@ class _GesteCard extends StatelessWidget {
         margin: const EdgeInsets.only(bottom: 10),
         padding: const EdgeInsets.all(16),
         decoration: BoxDecoration(
-          color: isDone ? AppColors.success.withValues(alpha: 0.05) : AppColors.surface,
+          color: isDone
+              ? AppColors.success.withValues(alpha: 0.05)
+              : (isDark ? AppColors.darkCard : AppColors.surface),
           borderRadius: BorderRadius.circular(20),
           border: Border.all(
-            color: isDone ? AppColors.success.withValues(alpha: 0.3) : AppColors.border,
+            color: isDone
+                ? AppColors.success.withValues(alpha: 0.3)
+                : (isDark ? Colors.white.withValues(alpha: 0.1) : AppColors.border),
             width: 1.5,
           ),
           boxShadow: [
@@ -140,9 +159,9 @@ class _GesteCard extends StatelessWidget {
                     style: GoogleFonts.poppins(
                       fontSize: 14,
                       fontWeight: FontWeight.w600,
-                      color: isDone ? AppColors.textSecondary : AppColors.textPrimary,
+                      color: isDone ? theme.colorScheme.onSurface.withValues(alpha: 0.5) : theme.colorScheme.onSurface,
                       decoration: isDone ? TextDecoration.lineThrough : null,
-                      decorationColor: AppColors.textSecondary,
+                      decorationColor: theme.colorScheme.onSurface.withValues(alpha: 0.5),
                       letterSpacing: -0.2,
                     ),
                   ),
@@ -151,7 +170,7 @@ class _GesteCard extends StatelessWidget {
                     geste.description,
                     style: GoogleFonts.poppins(
                       fontSize: 11,
-                      color: AppColors.textSecondary,
+                      color: theme.colorScheme.onSurface.withValues(alpha: 0.5),
                       fontWeight: FontWeight.w400,
                     ),
                     maxLines: 1,
@@ -168,7 +187,7 @@ class _GesteCard extends StatelessWidget {
                 borderRadius: BorderRadius.circular(10),
               ),
               child: Text(
-                isDone ? 'Fait' : '+${geste.points}',
+                isDone ? l10n.home_done : '+${geste.points}',
                 style: GoogleFonts.poppins(
                   fontSize: 12,
                   fontWeight: FontWeight.w700,

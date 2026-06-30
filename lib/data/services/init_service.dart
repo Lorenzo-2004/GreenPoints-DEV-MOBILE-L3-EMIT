@@ -7,6 +7,64 @@ class InitService {
     await initGestes();
     await initDefis();
     await initBadges();
+    await initRecompenses();
+  }
+
+  Future<void> initRecompenses() async {
+    final snapshot = await _firestore.collection('recompenses').get();
+    if (snapshot.docs.isNotEmpty) return;
+
+    final recompenses = [
+      {
+        'id': '1',
+        'title': 'Plante verte',
+        'description': 'Une plante pour ton bureau',
+        'points': 500,
+        'icon': 'local_florist',
+        'category': 'Plantes',
+        'stock': 10,
+      },
+      {
+        'id': '2',
+        'title': 'Gourde isotherme',
+        'description': 'Gourde en acier inoxydable',
+        'points': 1000,
+        'icon': 'water_bottle',
+        'category': 'Accessoires',
+        'stock': 5,
+      },
+      {
+        'id': '3',
+        'title': 'Sac à courses',
+        'description': 'Sac en tissu réutilisable',
+        'points': 300,
+        'icon': 'shopping_bag',
+        'category': 'Éco-produits',
+        'stock': 20,
+      },
+      {
+        'id': '4',
+        'title': 'Composteur',
+        'description': 'Composteur de balcon',
+        'points': 2000,
+        'icon': 'yard',
+        'category': 'Éco-produits',
+        'stock': 3,
+      },
+      {
+        'id': '5',
+        'title': 'Badge exclusif',
+        'description': 'Badge spécial GreenPoints',
+        'points': 1500,
+        'icon': 'emoji_events',
+        'category': 'Exclusifs',
+        'stock': 50,
+      },
+    ];
+
+    for (final rec in recompenses) {
+      await _firestore.collection('recompenses').doc(rec['id'] as String).set(rec);
+    }
   }
 
   Future<void> initGestes() async {

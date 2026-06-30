@@ -16,7 +16,7 @@ class SocialService {
     try {
       final snapshot = await _firestore
           .collection('users')
-          .orderBy('totalPoints', descending: true)
+          .orderBy('weeklyPoints', descending: true)
           .limit(limit)
           .get();
 
@@ -39,7 +39,7 @@ class SocialService {
     try {
       final allUsers = await _firestore
           .collection('users')
-          .orderBy('totalPoints', descending: true)
+          .orderBy('weeklyPoints', descending: true)
           .get();
 
       int rank = 1;
@@ -52,6 +52,25 @@ class SocialService {
       return null;
     } catch (e) {
       return null;
+    }
+  }
+
+  Future<List<UserRankModel>> getAllUsers() async {
+    try {
+      final snapshot = await _firestore
+          .collection('users')
+          .orderBy('name')
+          .get();
+
+      List<UserRankModel> users = [];
+      for (final doc in snapshot.docs) {
+        if (doc.id != _userId) {
+          users.add(UserRankModel.fromMap(doc.data(), doc.id, 0));
+        }
+      }
+      return users;
+    } catch (e) {
+      return [];
     }
   }
 

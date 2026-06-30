@@ -6,8 +6,10 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'package:share_plus/share_plus.dart';
 import 'package:provider/provider.dart';
 import '../../../core/theme/app_colors.dart';
+import '../../../l10n/app_localizations.dart';
 import '../../providers/locale_provider.dart';
 import '../../providers/theme_provider.dart';
+import '../../blocs/user/user_cubit.dart';
 
 class SettingsScreen extends StatefulWidget {
   const SettingsScreen({super.key});
@@ -18,7 +20,6 @@ class SettingsScreen extends StatefulWidget {
 
 class _SettingsScreenState extends State<SettingsScreen> {
   bool _notificationsEnabled = true;
-  bool _darkModeEnabled = false;
   String _selectedLanguage = 'Francais';
 
   @override
@@ -32,7 +33,6 @@ class _SettingsScreenState extends State<SettingsScreen> {
     if (mounted) {
       setState(() {
         _notificationsEnabled = prefs.getBool('notifications_enabled') ?? true;
-        _darkModeEnabled = prefs.getBool('dark_mode_enabled') ?? false;
         _selectedLanguage = prefs.getString('language') ?? 'Francais';
       });
     }
@@ -41,23 +41,23 @@ class _SettingsScreenState extends State<SettingsScreen> {
   Future<void> _saveSettings() async {
     final prefs = await SharedPreferences.getInstance();
     await prefs.setBool('notifications_enabled', _notificationsEnabled);
-    await prefs.setBool('dark_mode_enabled', _darkModeEnabled);
     await prefs.setString('language', _selectedLanguage);
   }
 
   Future<void> _logout() async {
+    final theme = Theme.of(context);
+    final l10n = AppLocalizations.of(context)!;
     final confirm = await showDialog<bool>(
       context: context,
       builder: (context) => AlertDialog(
-        backgroundColor: AppColors.surface,
         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
-        title: Text('Deconnexion', style: GoogleFonts.poppins(fontWeight: FontWeight.w600)),
-        content: Text('Voulez-vous vraiment vous deconnecter ?', style: GoogleFonts.poppins()),
+        title: Text(l10n.settings_logout, style: GoogleFonts.poppins(fontWeight: FontWeight.w600)),
+        content: Text(l10n.settings_logout_confirm, style: GoogleFonts.poppins()),
         actions: [
-          TextButton(onPressed: () => Navigator.pop(context, false), child: Text('Non')),
+          TextButton(onPressed: () => Navigator.pop(context, false), child: Text(l10n.settings_no)),
           TextButton(
             onPressed: () => Navigator.pop(context, true),
-            child: Text('Oui', style: TextStyle(color: AppColors.error)),
+            child: Text(l10n.settings_yes, style: TextStyle(color: theme.colorScheme.error)),
           ),
         ],
       ),
@@ -80,6 +80,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
   }
 
   void _showHelp() {
+    final l10n = AppLocalizations.of(context)!;
     showModalBottomSheet(
       context: context,
       shape: const RoundedRectangleBorder(
@@ -90,7 +91,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
           mainAxisSize: MainAxisSize.min,
           children: [
             const SizedBox(height: 16),
-            Text('Aide', style: GoogleFonts.poppins(fontSize: 18, fontWeight: FontWeight.w600)),
+            Text(l10n.settings_help, style: GoogleFonts.poppins(fontSize: 18, fontWeight: FontWeight.w600)),
             const Divider(),
             _buildHelpItem('Comment gagner des points ?', 'Valide des gestes ecologiques.'),
             _buildHelpItem('Comment debloquer des badges ?', 'Atteins les paliers de points.'),
@@ -103,12 +104,13 @@ class _SettingsScreenState extends State<SettingsScreen> {
   }
 
   Widget _buildHelpItem(String title, String description) {
+    final theme = Theme.of(context);
     return ExpansionTile(
       title: Text(title, style: GoogleFonts.poppins()),
       children: [
         Padding(
           padding: const EdgeInsets.all(16),
-          child: Text(description, style: GoogleFonts.poppins(color: AppColors.textSecondary)),
+          child: Text(description, style: GoogleFonts.poppins(color: theme.colorScheme.onSurface.withValues(alpha: 0.6))),
         ),
       ],
     );
@@ -118,11 +120,19 @@ class _SettingsScreenState extends State<SettingsScreen> {
   Widget build(BuildContext context) {
     final themeProvider = Provider.of<ThemeProvider>(context);
     final localeProvider = Provider.of<LocaleProvider>(context);
+    final theme = Theme.of(context);
+    final colorScheme = theme.colorScheme;
+    final l10n = AppLocalizations.of(context)!;
+    final user = context.watch<UserCubit>().state;
+    final isAdmin = user?.email == 'admin@greenpoints.com' || user?.email == 'lorenzorafanomezantsoa@gmail.com';
 
     return Scaffold(
-      backgroundColor: AppColors.background,
       appBar: AppBar(
-        title: Text('Parametres', style: GoogleFonts.poppins(fontSize: 20, fontWeight: FontWeight.w600, color: AppColors.textPrimary)),
+        leading: IconButton(
+          icon: Icon(Icons.arrow_back_ios_new_rounded, color: theme.textTheme.bodyLarge?.color ?? AppColors.textPrimary),
+          onPressed: () => context.pop(),
+        ),
+        title: Text(l10n.settings_title, style: GoogleFonts.poppins(fontSize: 20, fontWeight: FontWeight.w600)),
         backgroundColor: Colors.transparent,
         elevation: 0,
         centerTitle: true,
@@ -130,11 +140,11 @@ class _SettingsScreenState extends State<SettingsScreen> {
       body: ListView(
         padding: const EdgeInsets.all(16),
         children: [
-          _buildSectionTitle('Preferences'),
+          _buildSectionTitle(l10n.settings_preferences, theme),
           _buildSwitchTile(
             icon: Icons.notifications_outlined,
-            title: 'Notifications',
-            subtitle: 'Recevoir des alertes et rappels',
+            title: l10n.settings_notifications,
+            subtitle: l10n.settings_notifications_subtitle,
             value: _notificationsEnabled,
             onChanged: (value) {
               setState(() {
@@ -142,88 +152,111 @@ class _SettingsScreenState extends State<SettingsScreen> {
                 _saveSettings();
               });
             },
+            theme: theme,
           ),
           _buildSwitchTile(
             icon: Icons.dark_mode_outlined,
-            title: 'Mode sombre',
-            subtitle: 'Theme sombre pour l\'application',
+            title: l10n.settings_dark_mode,
+            subtitle: l10n.settings_dark_mode_subtitle,
             value: themeProvider.isDarkMode,
             onChanged: (value) => themeProvider.toggleTheme(),
+            theme: theme,
           ),
           _buildListTile(
             icon: Icons.language_outlined,
-            title: 'Langue',
+            title: l10n.settings_language,
             subtitle: _selectedLanguage,
             onTap: () => _showLanguageDialog(localeProvider),
+            theme: theme,
           ),
 
           const SizedBox(height: 24),
 
-          _buildSectionTitle('Compte'),
+          _buildSectionTitle(l10n.settings_account, theme),
           _buildListTile(
             icon: Icons.person_outline,
-            title: 'Modifier le profil',
-            subtitle: 'Informations personnelles',
+            title: l10n.settings_edit_profile,
+            subtitle: l10n.settings_edit_profile_subtitle,
             onTap: () => context.go('/profil'),
+            theme: theme,
           ),
           _buildListTile(
             icon: Icons.emoji_events_outlined,
-            title: 'Mes badges',
-            subtitle: 'Voir les badges debloques',
-            onTap: () => context.go('/badges'),
+            title: l10n.settings_my_badges,
+            subtitle: l10n.settings_my_badges_subtitle,
+            onTap: () => context.push('/badges'),
+            theme: theme,
           ),
           _buildListTile(
             icon: Icons.history_rounded,
-            title: 'Historique des points',
-            subtitle: 'Voir toutes tes transactions',
-            onTap: () => context.go('/points'),
+            title: l10n.settings_points_history,
+            subtitle: l10n.settings_points_history_subtitle,
+            onTap: () => context.push('/points'),
+            theme: theme,
           ),
+          
+          if (isAdmin) ...[
+            const SizedBox(height: 24),
+            _buildSectionTitle('Administration', theme),
+            _buildListTile(
+              icon: Icons.admin_panel_settings_outlined,
+              iconColor: AppColors.info,
+              title: 'Panneau Admin',
+              subtitle: 'Gérer les données de l\'app',
+              onTap: () => context.push('/admin'),
+              theme: theme,
+            ),
+          ],
 
           const SizedBox(height: 24),
 
-          _buildSectionTitle('Support'),
+          _buildSectionTitle(l10n.settings_support, theme),
           _buildListTile(
             icon: Icons.help_outline,
-            title: 'Aide',
-            subtitle: 'FAQ et assistance',
+            title: l10n.settings_help,
+            subtitle: l10n.settings_help_subtitle,
             onTap: _showHelp,
+            theme: theme,
           ),
           _buildListTile(
             icon: Icons.share_outlined,
-            title: 'Partager l\'application',
-            subtitle: 'Invite tes amis',
+            title: l10n.settings_share_app,
+            subtitle: l10n.settings_share_app_subtitle,
             onTap: _shareApp,
+            theme: theme,
           ),
           _buildListTile(
             icon: Icons.star_outline,
-            title: 'Noter l\'application',
-            subtitle: 'Donne ton avis',
+            title: l10n.settings_rate_app,
+            subtitle: l10n.settings_rate_app_subtitle,
             onTap: () {},
+            theme: theme,
           ),
 
           const SizedBox(height: 24),
 
           _buildListTile(
             icon: Icons.logout,
-            title: 'Deconnexion',
-            subtitle: 'Quitter le compte',
-            iconColor: AppColors.error,
-            textColor: AppColors.error,
+            title: l10n.settings_logout,
+            subtitle: l10n.settings_logout_subtitle,
+            iconColor: colorScheme.error,
+            textColor: colorScheme.error,
             onTap: _logout,
+            theme: theme,
           ),
 
           const SizedBox(height: 40),
-          Center(child: Text('Version 1.0.0', style: GoogleFonts.poppins(fontSize: 12, color: AppColors.textSecondary))),
+          Center(child: Text('${l10n.settings_version} 1.0.0', style: GoogleFonts.poppins(fontSize: 12, color: colorScheme.onSurface.withValues(alpha: 0.5)))),
           const SizedBox(height: 20),
         ],
       ),
     );
   }
 
-  Widget _buildSectionTitle(String title) {
+  Widget _buildSectionTitle(String title, ThemeData theme) {
     return Padding(
       padding: const EdgeInsets.only(top: 16, bottom: 8),
-      child: Text(title, style: GoogleFonts.poppins(fontSize: 14, fontWeight: FontWeight.w600, color: AppColors.textSecondary)),
+      child: Text(title, style: GoogleFonts.poppins(fontSize: 14, fontWeight: FontWeight.w600, color: theme.colorScheme.onSurface.withValues(alpha: 0.6))),
     );
   }
 
@@ -232,26 +265,31 @@ class _SettingsScreenState extends State<SettingsScreen> {
     required String title,
     required String subtitle,
     required VoidCallback onTap,
+    required ThemeData theme,
     Color? iconColor,
     Color? textColor,
   }) {
+    final effectiveIconColor = iconColor ?? theme.colorScheme.primary;
+    final effectiveTextColor = textColor ?? theme.colorScheme.onSurface;
+    final isDark = theme.brightness == Brightness.dark;
+
     return Container(
       margin: const EdgeInsets.only(bottom: 8),
       decoration: BoxDecoration(
-        color: AppColors.surface,
+        color: isDark ? AppColors.darkCard : AppColors.surface,
         borderRadius: BorderRadius.circular(16),
-        border: Border.all(color: AppColors.border),
+        border: Border.all(color: isDark ? Colors.white.withValues(alpha: 0.1) : AppColors.border),
       ),
       child: ListTile(
         onTap: onTap,
         leading: Container(
           width: 44, height: 44,
-          decoration: BoxDecoration(color: (iconColor ?? AppColors.primary).withValues(alpha: 0.12), borderRadius: BorderRadius.circular(12)),
-          child: Icon(icon, color: iconColor ?? AppColors.primary, size: 22),
+          decoration: BoxDecoration(color: effectiveIconColor.withValues(alpha: 0.12), borderRadius: BorderRadius.circular(12)),
+          child: Icon(icon, color: effectiveIconColor, size: 22),
         ),
-        title: Text(title, style: GoogleFonts.poppins(fontSize: 15, fontWeight: FontWeight.w500, color: textColor ?? AppColors.textPrimary)),
-        subtitle: Text(subtitle, style: GoogleFonts.poppins(fontSize: 12, color: AppColors.textSecondary)),
-        trailing: Icon(Icons.chevron_right, color: AppColors.textSecondary, size: 20),
+        title: Text(title, style: GoogleFonts.poppins(fontSize: 15, fontWeight: FontWeight.w500, color: effectiveTextColor)),
+        subtitle: Text(subtitle, style: GoogleFonts.poppins(fontSize: 12, color: theme.colorScheme.onSurface.withValues(alpha: 0.6))),
+        trailing: Icon(Icons.chevron_right, color: theme.colorScheme.onSurface.withValues(alpha: 0.5), size: 20),
       ),
     );
   }
@@ -262,28 +300,32 @@ class _SettingsScreenState extends State<SettingsScreen> {
     required String subtitle,
     required bool value,
     required ValueChanged<bool> onChanged,
+    required ThemeData theme,
   }) {
+    final isDark = theme.brightness == Brightness.dark;
+
     return Container(
       margin: const EdgeInsets.only(bottom: 8),
       decoration: BoxDecoration(
-        color: AppColors.surface,
+        color: isDark ? AppColors.darkCard : AppColors.surface,
         borderRadius: BorderRadius.circular(16),
-        border: Border.all(color: AppColors.border),
+        border: Border.all(color: isDark ? Colors.white.withValues(alpha: 0.1) : AppColors.border),
       ),
       child: ListTile(
         leading: Container(
           width: 44, height: 44,
-          decoration: BoxDecoration(color: AppColors.primary.withValues(alpha: 0.12), borderRadius: BorderRadius.circular(12)),
-          child: Icon(icon, color: AppColors.primary, size: 22),
+          decoration: BoxDecoration(color: theme.colorScheme.primary.withValues(alpha: 0.12), borderRadius: BorderRadius.circular(12)),
+          child: Icon(icon, color: theme.colorScheme.primary, size: 22),
         ),
-        title: Text(title, style: GoogleFonts.poppins(fontSize: 15, fontWeight: FontWeight.w500, color: AppColors.textPrimary)),
-        subtitle: Text(subtitle, style: GoogleFonts.poppins(fontSize: 12, color: AppColors.textSecondary)),
-        trailing: Switch(value: value, onChanged: onChanged, activeTrackColor: AppColors.primary, activeThumbColor: Colors.white),
+        title: Text(title, style: GoogleFonts.poppins(fontSize: 15, fontWeight: FontWeight.w500, color: theme.colorScheme.onSurface)),
+        subtitle: Text(subtitle, style: GoogleFonts.poppins(fontSize: 12, color: theme.colorScheme.onSurface.withValues(alpha: 0.6))),
+        trailing: Switch(value: value, onChanged: onChanged, activeTrackColor: theme.colorScheme.primary, activeThumbColor: Colors.white),
       ),
     );
   }
 
   void _showLanguageDialog(LocaleProvider localeProvider) {
+    final l10n = AppLocalizations.of(context)!;
     showModalBottomSheet(
       context: context,
       shape: const RoundedRectangleBorder(borderRadius: BorderRadius.vertical(top: Radius.circular(20))),
@@ -292,11 +334,10 @@ class _SettingsScreenState extends State<SettingsScreen> {
           mainAxisSize: MainAxisSize.min,
           children: [
             const SizedBox(height: 16),
-            Text('Choisir la langue', style: GoogleFonts.poppins(fontSize: 18, fontWeight: FontWeight.w600)),
+            Text(l10n.settings_choose_language, style: GoogleFonts.poppins(fontSize: 18, fontWeight: FontWeight.w600)),
             const Divider(),
-            _buildLanguageOption('Francais', 'fr', localeProvider),
-            _buildLanguageOption('English', 'en', localeProvider),
-            _buildLanguageOption('Espanol', 'es', localeProvider),
+            _buildLanguageOption(l10n.settings_french, 'fr', localeProvider),
+            _buildLanguageOption(l10n.settings_english, 'en', localeProvider),
             const SizedBox(height: 16),
           ],
         ),
@@ -305,6 +346,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
   }
 
   Widget _buildLanguageOption(String label, String code, LocaleProvider provider) {
+    final theme = Theme.of(context);
     final isSelected = provider.locale.languageCode == code;
     return ListTile(
       onTap: () {
@@ -316,7 +358,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
         Navigator.pop(context);
       },
       title: Text(label, style: GoogleFonts.poppins(fontWeight: isSelected ? FontWeight.w600 : FontWeight.w400)),
-      trailing: isSelected ? Icon(Icons.check_rounded, color: AppColors.primary) : null,
+      trailing: isSelected ? Icon(Icons.check_rounded, color: theme.colorScheme.primary) : null,
     );
   }
 }

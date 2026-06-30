@@ -26,6 +26,49 @@
 	<string>$(FLUTTER_BUILD_NUMBER)</string>
 	<key>LSRequiresIPhoneOS</key>
 	<true/>
+
+	<!-- Google Sign-In -->
+	<key>CFBundleURLTypes</key>
+	<array>
+		<dict>
+			<key>CFBundleTypeRole</key>
+			<string>Editor</string>
+			<key>CFBundleURLSchemes</key>
+			<array>
+				<string>com.googleusercontent.apps.1:965053537355:ios:e3a2cbebbbc912717a01ce</string>
+			</array>
+		</dict>
+	</array>
+	<key>LSApplicationQueriesSchemes</key>
+	<array>
+		<string>google</string>
+		<string>com.google</string>
+	</array>
+
+	<!-- Firebase -->
+	<key>FirebaseAppDelegateProxyEnabled</key>
+	<false/>
+
+	<!-- Camera / Photo -->
+	<key>NSCameraUsageDescription</key>
+	<string>GreenPoints utilise la caméra pour scanner les QR codes des gestes écologiques</string>
+	<key>NSPhotoLibraryUsageDescription</key>
+	<string>GreenPoints utilise la galerie pour importer des photos de vos actions écologiques</string>
+	<key>NSMicrophoneUsageDescription</key>
+	<string>GreenPoints utilise le microphone pour certaines fonctionnalités</string>
+
+	<!-- Localisation -->
+	<key>NSLocationWhenInUseUsageDescription</key>
+	<string>GreenPoints utilise votre localisation pour vous proposer des gestes écologiques adaptés</string>
+	<key>NSLocationAlwaysAndWhenInUseUsageDescription</key>
+	<string>GreenPoints utilise votre localisation pour vous proposer des gestes écologiques adaptés</string>
+
+	<!-- Notifications -->
+	<key>UIBackgroundModes</key>
+	<array>
+		<string>remote-notification</string>
+	</array>
+
 	<key>UIApplicationSceneManifest</key>
 	<dict>
 		<key>UIApplicationSupportsMultipleScenes</key>
@@ -66,5 +109,10 @@
 		<string>UIInterfaceOrientationLandscapeLeft</string>
 		<string>UIInterfaceOrientationLandscapeRight</string>
 	</array>
+
+	<!-- Version -->
+	<key>CFBundleShortVersionString</key>
+	<string>1.0.0</string>
+
 </dict>
 </plist>

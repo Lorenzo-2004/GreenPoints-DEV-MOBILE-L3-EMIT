@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:go_router/go_router.dart';
 import 'package:share_plus/share_plus.dart';
 import '../../../core/theme/app_colors.dart';
 import '../../../data/models/badge/badge_model.dart';
@@ -45,6 +46,7 @@ class _BadgesScreenState extends State<BadgesScreen> {
 
   @override
   Widget build(BuildContext context) {
+    final isDark = Theme.of(context).brightness == Brightness.dark;
     final user = context.watch<UserCubit>().state;
     final userPoints = user?.totalPoints ?? 0;
 
@@ -63,14 +65,18 @@ class _BadgesScreenState extends State<BadgesScreen> {
     final unlockedCount = badgesWithStatus.where((b) => b.isUnlocked).length;
 
     return Scaffold(
-      backgroundColor: AppColors.background,
+      backgroundColor: isDark ? AppColors.darkSurface : AppColors.background,
       appBar: AppBar(
+        leading: IconButton(
+          icon: Icon(Icons.arrow_back_ios_new_rounded, color: isDark ? AppColors.textOnDark : AppColors.textPrimary),
+          onPressed: () => context.pop(),
+        ),
         title: Text(
           'Badges',
           style: GoogleFonts.poppins(
             fontSize: 20,
             fontWeight: FontWeight.w600,
-            color: AppColors.textPrimary,
+            color: isDark ? AppColors.textOnDark : AppColors.textPrimary,
           ),
         ),
         backgroundColor: Colors.transparent,
@@ -87,6 +93,13 @@ class _BadgesScreenState extends State<BadgesScreen> {
                   decoration: BoxDecoration(
                     gradient: AppColors.primaryGradient,
                     borderRadius: BorderRadius.circular(20),
+                    boxShadow: [
+                      BoxShadow(
+                        color: AppColors.glassShadow,
+                        blurRadius: 16,
+                        offset: const Offset(0, 6),
+                      ),
+                    ],
                   ),
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -116,8 +129,9 @@ class _BadgesScreenState extends State<BadgesScreen> {
                         width: 60,
                         height: 60,
                         decoration: BoxDecoration(
-                          color: Colors.white.withValues(alpha: 0.15),
+                          color: AppColors.glassFill,
                           borderRadius: BorderRadius.circular(16),
+                          border: Border.all(color: AppColors.glassBorder, width: 1),
                         ),
                         child: const Icon(
                           Icons.emoji_events_rounded,

@@ -25,16 +25,29 @@ class LeaderboardTile extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final isDark = Theme.of(context).brightness == Brightness.dark;
+
     return Container(
       margin: const EdgeInsets.only(bottom: 12),
       padding: const EdgeInsets.all(12),
       decoration: BoxDecoration(
-        color: isTop3 ? AppColors.primaryLight : AppColors.surface,
+        color: isTop3 
+            ? (isDark ? AppColors.glassFillDark : AppColors.primaryLight)
+            : (isDark ? AppColors.darkCard : AppColors.glassFill),
         borderRadius: BorderRadius.circular(16),
         border: Border.all(
-          color: isTop3 ? AppColors.primary : AppColors.border,
+          color: isTop3 
+              ? AppColors.primary 
+              : (isDark ? AppColors.glassBorderDark : AppColors.glassBorder),
           width: isTop3 ? 1.5 : 1,
         ),
+        boxShadow: [
+          BoxShadow(
+            color: isDark ? AppColors.glassShadowDark : AppColors.glassShadow,
+            blurRadius: 8,
+            offset: const Offset(0, 2),
+          ),
+        ],
       ),
       child: Row(
         children: [
@@ -42,16 +55,17 @@ class LeaderboardTile extends StatelessWidget {
             width: 40,
             height: 40,
             decoration: BoxDecoration(
-              color: isTop3 ? _getRankColor().withValues(alpha: 0.2) : AppColors.border,
+              color: isTop3 ? _getRankColor().withValues(alpha: 0.2) : (isDark ? AppColors.darkCard : AppColors.border),
               borderRadius: BorderRadius.circular(12),
+              border: isTop3 ? Border.all(color: _getRankColor().withValues(alpha: 0.3), width: 1) : null,
             ),
             child: Center(
               child: Text(
                 '#$rank',
-                style: GoogleFonts.poppins(
+                style: GoogleFonts.inter(
                   fontSize: 16,
                   fontWeight: FontWeight.w800,
-                  color: isTop3 ? _getRankColor() : AppColors.textSecondary,
+                  color: isTop3 ? _getRankColor() : (isDark ? AppColors.textSecondary : AppColors.textSecondary),
                 ),
               ),
             ),
@@ -63,17 +77,17 @@ class LeaderboardTile extends StatelessWidget {
               children: [
                 Text(
                   user.name,
-                  style: GoogleFonts.poppins(
+                  style: GoogleFonts.inter(
                     fontSize: 14,
                     fontWeight: FontWeight.w600,
-                    color: AppColors.textPrimary,
+                    color: isDark ? AppColors.textOnDark : AppColors.textPrimary,
                   ),
                 ),
                 Text(
                   user.email,
-                  style: GoogleFonts.poppins(
+                  style: GoogleFonts.inter(
                     fontSize: 11,
-                    color: AppColors.textSecondary,
+                    color: isDark ? AppColors.textSecondary : AppColors.textSecondary,
                   ),
                 ),
               ],
@@ -91,7 +105,7 @@ class LeaderboardTile extends StatelessWidget {
                 const SizedBox(width: 4),
                 Text(
                   '${user.totalPoints}',
-                  style: GoogleFonts.poppins(
+                  style: GoogleFonts.inter(
                     fontSize: 13,
                     fontWeight: FontWeight.w700,
                     color: AppColors.warning,

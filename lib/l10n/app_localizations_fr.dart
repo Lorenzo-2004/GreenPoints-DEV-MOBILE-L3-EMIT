@@ -642,7 +642,7 @@ class AppLocalizationsFr extends AppLocalizations {
   String get social_no_friends_hint => 'Ajoute des amis pour les suivre';
 
   @override
-  String get social_add_friend => 'Ajouter un ami';
+  String get social_add_friend => 'Ajouter';
 
   @override
   String get social_friend_email => 'Email de l\'ami';
@@ -699,6 +699,18 @@ class AppLocalizationsFr extends AppLocalizations {
   String get common_ok => 'OK';
 
   @override
+  String get home_streak_desc => 'Continue chaque jour pour augmenter ta série !';
+
+  @override
+  String get home_level_details => 'Détails du niveau';
+
+  @override
+  String get validation_qr_scanned => 'QR Code scanné: ';
+
+  @override
+  String get common_clear => 'Effacer';
+
+  @override
   String get errors_connection => 'Erreur de connexion';
 
   @override
@@ -709,4 +721,148 @@ class AppLocalizationsFr extends AppLocalizations {
 
   @override
   String get errors_not_found => 'Non trouvé';
+
+  @override
+  String get settings_admin_panel => 'Panneau Admin';
+
+  @override
+  String get settings_admin_panel_subtitle => 'Gérer les données';
+
+  @override
+  String get settings_theme => 'Thème';
+
+  @override
+  String get settings_theme_subtitle => 'Basculer clair / sombre';
+
+  @override
+  String get admin_title => 'Console Admin';
+
+  @override
+  String get admin_tab_gestes => 'Gestes';
+
+  @override
+  String get admin_tab_defis => 'Défis';
+
+  @override
+  String get admin_tab_badges => 'Badges';
+
+  @override
+  String get admin_tab_shop => 'Boutique';
+
+  @override
+  String get admin_btn_add => 'Ajouter';
+
+  @override
+  String get admin_btn_add_geste => 'Créer le Geste';
+
+  @override
+  String get admin_btn_add_defi => 'Créer le Défi';
+
+  @override
+  String get admin_btn_add_badge => 'Créer le Badge';
+
+  @override
+  String get admin_btn_add_reward => 'Ajouter à la Boutique';
+
+  @override
+  String get admin_success_geste => 'Geste ajouté avec succès';
+
+  @override
+  String get admin_success_defi => 'Défi ajouté avec succès';
+
+  @override
+  String get admin_success_badge => 'Badge ajouté avec succès';
+
+  @override
+  String get admin_success_reward => 'Récompense ajoutée avec succès';
+
+  @override
+  String get admin_field_title => 'Titre';
+
+  @override
+  String get admin_field_desc => 'Description';
+
+  @override
+  String get admin_field_points => 'Points';
+
+  @override
+  String get admin_field_cat => 'Catégorie';
+
+  @override
+  String get admin_field_daily => 'Geste Quotidien ?';
+
+  @override
+  String get admin_field_sub => 'Sous-titre';
+
+  @override
+  String get admin_field_days => 'Jours restants';
+
+  @override
+  String get admin_field_stock => 'Stock';
+
+  @override
+  String get stats_title => 'Mes statistiques';
+
+  @override
+  String get stats_points_total => 'Points total';
+
+  @override
+  String get stats_streak => 'Série actuelle';
+
+  @override
+  String get stats_points_week => 'Points semaine';
+
+  @override
+  String get stats_gestures_done => 'Gestes réalisés';
+
+  @override
+  String get level_title => 'Niveau';
+
+  @override
+  String get level_max => 'Niveau maximum atteint';
+
+  @override
+  String get level_points_next => 'pts pour le niveau suivant';
+
+  @override
+  String get search_title => 'Rechercher';
+
+  @override
+  String get search_hint => 'Titre, description...';
+
+  @override
+  String get search_clear => 'Effacer';
+
+  @override
+  String get defi_days_left => 'j restants';
+
+  @override
+  String get defi_completed => 'Terminé !';
+
+  @override
+  String get defi_continue => 'Continuer';
+
+  @override
+  String get defi_start => 'Commencer le défi';
+
+  @override
+  String get date_today => 'Aujourd\'hui';
+
+  @override
+  String get date_yesterday => 'Hier';
+
+  @override
+  String get date_days_ago => 'Il y a %d jours';
+
+  @override
+  String get social_tab_leaderboard => 'Classement';
+
+  @override
+  String get social_tab_friends => 'Amis';
+
+  @override
+  String get social_add_friend_title => 'Ajouter un ami';
+
+  @override
+  String get social_no_users => 'Aucun nouvel utilisateur trouvé';
 }

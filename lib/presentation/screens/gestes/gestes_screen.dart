@@ -9,6 +9,7 @@ import '../../../data/models/geste/geste_model.dart';
 import '../../../data/services/geste_service.dart';
 import '../../../domain/enums/action_category.dart';
 import '../../blocs/user/user_cubit.dart';
+import '../../../l10n/app_localizations.dart';
 import 'widgets/geste_card.dart';
 import 'widgets/category_filter.dart';
 
@@ -43,6 +44,10 @@ class _GestesScreenState extends State<GestesScreen> {
         _isLoading = false;
       });
     }
+  }
+
+  Set<ActionCategory> get _availableCategories {
+    return _allGestes.map((g) => g.category).toSet();
   }
 
   void _applyFilters() {
@@ -99,11 +104,15 @@ class _GestesScreenState extends State<GestesScreen> {
 
   @override
   Widget build(BuildContext context) {
+    final theme = Theme.of(context);
+    final isDark = theme.brightness == Brightness.dark;
+    final l10n = AppLocalizations.of(context)!;
+    
     final user = context.watch<UserCubit>().state;
     final completedIds = user?.completedActionIds ?? [];
 
     return Scaffold(
-      backgroundColor: AppColors.background,
+      backgroundColor: theme.scaffoldBackgroundColor,
       body: _isLoading
           ? const Center(child: CircularProgressIndicator())
           : CustomScrollView(
@@ -117,13 +126,9 @@ class _GestesScreenState extends State<GestesScreen> {
                       right: 24,
                       bottom: 32,
                     ),
-                    decoration: BoxDecoration(
-                      gradient: const LinearGradient(
-                        colors: [Color(0xFF1D4ED8), Color(0xFF2563EB)],
-                        begin: Alignment.topLeft,
-                        end: Alignment.bottomRight,
-                      ),
-                      borderRadius: const BorderRadius.only(
+                    decoration: const BoxDecoration(
+                      gradient: AppColors.primaryGradient,
+                      borderRadius: BorderRadius.only(
                         bottomLeft: Radius.circular(32),
                         bottomRight: Radius.circular(32),
                       ),
@@ -135,7 +140,7 @@ class _GestesScreenState extends State<GestesScreen> {
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
                             Text(
-                              'Decouvrez',
+                              l10n.gestures_discover,
                               style: GoogleFonts.poppins(
                                 fontSize: 14,
                                 color: Colors.white.withValues(alpha: 0.8),
@@ -144,7 +149,7 @@ class _GestesScreenState extends State<GestesScreen> {
                             ),
                             const SizedBox(height: 4),
                             Text(
-                              'Mes Gestes',
+                              l10n.gestures_title,
                               style: GoogleFonts.poppins(
                                 fontSize: 28,
                                 fontWeight: FontWeight.w700,
@@ -233,22 +238,22 @@ class _GestesScreenState extends State<GestesScreen> {
                       margin: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
                       padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
                       decoration: BoxDecoration(
-                        color: AppColors.primaryLight,
+                        color: isDark ? AppColors.primary.withValues(alpha: 0.2) : AppColors.primaryLight,
                         borderRadius: BorderRadius.circular(12),
                       ),
                       child: Row(
                         children: [
-                          Icon(Icons.search, size: 16, color: AppColors.primary),
+                          Icon(Icons.search, size: 16, color: isDark ? Colors.white : AppColors.primary),
                           const SizedBox(width: 8),
                           Expanded(
                             child: Text(
                               'Recherche: "$_searchQuery"',
-                              style: GoogleFonts.poppins(fontSize: 12, color: AppColors.primary),
+                              style: GoogleFonts.poppins(fontSize: 12, color: isDark ? Colors.white : AppColors.primary),
                             ),
                           ),
                           GestureDetector(
                             onTap: _clearSearch,
-                            child: Icon(Icons.close, size: 16, color: AppColors.primary),
+                            child: Icon(Icons.close, size: 16, color: isDark ? Colors.white : AppColors.primary),
                           ),
                         ],
                       ),
@@ -261,6 +266,7 @@ class _GestesScreenState extends State<GestesScreen> {
                     child: CategoryFilter(
                       selected: _selectedCategory,
                       onSelected: _updateCategory,
+                      availableCategories: _availableCategories,
                     ),
                   ).animate(delay: 150.ms).fadeIn().slideY(begin: 0.2, end: 0),
                 ),
@@ -293,22 +299,36 @@ class _GestesScreenState extends State<GestesScreen> {
   }
 
   void _showSearchDialog() {
+    final theme = Theme.of(context);
+    final isDark = theme.brightness == Brightness.dark;
+    final l10n = AppLocalizations.of(context)!;
+    
     showDialog(
       context: context,
       builder: (context) => AlertDialog(
-        backgroundColor: AppColors.surface,
+        backgroundColor: isDark ? AppColors.darkCard : AppColors.surface,
         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
         title: Text('Rechercher un geste', style: GoogleFonts.poppins(fontWeight: FontWeight.w600)),
         content: TextField(
           autofocus: true,
+          style: TextStyle(color: theme.colorScheme.onSurface),
           onChanged: (value) {
             _searchQuery = value;
             _applyFilters();
           },
           decoration: InputDecoration(
             hintText: 'Titre, description...',
-            prefixIcon: Icon(Icons.search),
+            hintStyle: TextStyle(color: theme.colorScheme.onSurface.withValues(alpha: 0.5)),
+            prefixIcon: Icon(Icons.search, color: theme.colorScheme.onSurface),
             border: OutlineInputBorder(borderRadius: BorderRadius.circular(12)),
+            enabledBorder: OutlineInputBorder(
+              borderRadius: BorderRadius.circular(12),
+              borderSide: BorderSide(color: isDark ? Colors.white.withValues(alpha: 0.2) : AppColors.border),
+            ),
+            focusedBorder: OutlineInputBorder(
+              borderRadius: BorderRadius.circular(12),
+              borderSide: BorderSide(color: AppColors.primary),
+            ),
           ),
         ),
         actions: [
@@ -321,7 +341,7 @@ class _GestesScreenState extends State<GestesScreen> {
           ),
           ElevatedButton(
             onPressed: () => Navigator.pop(context),
-            child: Text('Fermer', style: GoogleFonts.poppins()),
+            child: Text(l10n.common_close, style: GoogleFonts.poppins()),
           ),
         ],
       ),

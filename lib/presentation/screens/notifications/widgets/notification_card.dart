@@ -33,21 +33,27 @@ class NotificationCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final isDark = Theme.of(context).brightness == Brightness.dark;
+
     return GestureDetector(
       onTap: onTap,
       child: Container(
         margin: const EdgeInsets.only(bottom: 12),
         padding: const EdgeInsets.all(16),
         decoration: BoxDecoration(
-          color: notification.isRead ? AppColors.surface : AppColors.primaryLight,
+          color: notification.isRead 
+              ? (isDark ? AppColors.glassFillDark : AppColors.glassFill)
+              : (isDark ? AppColors.primary.withValues(alpha: 0.15) : AppColors.primaryLight),
           borderRadius: BorderRadius.circular(20),
           border: Border.all(
-            color: notification.isRead ? AppColors.border : AppColors.primary,
+            color: notification.isRead 
+                ? (isDark ? AppColors.glassBorderDark : AppColors.glassBorder)
+                : AppColors.primary,
             width: notification.isRead ? 1 : 1.5,
           ),
           boxShadow: [
             BoxShadow(
-              color: Colors.black.withValues(alpha: 0.04),
+              color: isDark ? AppColors.glassShadowDark : AppColors.glassShadow,
               blurRadius: 8,
               offset: const Offset(0, 2),
             ),
@@ -61,6 +67,10 @@ class NotificationCard extends StatelessWidget {
               decoration: BoxDecoration(
                 color: notification.color.withValues(alpha: 0.12),
                 borderRadius: BorderRadius.circular(14),
+                border: Border.all(
+                  color: notification.color.withValues(alpha: 0.2),
+                  width: 0.5,
+                ),
               ),
               child: Icon(
                 notification.icon,
@@ -75,20 +85,20 @@ class NotificationCard extends StatelessWidget {
                 children: [
                   Text(
                     notification.title,
-                    style: GoogleFonts.poppins(
+                    style: GoogleFonts.inter(
                       fontSize: 14,
                       fontWeight: FontWeight.w600,
                       color: notification.isRead
-                          ? AppColors.textPrimary
+                          ? (isDark ? AppColors.textOnDark : AppColors.textPrimary)
                           : AppColors.primary,
                     ),
                   ),
                   const SizedBox(height: 4),
                   Text(
                     notification.message,
-                    style: GoogleFonts.poppins(
+                    style: GoogleFonts.inter(
                       fontSize: 12,
-                      color: AppColors.textSecondary,
+                      color: isDark ? AppColors.textSecondary : AppColors.textSecondary,
                     ),
                     maxLines: 2,
                     overflow: TextOverflow.ellipsis,
@@ -98,7 +108,7 @@ class NotificationCard extends StatelessWidget {
                     _formatDate(notification.createdAt),
                     style: GoogleFonts.poppins(
                       fontSize: 10,
-                      color: AppColors.textSecondary.withValues(alpha: 0.7),
+                      color: isDark ? AppColors.textSecondary.withValues(alpha: 0.7) : AppColors.textSecondary.withValues(alpha: 0.7),
                     ),
                   ),
                 ],
@@ -111,6 +121,12 @@ class NotificationCard extends StatelessWidget {
                 decoration: BoxDecoration(
                   color: AppColors.primary,
                   shape: BoxShape.circle,
+                  boxShadow: [
+                    BoxShadow(
+                      color: AppColors.primary.withValues(alpha: 0.4),
+                      blurRadius: 4,
+                    ),
+                  ],
                 ),
               ),
           ],

@@ -6,21 +6,29 @@ import '../../../../domain/enums/action_category.dart';
 class CategoryFilter extends StatelessWidget {
   final ActionCategory? selected;
   final ValueChanged<ActionCategory> onSelected;
+  final Set<ActionCategory> availableCategories;
 
   const CategoryFilter({
     super.key,
     required this.selected,
     required this.onSelected,
+    required this.availableCategories,
   });
 
   @override
   Widget build(BuildContext context) {
+    final theme = Theme.of(context);
+    final isDark = theme.brightness == Brightness.dark;
+    
+    // Convert to list and optionally sort it
+    final categories = availableCategories.toList()..sort((a, b) => a.index.compareTo(b.index));
+
     return SizedBox(
       height: 60,
       child: ListView(
         scrollDirection: Axis.horizontal,
         padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
-        children: ActionCategory.values.map((cat) {
+        children: categories.map((cat) {
           final isSelected = selected == cat;
           return GestureDetector(
             onTap: () => onSelected(cat),
@@ -36,10 +44,12 @@ class CategoryFilter extends StatelessWidget {
                         end: Alignment.bottomRight,
                       )
                     : null,
-                color: isSelected ? null : AppColors.surface,
+                color: isSelected ? null : (isDark ? AppColors.darkCard : AppColors.surface),
                 borderRadius: BorderRadius.circular(30),
                 border: Border.all(
-                  color: isSelected ? Colors.transparent : AppColors.border,
+                  color: isSelected 
+                      ? Colors.transparent 
+                      : (isDark ? Colors.white.withValues(alpha: 0.1) : AppColors.border),
                   width: 1,
                 ),
                 boxShadow: isSelected
@@ -52,7 +62,7 @@ class CategoryFilter extends StatelessWidget {
                       ]
                     : [
                         BoxShadow(
-                          color: Colors.black.withValues(alpha: 0.04),
+                          color: isDark ? Colors.black.withValues(alpha: 0.2) : Colors.black.withValues(alpha: 0.04),
                           blurRadius: 4,
                           offset: const Offset(0, 2),
                         ),
@@ -64,7 +74,7 @@ class CategoryFilter extends StatelessWidget {
                   Icon(
                     cat.icon,
                     size: 18,
-                    color: isSelected ? Colors.white : AppColors.textSecondary,
+                    color: isSelected ? Colors.white : theme.colorScheme.onSurface.withValues(alpha: 0.6),
                   ),
                   const SizedBox(width: 8),
                   Text(
@@ -72,7 +82,7 @@ class CategoryFilter extends StatelessWidget {
                     style: GoogleFonts.poppins(
                       fontSize: 13,
                       fontWeight: FontWeight.w600,
-                      color: isSelected ? Colors.white : AppColors.textSecondary,
+                      color: isSelected ? Colors.white : theme.colorScheme.onSurface.withValues(alpha: 0.6),
                       letterSpacing: -0.2,
                     ),
                   ),

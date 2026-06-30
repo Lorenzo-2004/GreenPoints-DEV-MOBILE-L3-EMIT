@@ -64,10 +64,10 @@ class DefiCategoryFilter extends StatelessWidget {
                         end: Alignment.bottomRight,
                       )
                     : null,
-                color: isSelected ? null : AppColors.surface,
+                color: isSelected ? null : Theme.of(context).cardColor,
                 borderRadius: BorderRadius.circular(30),
                 border: Border.all(
-                  color: isSelected ? Colors.transparent : AppColors.border,
+                  color: isSelected ? Colors.transparent : Theme.of(context).dividerColor,
                   width: 1,
                 ),
                 boxShadow: isSelected
@@ -92,7 +92,7 @@ class DefiCategoryFilter extends StatelessWidget {
                   Icon(
                     icon,
                     size: 18,
-                    color: isSelected ? Colors.white : AppColors.textSecondary,
+                    color: isSelected ? Colors.white : (Theme.of(context).textTheme.bodyMedium?.color ?? AppColors.textSecondary),
                   ),
                   const SizedBox(width: 8),
                   Text(
@@ -100,7 +100,7 @@ class DefiCategoryFilter extends StatelessWidget {
                     style: GoogleFonts.poppins(
                       fontSize: 13,
                       fontWeight: FontWeight.w600,
-                      color: isSelected ? Colors.white : AppColors.textSecondary,
+                      color: isSelected ? Colors.white : (Theme.of(context).textTheme.bodyMedium?.color ?? AppColors.textSecondary),
                       letterSpacing: -0.2,
                     ),
                   ),

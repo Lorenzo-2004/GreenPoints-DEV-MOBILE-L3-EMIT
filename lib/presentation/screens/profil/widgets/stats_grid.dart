@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import '../../../../core/theme/app_colors.dart';
 import '../../../../data/models/user/user_model.dart';
+import '../../../../l10n/app_localizations.dart';
 
 class StatsGrid extends StatelessWidget {
   final UserModel user;
@@ -10,6 +11,7 @@ class StatsGrid extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final l10n = AppLocalizations.of(context)!;
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
@@ -25,11 +27,11 @@ class StatsGrid extends StatelessWidget {
             ),
             const SizedBox(width: 10),
             Text(
-              'Mes statistiques',
+              l10n.stats_title,
               style: GoogleFonts.poppins(
                 fontSize: 16,
                 fontWeight: FontWeight.w600,
-                color: AppColors.textPrimary,
+                color: Theme.of(context).textTheme.bodyLarge?.color ?? AppColors.textPrimary,
               ),
             ),
           ],
@@ -46,28 +48,28 @@ class StatsGrid extends StatelessWidget {
             _StatTile(
               icon: Icons.stars_rounded,
               iconColor: AppColors.warning,
-              label: 'Points total',
+              label: l10n.stats_points_total,
               value: '${user.totalPoints}',
               suffix: 'pts',
             ),
             _StatTile(
               icon: Icons.local_fire_department_rounded,
-              iconColor: AppColors.warning, // Changé : utilise AppColors.warning
-              label: 'Série actuelle',
+              iconColor: AppColors.warning, 
+              label: l10n.stats_streak,
               value: '${user.streak}',
               suffix: 'j',
             ),
             _StatTile(
               icon: Icons.trending_up_rounded,
               iconColor: AppColors.accent,
-              label: 'Points semaine',
+              label: l10n.stats_points_week,
               value: '${user.weeklyPoints}',
               suffix: 'pts',
             ),
             _StatTile(
               icon: Icons.check_circle_rounded,
               iconColor: AppColors.success,
-              label: 'Gestes réalisés',
+              label: l10n.stats_gestures_done,
               value: '${user.completedActionIds.length}',
               suffix: '',
             ),
@@ -98,9 +100,9 @@ class _StatTile extends StatelessWidget {
     return Container(
       padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 10),
       decoration: BoxDecoration(
-        color: AppColors.surface,
+        color: Theme.of(context).cardColor,
         borderRadius: BorderRadius.circular(14),
-        border: Border.all(color: AppColors.border),
+        border: Border.all(color: Theme.of(context).dividerColor),
       ),
       child: Row(
         crossAxisAlignment: CrossAxisAlignment.center,
@@ -127,7 +129,7 @@ class _StatTile extends StatelessWidget {
                       style: GoogleFonts.poppins(
                         fontSize: 16,
                         fontWeight: FontWeight.w700,
-                        color: AppColors.textPrimary,
+                        color: Theme.of(context).textTheme.bodyLarge?.color ?? AppColors.textPrimary,
                       ),
                     ),
                     if (suffix.isNotEmpty) ...[
@@ -137,7 +139,7 @@ class _StatTile extends StatelessWidget {
                         style: GoogleFonts.poppins(
                           fontSize: 10,
                           fontWeight: FontWeight.w500,
-                          color: AppColors.textSecondary,
+                          color: Theme.of(context).textTheme.bodyMedium?.color ?? AppColors.textSecondary,
                         ),
                       ),
                     ],
@@ -147,7 +149,7 @@ class _StatTile extends StatelessWidget {
                   label,
                   style: GoogleFonts.poppins(
                     fontSize: 10,
-                    color: AppColors.textSecondary,
+                    color: Theme.of(context).textTheme.bodyMedium?.color ?? AppColors.textSecondary,
                   ),
                 ),
               ],

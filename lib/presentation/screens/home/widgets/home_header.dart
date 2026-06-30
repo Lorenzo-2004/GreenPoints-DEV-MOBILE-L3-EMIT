@@ -3,17 +3,19 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:share_plus/share_plus.dart';
 import '../../../../core/theme/app_colors.dart';
 import '../../../../data/models/user/user_model.dart';
+import '../../../../l10n/app_localizations.dart';
 
 class HomeHeader extends StatelessWidget {
   final UserModel user;
 
   const HomeHeader({super.key, required this.user});
 
-  String get _greeting {
+  String _greeting(BuildContext context) {
+    final l10n = AppLocalizations.of(context)!;
     final hour = DateTime.now().hour;
-    if (hour < 12) return 'Bonjour';
-    if (hour < 18) return 'Bon après-midi';
-    return 'Bonsoir';
+    if (hour < 12) return l10n.home_greeting_morning;
+    if (hour < 18) return l10n.home_greeting_afternoon;
+    return l10n.home_greeting_evening;
   }
 
   void _shareProgress(BuildContext context) {
@@ -29,6 +31,8 @@ class HomeHeader extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final l10n = AppLocalizations.of(context)!;
+
     return Container(
       padding: EdgeInsets.only(
         top: MediaQuery.of(context).padding.top + 20,
@@ -60,7 +64,7 @@ class HomeHeader extends StatelessWidget {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Text(
-                    _greeting,
+                    _greeting(context),
                     style: GoogleFonts.poppins(
                       fontSize: 14,
                       color: Colors.white.withValues(alpha: 0.8),
@@ -127,14 +131,14 @@ class HomeHeader extends StatelessWidget {
                   icon: Icons.stars_rounded,
                   iconColor: AppColors.warning,
                   value: '${user.totalPoints}',
-                  label: 'Points',
+                  label: l10n.home_points,
                 ),
                 Container(width: 1, height: 30, color: Colors.white.withValues(alpha: 0.15)),
                 _QuickStat(
                   icon: Icons.local_fire_department_rounded,
                   iconColor: AppColors.warning,
                   value: '${user.streak}',
-                  label: 'Série',
+                  label: l10n.home_streak,
                   suffix: 'j',
                 ),
                 Container(width: 1, height: 30, color: Colors.white.withValues(alpha: 0.15)),
@@ -142,7 +146,7 @@ class HomeHeader extends StatelessWidget {
                   icon: Icons.trending_up_rounded,
                   iconColor: AppColors.accent,
                   value: '${user.weeklyPoints}',
-                  label: 'Semaine',
+                  label: l10n.home_weekly,
                   suffix: 'pts',
                 ),
               ],

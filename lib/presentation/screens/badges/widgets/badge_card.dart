@@ -15,27 +15,39 @@ class BadgeCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final isDark = Theme.of(context).brightness == Brightness.dark;
+
     return GestureDetector(
       onTap: onTap,
       child: AnimatedContainer(
         duration: const Duration(milliseconds: 300),
         padding: const EdgeInsets.all(16),
         decoration: BoxDecoration(
-          color: badge.isUnlocked ? AppColors.surface : AppColors.surface.withValues(alpha: 0.6),
+          color: badge.isUnlocked 
+              ? (isDark ? AppColors.glassFillDark : AppColors.glassFillVibrant)
+              : (isDark ? AppColors.darkCard : AppColors.glassFill),
           borderRadius: BorderRadius.circular(20),
           border: Border.all(
-            color: badge.isUnlocked ? badge.color : AppColors.border,
+            color: badge.isUnlocked 
+                ? badge.color 
+                : (isDark ? AppColors.glassBorderDark : AppColors.glassBorder),
             width: badge.isUnlocked ? 1.5 : 1,
           ),
           boxShadow: badge.isUnlocked
               ? [
                   BoxShadow(
-                    color: badge.color.withValues(alpha: 0.2),
+                    color: badge.color.withValues(alpha: 0.25),
                     blurRadius: 12,
                     offset: const Offset(0, 4),
                   ),
                 ]
-              : null,
+              : [
+                  BoxShadow(
+                    color: isDark ? AppColors.glassShadowDark : AppColors.glassShadow,
+                    blurRadius: 4,
+                    offset: const Offset(0, 2),
+                  ),
+                ],
         ),
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
@@ -54,8 +66,11 @@ class BadgeCard extends StatelessWidget {
                             end: Alignment.bottomRight,
                           )
                         : null,
-                    color: badge.isUnlocked ? null : AppColors.border,
+                    color: badge.isUnlocked ? null : (isDark ? AppColors.darkCard : AppColors.border),
                     shape: BoxShape.circle,
+                    border: badge.isUnlocked
+                        ? Border.all(color: Colors.white.withValues(alpha: 0.3), width: 1.5)
+                        : null,
                   ),
                   child: Icon(
                     badge.icon,
@@ -77,7 +92,9 @@ class BadgeCard extends StatelessWidget {
               style: GoogleFonts.poppins(
                 fontSize: 14,
                 fontWeight: FontWeight.w600,
-                color: badge.isUnlocked ? AppColors.textPrimary : AppColors.textSecondary,
+                color: badge.isUnlocked 
+                    ? (isDark ? AppColors.textOnDark : AppColors.textPrimary) 
+                    : AppColors.textSecondary,
               ),
               textAlign: TextAlign.center,
             ),
@@ -86,7 +103,7 @@ class BadgeCard extends StatelessWidget {
               badge.description,
               style: GoogleFonts.poppins(
                 fontSize: 11,
-                color: AppColors.textSecondary,
+                color: isDark ? AppColors.textSecondary : AppColors.textSecondary,
               ),
               textAlign: TextAlign.center,
               maxLines: 2,
@@ -98,11 +115,14 @@ class BadgeCard extends StatelessWidget {
               decoration: BoxDecoration(
                 color: badge.isUnlocked
                     ? badge.color.withValues(alpha: 0.12)
-                    : AppColors.border,
+                    : (isDark ? AppColors.glassBorderDark : AppColors.border),
                 borderRadius: BorderRadius.circular(12),
+                border: badge.isUnlocked
+                    ? Border.all(color: badge.color.withValues(alpha: 0.2), width: 0.5)
+                    : null,
               ),
               child: Text(
-                badge.isUnlocked ? 'DeBloque' : badge.progressText,
+                badge.isUnlocked ? 'Debloque' : badge.progressText,
                 style: GoogleFonts.poppins(
                   fontSize: 10,
                   fontWeight: FontWeight.w600,

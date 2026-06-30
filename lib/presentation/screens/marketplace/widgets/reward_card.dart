@@ -35,10 +35,10 @@ class RewardCard extends StatelessWidget {
       child: Container(
         padding: const EdgeInsets.all(12),
         decoration: BoxDecoration(
-          color: AppColors.surface,
+          color: Theme.of(context).cardColor,
           borderRadius: BorderRadius.circular(20),
           border: Border.all(
-            color: canAfford ? AppColors.primary : AppColors.border,
+            color: canAfford ? AppColors.primary : Theme.of(context).dividerColor,
             width: canAfford ? 1.5 : 1,
           ),
           boxShadow: canAfford
@@ -90,7 +90,7 @@ class RewardCard extends StatelessWidget {
               style: GoogleFonts.poppins(
                 fontSize: 14,
                 fontWeight: FontWeight.w600,
-                color: AppColors.textPrimary,
+                color: Theme.of(context).textTheme.bodyLarge?.color ?? AppColors.textPrimary,
               ),
               maxLines: 1,
               overflow: TextOverflow.ellipsis,
@@ -100,7 +100,7 @@ class RewardCard extends StatelessWidget {
               reward.description,
               style: GoogleFonts.poppins(
                 fontSize: 11,
-                color: AppColors.textSecondary,
+                color: Theme.of(context).textTheme.bodyMedium?.color ?? AppColors.textSecondary,
               ),
               maxLines: 2,
               overflow: TextOverflow.ellipsis,
@@ -115,7 +115,7 @@ class RewardCard extends StatelessWidget {
                   style: GoogleFonts.poppins(
                     fontSize: 12,
                     fontWeight: FontWeight.w600,
-                    color: canAfford ? AppColors.warning : AppColors.textSecondary,
+                    color: canAfford ? AppColors.warning : (Theme.of(context).textTheme.bodyMedium?.color ?? AppColors.textSecondary),
                   ),
                 ),
               ],

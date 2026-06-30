@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import '../../../../core/theme/app_colors.dart';
 import '../../../../data/models/user/user_model.dart';
+import '../../../../l10n/app_localizations.dart';
 
 class LevelProgressCard extends StatelessWidget {
   final UserModel user;
@@ -10,6 +11,10 @@ class LevelProgressCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final theme = Theme.of(context);
+    final isDark = theme.brightness == Brightness.dark;
+    final l10n = AppLocalizations.of(context)!;
+    
     final level = user.level as LevelModel;
     final progress = level.progressTo(user.totalPoints);
     final pointsLeft = level.pointsToNext(user.totalPoints);
@@ -20,11 +25,12 @@ class LevelProgressCard extends StatelessWidget {
       child: Container(
         padding: const EdgeInsets.all(20),
         decoration: BoxDecoration(
-          color: AppColors.surface,
+          color: isDark ? AppColors.darkCard : AppColors.surface,
           borderRadius: BorderRadius.circular(24),
+          border: Border.all(color: isDark ? Colors.white.withValues(alpha: 0.1) : Colors.transparent),
           boxShadow: [
             BoxShadow(
-              color: level.color.withValues(alpha: 0.1),
+              color: isDark ? Colors.black.withValues(alpha: 0.2) : level.color.withValues(alpha: 0.1),
               blurRadius: 24,
               offset: const Offset(0, 8),
             ),
@@ -61,21 +67,21 @@ class LevelProgressCard extends StatelessWidget {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Text(
-                        'Niveau ${level.name}',
+                        '${l10n.home_level} ${level.name}',
                         style: GoogleFonts.poppins(
                           fontSize: 16,
                           fontWeight: FontWeight.w700,
-                          color: AppColors.textPrimary,
+                          color: theme.colorScheme.onSurface,
                           letterSpacing: -0.3,
                         ),
                       ),
                       Text(
                         pointsLeft > 0
                             ? '$pointsLeft pts → ${nextLevel?.name ?? ""}'
-                            : 'Niveau maximum atteint',
+                            : l10n.home_max_level,
                         style: GoogleFonts.poppins(
                           fontSize: 12,
-                          color: AppColors.textSecondary,
+                          color: theme.colorScheme.onSurface.withValues(alpha: 0.6),
                           fontWeight: FontWeight.w400,
                         ),
                       ),
@@ -105,7 +111,7 @@ class LevelProgressCard extends StatelessWidget {
                 Container(
                   height: 10,
                   decoration: BoxDecoration(
-                    color: AppColors.border,
+                    color: isDark ? Colors.white.withValues(alpha: 0.1) : AppColors.border,
                     borderRadius: BorderRadius.circular(10),
                   ),
                 ),
@@ -158,6 +164,8 @@ class LevelProgressCard extends StatelessWidget {
   }
 
   void _showLevelDetails(BuildContext context, LevelModel level, int points, int pointsLeft, LevelModel? nextLevel) {
+    final l10n = AppLocalizations.of(context)!;
+    
     showModalBottomSheet(
       context: context,
       shape: const RoundedRectangleBorder(
@@ -171,19 +179,19 @@ class LevelProgressCard extends StatelessWidget {
           children: [
             Text('Details du niveau', style: GoogleFonts.poppins(fontSize: 18, fontWeight: FontWeight.w600)),
             const SizedBox(height: 16),
-            _detailRow('Niveau actuel', level.name),
-            _detailRow('Points actuels', '$points'),
+            _detailRow(context, 'Niveau actuel', level.name),
+            _detailRow(context, 'Points actuels', '$points'),
             if (pointsLeft > 0) ...[
-              _detailRow('Points restants', '$pointsLeft'),
-              _detailRow('Prochain niveau', nextLevel?.name ?? ''),
+              _detailRow(context, 'Points restants', '$pointsLeft'),
+              _detailRow(context, 'Prochain niveau', nextLevel?.name ?? ''),
             ] else
-              _detailRow('Statut', 'Niveau maximum atteint !'),
+              _detailRow(context, 'Statut', 'Niveau maximum atteint !'),
             const SizedBox(height: 20),
             SizedBox(
               width: double.infinity,
               child: ElevatedButton(
                 onPressed: () => Navigator.pop(context),
-                child: Text('Fermer'),
+                child: Text(l10n.common_close),
               ),
             ),
           ],
@@ -192,14 +200,15 @@ class LevelProgressCard extends StatelessWidget {
     );
   }
 
-  Widget _detailRow(String label, String value) {
+  Widget _detailRow(BuildContext context, String label, String value) {
+    final theme = Theme.of(context);
     return Padding(
       padding: const EdgeInsets.symmetric(vertical: 4),
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
-          Text(label, style: GoogleFonts.poppins(color: AppColors.textSecondary)),
-          Text(value, style: GoogleFonts.poppins(fontWeight: FontWeight.w600, color: AppColors.textPrimary)),
+          Text(label, style: GoogleFonts.poppins(color: theme.colorScheme.onSurface.withValues(alpha: 0.6))),
+          Text(value, style: GoogleFonts.poppins(fontWeight: FontWeight.w600, color: theme.colorScheme.onSurface)),
         ],
       ),
     );
@@ -219,6 +228,9 @@ class _LevelDot extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final theme = Theme.of(context);
+    final isDark = theme.brightness == Brightness.dark;
+    
     return Column(
       children: [
         AnimatedContainer(
@@ -233,7 +245,7 @@ class _LevelDot extends StatelessWidget {
                     end: Alignment.bottomRight,
                   )
                 : null,
-            color: isReached ? null : AppColors.border,
+            color: isReached ? null : (isDark ? Colors.white.withValues(alpha: 0.1) : AppColors.border),
             borderRadius: BorderRadius.circular(isCurrent ? 14 : 11),
             border: isCurrent ? Border.all(color: level.color, width: 2.5) : null,
             boxShadow: isCurrent
@@ -249,7 +261,7 @@ class _LevelDot extends StatelessWidget {
           child: Icon(
             level.icon,
             size: isCurrent ? 22 : 18,
-            color: isReached ? Colors.white : AppColors.textSecondary,
+            color: isReached ? Colors.white : theme.colorScheme.onSurface.withValues(alpha: 0.3),
           ),
         ),
         const SizedBox(height: 6),
@@ -257,7 +269,7 @@ class _LevelDot extends StatelessWidget {
           level.name,
           style: GoogleFonts.poppins(
             fontSize: 9,
-            color: isReached ? AppColors.textPrimary : AppColors.textSecondary,
+            color: isReached ? theme.colorScheme.onSurface : theme.colorScheme.onSurface.withValues(alpha: 0.5),
             fontWeight: isCurrent ? FontWeight.w700 : FontWeight.w400,
           ),
         ),

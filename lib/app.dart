@@ -8,6 +8,7 @@ import 'presentation/blocs/auth/auth_cubit.dart';
 import 'presentation/blocs/user/user_cubit.dart';
 import 'presentation/providers/theme_provider.dart';
 import 'presentation/providers/locale_provider.dart';
+import 'l10n/app_localizations.dart';
 
 class GreenPointsApp extends StatelessWidget {
   const GreenPointsApp({super.key});
@@ -24,11 +25,20 @@ class GreenPointsApp extends StatelessWidget {
           BlocProvider(create: (context) => AuthCubit(AuthRepository())),
           BlocProvider(create: (context) => UserCubit()),
         ],
-        child: MaterialApp.router(
-          title: 'GreenPoints',
-          debugShowCheckedModeBanner: false,
-          theme: AppTheme.light,
-          routerConfig: appRouter,
+        child: Consumer2<ThemeProvider, LocaleProvider>(
+          builder: (context, themeProvider, localeProvider, _) {
+            return MaterialApp.router(
+              title: 'GreenPoints',
+              debugShowCheckedModeBanner: false,
+              theme: AppTheme.light,
+              darkTheme: AppTheme.dark,
+              themeMode: themeProvider.isDarkMode ? ThemeMode.dark : ThemeMode.light,
+              locale: localeProvider.locale,
+              localizationsDelegates: AppLocalizations.localizationsDelegates,
+              supportedLocales: AppLocalizations.supportedLocales,
+              routerConfig: appRouter,
+            );
+          },
         ),
       ),
     );

@@ -3,6 +3,7 @@ import 'package:flutter/services.dart';
 import 'package:go_router/go_router.dart';
 import 'package:google_fonts/google_fonts.dart';
 import '../../../core/theme/app_colors.dart';
+import '../../../l10n/app_localizations.dart';
 
 class MainShell extends StatelessWidget {
   final Widget child;
@@ -12,7 +13,7 @@ class MainShell extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: AppColors.background,
+      backgroundColor: Theme.of(context).scaffoldBackgroundColor,
       body: child,
       bottomNavigationBar: _BottomNav(),
     );
@@ -23,6 +24,9 @@ class _BottomNav extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final location = GoRouterState.of(context).uri.toString();
+    final theme = Theme.of(context);
+    final isDark = theme.brightness == Brightness.dark;
+    final l10n = AppLocalizations.of(context)!;
 
     return Container(
       color: Colors.transparent,
@@ -34,17 +38,17 @@ class _BottomNav extends StatelessWidget {
       ),
       child: Container(
         decoration: BoxDecoration(
-          color: AppColors.surface,
+          color: isDark ? AppColors.darkCard : AppColors.surface,
           borderRadius: BorderRadius.circular(28),
-          border: Border.all(color: AppColors.border),
+          border: Border.all(color: isDark ? Colors.white.withValues(alpha: 0.1) : AppColors.border),
           boxShadow: [
             BoxShadow(
-              color: AppColors.shadow,
+              color: isDark ? Colors.black.withValues(alpha: 0.3) : AppColors.shadow,
               blurRadius: 24,
               offset: const Offset(0, 8),
             ),
             BoxShadow(
-              color: AppColors.glassShadow,
+              color: isDark ? Colors.black.withValues(alpha: 0.2) : AppColors.glassShadow,
               blurRadius: 40,
               offset: const Offset(0, 4),
             ),
@@ -63,14 +67,14 @@ class _BottomNav extends StatelessWidget {
                   _NavItem(
                     icon: Icons.home_outlined,
                     iconActive: Icons.home_rounded,
-                    label: 'Accueil',
+                    label: l10n.home_gestures.length > 8 ? l10n.home_gestures.substring(0, 7) : 'Accueil',
                     path: '/home',
                     isActive: location == '/home',
                   ),
                   _NavItem(
                     icon: Icons.eco_outlined,
                     iconActive: Icons.eco_rounded,
-                    label: 'Gestes',
+                    label: l10n.gestures_title.split(' ').last,
                     path: '/gestes',
                     isActive: location.startsWith('/gestes'),
                   ),
@@ -78,14 +82,14 @@ class _BottomNav extends StatelessWidget {
                   _NavItem(
                     icon: Icons.emoji_events_outlined,
                     iconActive: Icons.emoji_events_rounded,
-                    label: 'Défis',
+                    label: l10n.challenges_discover,
                     path: '/defis',
                     isActive: location.startsWith('/defis'),
                   ),
                   _NavItem(
                     icon: Icons.person_outline,
                     iconActive: Icons.person_rounded,
-                    label: 'Profil',
+                    label: l10n.profile_title.split(' ').last,
                     path: '/profil',
                     isActive: location.startsWith('/profil'),
                   ),
@@ -122,6 +126,9 @@ class _NavItem extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final theme = Theme.of(context);
+    final isDark = theme.brightness == Brightness.dark;
+
     return GestureDetector(
       onTap: () {
         HapticFeedback.selectionClick();
@@ -132,10 +139,12 @@ class _NavItem extends StatelessWidget {
         duration: const Duration(milliseconds: 200),
         padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 8),
         decoration: BoxDecoration(
-          color: isActive ? AppColors.surfaceAlt : Colors.transparent,
+          color: isActive
+              ? (isDark ? AppColors.primary.withValues(alpha: 0.15) : AppColors.surfaceAlt)
+              : Colors.transparent,
           borderRadius: BorderRadius.circular(14),
           border: isActive
-              ? Border.all(color: AppColors.borderSubtle)
+              ? Border.all(color: isDark ? AppColors.primary.withValues(alpha: 0.3) : AppColors.borderSubtle)
               : null,
         ),
         child: Column(
@@ -148,7 +157,7 @@ class _NavItem extends StatelessWidget {
                 key: ValueKey(isActive),
                 color: isActive
                     ? AppColors.primary
-                    : AppColors.textSecondary,
+                    : theme.colorScheme.onSurface.withValues(alpha: 0.5),
                 size: 22,
               ),
             ),
@@ -161,7 +170,7 @@ class _NavItem extends StatelessWidget {
                     isActive ? FontWeight.w600 : FontWeight.w500,
                 color: isActive
                     ? AppColors.primary
-                    : AppColors.textSecondary,
+                    : theme.colorScheme.onSurface.withValues(alpha: 0.5),
               ),
             ),
           ],

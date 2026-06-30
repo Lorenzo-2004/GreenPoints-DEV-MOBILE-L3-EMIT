@@ -642,7 +642,7 @@ class AppLocalizationsEn extends AppLocalizations {
   String get social_no_friends_hint => 'Add friends to follow them';
 
   @override
-  String get social_add_friend => 'Add friend';
+  String get social_add_friend => 'Add';
 
   @override
   String get social_friend_email => 'Friend\'s email';
@@ -699,6 +699,18 @@ class AppLocalizationsEn extends AppLocalizations {
   String get common_ok => 'OK';
 
   @override
+  String get home_streak_desc => 'Continue every day to increase your streak!';
+
+  @override
+  String get home_level_details => 'Level details';
+
+  @override
+  String get validation_qr_scanned => 'QR Code scanned: ';
+
+  @override
+  String get common_clear => 'Clear filter';
+
+  @override
   String get errors_connection => 'Connection error';
 
   @override
@@ -709,4 +721,148 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get errors_not_found => 'Not found';
+
+  @override
+  String get settings_admin_panel => 'Admin Panel';
+
+  @override
+  String get settings_admin_panel_subtitle => 'Manage app data';
+
+  @override
+  String get settings_theme => 'Theme';
+
+  @override
+  String get settings_theme_subtitle => 'Toggle light / dark';
+
+  @override
+  String get admin_title => 'Admin Console';
+
+  @override
+  String get admin_tab_gestes => 'Gestures';
+
+  @override
+  String get admin_tab_defis => 'Challenges';
+
+  @override
+  String get admin_tab_badges => 'Badges';
+
+  @override
+  String get admin_tab_shop => 'Shop';
+
+  @override
+  String get admin_btn_add => 'Add';
+
+  @override
+  String get admin_btn_add_geste => 'Create Gesture';
+
+  @override
+  String get admin_btn_add_defi => 'Create Challenge';
+
+  @override
+  String get admin_btn_add_badge => 'Create Badge';
+
+  @override
+  String get admin_btn_add_reward => 'Add to Shop';
+
+  @override
+  String get admin_success_geste => 'Gesture successfully added';
+
+  @override
+  String get admin_success_defi => 'Challenge successfully added';
+
+  @override
+  String get admin_success_badge => 'Badge successfully added';
+
+  @override
+  String get admin_success_reward => 'Reward successfully added';
+
+  @override
+  String get admin_field_title => 'Title';
+
+  @override
+  String get admin_field_desc => 'Description';
+
+  @override
+  String get admin_field_points => 'Points';
+
+  @override
+  String get admin_field_cat => 'Category';
+
+  @override
+  String get admin_field_daily => 'Daily Gesture?';
+
+  @override
+  String get admin_field_sub => 'Subtitle';
+
+  @override
+  String get admin_field_days => 'Days left';
+
+  @override
+  String get admin_field_stock => 'Stock';
+
+  @override
+  String get stats_title => 'My statistics';
+
+  @override
+  String get stats_points_total => 'Total points';
+
+  @override
+  String get stats_streak => 'Current streak';
+
+  @override
+  String get stats_points_week => 'Weekly points';
+
+  @override
+  String get stats_gestures_done => 'Gestures completed';
+
+  @override
+  String get level_title => 'Level';
+
+  @override
+  String get level_max => 'Maximum level reached';
+
+  @override
+  String get level_points_next => 'pts to next level';
+
+  @override
+  String get search_title => 'Search';
+
+  @override
+  String get search_hint => 'Title, description...';
+
+  @override
+  String get search_clear => 'Clear';
+
+  @override
+  String get defi_days_left => 'd left';
+
+  @override
+  String get defi_completed => 'Completed!';
+
+  @override
+  String get defi_continue => 'Continue';
+
+  @override
+  String get defi_start => 'Start challenge';
+
+  @override
+  String get date_today => 'Today';
+
+  @override
+  String get date_yesterday => 'Yesterday';
+
+  @override
+  String get date_days_ago => '%d days ago';
+
+  @override
+  String get social_tab_leaderboard => 'Leaderboard';
+
+  @override
+  String get social_tab_friends => 'Friends';
+
+  @override
+  String get social_add_friend_title => 'Add a friend';
+
+  @override
+  String get social_no_users => 'No new user found';
 }

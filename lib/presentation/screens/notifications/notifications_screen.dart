@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_animate/flutter_animate.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:go_router/go_router.dart';
 import '../../../core/theme/app_colors.dart';
 import '../../blocs/notification/notification_cubit.dart';
 import '../../blocs/notification/notification_state.dart';
@@ -35,14 +36,18 @@ class _NotificationsScreenState extends State<NotificationsScreen> {
     return BlocProvider.value(
       value: _cubit,
       child: Scaffold(
-        backgroundColor: AppColors.background,
+        backgroundColor: Theme.of(context).scaffoldBackgroundColor,
         appBar: AppBar(
+          leading: IconButton(
+            icon: Icon(Icons.arrow_back_ios_new_rounded, color: Theme.of(context).textTheme.bodyLarge?.color ?? AppColors.textPrimary),
+            onPressed: () => context.pop(),
+          ),
           title: Text(
             'Notifications',
-            style: GoogleFonts.poppins(
+            style: GoogleFonts.inter(
               fontSize: 20,
               fontWeight: FontWeight.w600,
-              color: AppColors.textPrimary,
+              color: Theme.of(context).textTheme.bodyLarge?.color ?? AppColors.textPrimary,
             ),
           ),
           backgroundColor: Colors.transparent,
@@ -55,7 +60,7 @@ class _NotificationsScreenState extends State<NotificationsScreen> {
               },
               child: Text(
                 'Tout marquer lu',
-                style: GoogleFonts.poppins(
+                style: GoogleFonts.inter(
                   fontSize: 13,
                   color: AppColors.primary,
                   fontWeight: FontWeight.w500,
@@ -72,7 +77,7 @@ class _NotificationsScreenState extends State<NotificationsScreen> {
 
             if (state is NotificationLoaded) {
               if (state.notifications.isEmpty) {
-                return _buildEmptyState();
+                return _buildEmptyState(context);
               }
 
               return ListView.builder(
@@ -92,14 +97,14 @@ class _NotificationsScreenState extends State<NotificationsScreen> {
               );
             }
 
-            return _buildEmptyState();
+            return _buildEmptyState(context);
           },
         ),
       ),
     );
   }
 
-  Widget _buildEmptyState() {
+  Widget _buildEmptyState(BuildContext context) {
     return Center(
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
@@ -120,18 +125,18 @@ class _NotificationsScreenState extends State<NotificationsScreen> {
           const SizedBox(height: 20),
           Text(
             'Aucune notification',
-            style: GoogleFonts.poppins(
+            style: GoogleFonts.inter(
               fontSize: 18,
               fontWeight: FontWeight.w600,
-              color: AppColors.textPrimary,
+              color: Theme.of(context).textTheme.bodyLarge?.color ?? AppColors.textPrimary,
             ),
           ),
           const SizedBox(height: 8),
           Text(
             'Les notifications apparaitront ici',
-            style: GoogleFonts.poppins(
+            style: GoogleFonts.inter(
               fontSize: 14,
-              color: AppColors.textSecondary,
+              color: Theme.of(context).textTheme.bodyMedium?.color ?? AppColors.textSecondary,
             ),
           ),
         ],

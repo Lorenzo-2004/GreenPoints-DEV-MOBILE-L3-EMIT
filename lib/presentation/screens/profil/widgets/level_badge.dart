@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import '../../../../core/theme/app_colors.dart';
 import '../../../../data/models/user/user_model.dart';
+import '../../../../l10n/app_localizations.dart';
 
 class LevelBadge extends StatelessWidget {
   final UserModel user;
@@ -13,11 +14,12 @@ class LevelBadge extends StatelessWidget {
     final level = user.level as LevelModel;
     final progress = level.progressTo(user.totalPoints);
     final pointsLeft = level.pointsToNext(user.totalPoints);
+    final l10n = AppLocalizations.of(context)!;
 
     return Container(
       padding: const EdgeInsets.all(20),
       decoration: BoxDecoration(
-        color: AppColors.surface,
+        color: Theme.of(context).cardColor,
         borderRadius: BorderRadius.circular(20),
         boxShadow: [
           BoxShadow(
@@ -47,20 +49,20 @@ class LevelBadge extends StatelessWidget {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Text(
-                      'Niveau ${level.name}',
+                      '${l10n.level_title} ${level.name}',
                       style: GoogleFonts.poppins(
                         fontSize: 16,
                         fontWeight: FontWeight.w600,
-                        color: AppColors.textPrimary,
+                        color: Theme.of(context).textTheme.bodyLarge?.color ?? AppColors.textPrimary,
                       ),
                     ),
                     Text(
                       pointsLeft > 0
-                          ? '$pointsLeft pts pour le niveau suivant'
-                          : 'Niveau maximum atteint',
+                          ? '$pointsLeft ${l10n.level_points_next}'
+                          : l10n.level_max,
                       style: GoogleFonts.poppins(
                         fontSize: 12,
-                        color: AppColors.textSecondary,
+                        color: Theme.of(context).textTheme.bodyMedium?.color ?? AppColors.textSecondary,
                       ),
                     ),
                   ],
@@ -83,7 +85,7 @@ class LevelBadge extends StatelessWidget {
           Container(
             height: 8,
             decoration: BoxDecoration(
-              color: AppColors.border,
+              color: Theme.of(context).dividerColor,
               borderRadius: BorderRadius.circular(4),
             ),
             child: FractionallySizedBox(

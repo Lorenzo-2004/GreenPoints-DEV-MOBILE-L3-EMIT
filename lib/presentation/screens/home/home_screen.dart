@@ -6,6 +6,7 @@ import 'package:go_router/go_router.dart';
 import '../../../core/theme/app_colors.dart';
 import '../../../data/models/user/user_model.dart';
 import 'package:google_fonts/google_fonts.dart';
+import '../../../l10n/app_localizations.dart';
 import '../../blocs/user/user_cubit.dart';
 import 'widgets/home_header.dart';
 import 'widgets/level_progress_card.dart';
@@ -20,14 +21,12 @@ class HomeScreen extends StatelessWidget {
     return BlocBuilder<UserCubit, UserModel?>(
       builder: (context, user) {
         if (user == null) {
-          return const Scaffold(
-            backgroundColor: AppColors.background,
-            body: Center(child: CircularProgressIndicator()),
+          return Scaffold(
+            body: const Center(child: CircularProgressIndicator()),
           );
         }
 
         return Scaffold(
-          backgroundColor: AppColors.background,
           body: RefreshIndicator(
             onRefresh: () async {
               context.read<UserCubit>().refresh();
@@ -68,40 +67,43 @@ class HomeScreen extends StatelessWidget {
   }
 
   Widget _buildQuickActions(BuildContext context, UserModel user) {
+    final theme = Theme.of(context);
+    final l10n = AppLocalizations.of(context)!;
+
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         Text(
-          'Actions rapides',
-          style: GoogleFonts.poppins(fontSize: 18, fontWeight: FontWeight.w600, color: AppColors.textPrimary),
+          l10n.home_quick_actions,
+          style: GoogleFonts.poppins(fontSize: 18, fontWeight: FontWeight.w600, color: theme.colorScheme.onSurface),
         ),
         const SizedBox(height: 12),
         Row(
           children: [
             _QuickActionButton(
               icon: Icons.eco_rounded,
-              label: 'Gestes',
+              label: l10n.home_gestures,
               color: AppColors.success,
               onTap: () => context.go('/gestes'),
             ),
             const SizedBox(width: 12),
             _QuickActionButton(
               icon: Icons.flag_rounded,
-              label: 'Defis',
+              label: l10n.home_challenges,
               color: AppColors.accent,
               onTap: () => context.go('/defis'),
             ),
             const SizedBox(width: 12),
             _QuickActionButton(
               icon: Icons.shopping_bag_rounded,
-              label: 'Boutique',
+              label: l10n.home_shop,
               color: AppColors.warning,
-              onTap: () => context.go('/marketplace'),
+              onTap: () => context.push('/marketplace'),
             ),
             const SizedBox(width: 12),
             _QuickActionButton(
               icon: Icons.share_rounded,
-              label: 'Partager',
+              label: l10n.home_share_progress,
               color: AppColors.info,
               onTap: () => _shareProgress(context, user),
             ),
@@ -138,15 +140,18 @@ class _QuickActionButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final theme = Theme.of(context);
+    final isDark = theme.brightness == Brightness.dark;
+
     return Expanded(
       child: GestureDetector(
         onTap: onTap,
         child: Container(
           padding: const EdgeInsets.symmetric(vertical: 12),
           decoration: BoxDecoration(
-            color: AppColors.surface,
+            color: isDark ? AppColors.darkCard : AppColors.surface,
             borderRadius: BorderRadius.circular(16),
-            border: Border.all(color: AppColors.border),
+            border: Border.all(color: isDark ? Colors.white.withValues(alpha: 0.1) : AppColors.border),
           ),
           child: Column(
             children: [
@@ -154,7 +159,7 @@ class _QuickActionButton extends StatelessWidget {
               const SizedBox(height: 8),
               Text(
                 label,
-                style: GoogleFonts.poppins(fontSize: 12, fontWeight: FontWeight.w500, color: AppColors.textSecondary),
+                style: GoogleFonts.poppins(fontSize: 12, fontWeight: FontWeight.w500, color: theme.colorScheme.onSurface.withValues(alpha: 0.6)),
               ),
             ],
           ),

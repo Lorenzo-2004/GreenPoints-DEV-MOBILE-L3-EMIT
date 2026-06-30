@@ -121,8 +121,12 @@ class _DefisScreenState extends State<DefisScreen> {
   }
 
   void _showDefiDetails(Map<String, dynamic> defi) {
+    final theme = Theme.of(context);
+    final isDark = theme.brightness == Brightness.dark;
+
     showModalBottomSheet(
       context: context,
+      backgroundColor: isDark ? AppColors.darkCard : theme.cardColor,
       shape: const RoundedRectangleBorder(
         borderRadius: BorderRadius.vertical(top: Radius.circular(20)),
       ),
@@ -132,14 +136,14 @@ class _DefisScreenState extends State<DefisScreen> {
           mainAxisSize: MainAxisSize.min,
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Text(defi['title'], style: GoogleFonts.poppins(fontSize: 20, fontWeight: FontWeight.w700)),
+            Text(defi['title'], style: GoogleFonts.poppins(fontSize: 20, fontWeight: FontWeight.w700, color: theme.textTheme.bodyLarge?.color ?? AppColors.textPrimary)),
             const SizedBox(height: 8),
-            Text(defi['subtitle'], style: GoogleFonts.poppins(color: AppColors.textSecondary)),
+            Text(defi['subtitle'], style: GoogleFonts.poppins(color: theme.textTheme.bodyMedium?.color ?? AppColors.textSecondary)),
             const SizedBox(height: 16),
-            _detailRow('Points', '+${defi['points']} pts'),
-            _detailRow('Progression', '${((defi['progress'] as double) * 100).toInt()}%'),
-            _detailRow('Jours restants', '${defi['daysLeft']} jours'),
-            _detailRow('Categorie', defi['category']),
+            _detailRow('Points', '+${defi['points']} pts', theme),
+            _detailRow('Progression', '${((defi['progress'] as double) * 100).toInt()}%', theme),
+            _detailRow('Jours restants', '${defi['daysLeft']} jours', theme),
+            _detailRow('Categorie', defi['category'], theme),
             const SizedBox(height: 20),
             SizedBox(
               width: double.infinity,
@@ -154,14 +158,14 @@ class _DefisScreenState extends State<DefisScreen> {
     );
   }
 
-  Widget _detailRow(String label, String value) {
+  Widget _detailRow(String label, String value, ThemeData theme) {
     return Padding(
       padding: const EdgeInsets.symmetric(vertical: 4),
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
-          Text(label, style: GoogleFonts.poppins(color: AppColors.textSecondary)),
-          Text(value, style: GoogleFonts.poppins(fontWeight: FontWeight.w600, color: AppColors.textPrimary)),
+          Text(label, style: GoogleFonts.poppins(color: theme.textTheme.bodyMedium?.color ?? AppColors.textSecondary)),
+          Text(value, style: GoogleFonts.poppins(fontWeight: FontWeight.w600, color: theme.textTheme.bodyLarge?.color ?? AppColors.textPrimary)),
         ],
       ),
     );
@@ -169,8 +173,11 @@ class _DefisScreenState extends State<DefisScreen> {
 
   @override
   Widget build(BuildContext context) {
+    final theme = Theme.of(context);
+    final isDark = theme.brightness == Brightness.dark;
+
     return Scaffold(
-      backgroundColor: AppColors.background,
+      backgroundColor: theme.scaffoldBackgroundColor,
       body: _isLoading
           ? const Center(child: CircularProgressIndicator())
           : CustomScrollView(
@@ -288,22 +295,22 @@ class _DefisScreenState extends State<DefisScreen> {
                       margin: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
                       padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
                       decoration: BoxDecoration(
-                        color: Colors.white.withValues(alpha: 0.12),
+                        color: isDark ? AppColors.primary.withValues(alpha: 0.2) : Colors.white.withValues(alpha: 0.12),
                         borderRadius: BorderRadius.circular(12),
                       ),
                       child: Row(
                         children: [
-                          Icon(Icons.search, size: 14, color: Colors.white),
+                          Icon(Icons.search, size: 14, color: isDark ? Colors.white : AppColors.primary),
                           const SizedBox(width: 8),
                           Expanded(
                             child: Text(
                               'Recherche: "$_searchQuery"',
-                              style: GoogleFonts.poppins(fontSize: 12, color: Colors.white),
+                              style: GoogleFonts.poppins(fontSize: 12, color: isDark ? Colors.white : AppColors.primary),
                             ),
                           ),
                           GestureDetector(
                             onTap: _clearSearch,
-                            child: Icon(Icons.close, size: 14, color: Colors.white),
+                            child: Icon(Icons.close, size: 14, color: isDark ? Colors.white : AppColors.primary),
                           ),
                         ],
                       ),

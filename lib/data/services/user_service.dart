@@ -13,6 +13,10 @@ class UserService {
     return null;
   }
 
+  Future<void> updateUser(UserModel user) async {
+    await _usersCollection.doc(user.id).set(user.toMap(), SetOptions(merge: true));
+  }
+
   Future<void> addPoints(String userId, int points, String gesteId) async {
     await _usersCollection.doc(userId).update({
       'totalPoints': FieldValue.increment(points),

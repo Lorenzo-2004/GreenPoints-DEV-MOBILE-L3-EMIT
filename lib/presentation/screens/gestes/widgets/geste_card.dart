@@ -18,21 +18,28 @@ class GesteCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final theme = Theme.of(context);
+    final isDark = theme.brightness == Brightness.dark;
+
     return GestureDetector(
       onTap: onTap,
       child: Container(
         margin: const EdgeInsets.only(bottom: 12),
         padding: const EdgeInsets.all(16),
         decoration: BoxDecoration(
-          color: isDone ? AppColors.primaryLight : AppColors.surface,
+          color: isDone 
+              ? (isDark ? AppColors.primary.withValues(alpha: 0.15) : AppColors.primaryLight) 
+              : (isDark ? AppColors.darkCard : AppColors.surface),
           borderRadius: BorderRadius.circular(20),
           border: Border.all(
-            color: isDone ? AppColors.accent : AppColors.border,
+            color: isDone 
+                ? AppColors.accent 
+                : (isDark ? Colors.white.withValues(alpha: 0.1) : AppColors.border),
             width: isDone ? 1.5 : 1,
           ),
           boxShadow: [
             BoxShadow(
-              color: Colors.black.withValues(alpha: 0.04),
+              color: isDark ? Colors.black.withValues(alpha: 0.2) : Colors.black.withValues(alpha: 0.04),
               blurRadius: 8,
               offset: const Offset(0, 2),
             ),
@@ -76,8 +83,11 @@ class GesteCard extends StatelessWidget {
                           style: GoogleFonts.poppins(
                             fontSize: 15,
                             fontWeight: FontWeight.w600,
-                            color: isDone ? AppColors.primary : AppColors.textPrimary,
+                            color: isDone 
+                                ? (isDark ? AppColors.primaryLight : AppColors.primary) 
+                                : theme.colorScheme.onSurface,
                             decoration: isDone ? TextDecoration.lineThrough : null,
+                            decorationColor: isDark ? AppColors.primaryLight : AppColors.primary,
                             letterSpacing: -0.3,
                           ),
                         ),
@@ -86,14 +96,14 @@ class GesteCard extends StatelessWidget {
                         Container(
                           padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
                           decoration: BoxDecoration(
-                            color: AppColors.primaryLight,
+                            color: isDark ? AppColors.primary.withValues(alpha: 0.2) : AppColors.primaryLight,
                             borderRadius: BorderRadius.circular(8),
                           ),
                           child: Text(
                             'Quotidien',
                             style: GoogleFonts.poppins(
                               fontSize: 10,
-                              color: AppColors.primary,
+                              color: isDark ? Colors.white : AppColors.primary,
                               fontWeight: FontWeight.w600,
                             ),
                           ),
@@ -105,7 +115,7 @@ class GesteCard extends StatelessWidget {
                     geste.description,
                     style: GoogleFonts.poppins(
                       fontSize: 12,
-                      color: AppColors.textSecondary,
+                      color: theme.colorScheme.onSurface.withValues(alpha: 0.6),
                     ),
                     maxLines: 2,
                     overflow: TextOverflow.ellipsis,
@@ -134,7 +144,7 @@ class GesteCard extends StatelessWidget {
                           geste.category.label,
                           style: GoogleFonts.poppins(
                             fontSize: 11,
-                            color: geste.category.color,
+                            color: isDark ? geste.category.color.withValues(alpha: 0.9) : geste.category.color,
                             fontWeight: FontWeight.w600,
                           ),
                         ),
@@ -152,13 +162,13 @@ class GesteCard extends StatelessWidget {
                 gradient: isDone
                     ? LinearGradient(colors: [AppColors.primary, AppColors.accent])
                     : null,
-                color: isDone ? null : AppColors.primaryLight,
+                color: isDone ? null : (isDark ? Colors.white.withValues(alpha: 0.1) : AppColors.primaryLight),
                 borderRadius: BorderRadius.circular(14),
-                border: isDone ? null : Border.all(color: AppColors.accent, width: 1.5),
+                border: isDone ? null : Border.all(color: isDark ? Colors.transparent : AppColors.accent, width: 1.5),
               ),
               child: Icon(
                 isDone ? Icons.check_rounded : Icons.add_rounded,
-                color: isDone ? Colors.white : AppColors.primary,
+                color: isDone ? Colors.white : (isDark ? Colors.white : AppColors.primary),
                 size: 24,
               ),
             ),

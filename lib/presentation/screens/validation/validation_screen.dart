@@ -12,7 +12,10 @@ import 'dart:io';
 import '../../../core/theme/app_colors.dart';
 import '../../../data/models/geste/geste_model.dart';
 import '../../../data/services/geste_service.dart';
+import '../../../data/services/points_service.dart';
+import '../../../domain/entities/points_transaction_entity.dart';
 import '../../../domain/enums/action_category.dart';
+import '../../../l10n/app_localizations.dart';
 import '../../blocs/user/user_cubit.dart';
 
 class ValidationScreen extends StatefulWidget {
@@ -54,6 +57,19 @@ class _ValidationScreenState extends State<ValidationScreen> {
     }
   }
 
+  Future<void> _handlePhotoValidate() async {
+    setState(() => _isValidating = true);
+    // Simulate AI Image recognition delay
+    await Future.delayed(const Duration(seconds: 2));
+    
+    if (_selectedGeste == null && _gestes.isNotEmpty) {
+      // Pick a random geste or just the first one if none selected
+      _selectedGeste = _gestes.first;
+    }
+    
+    await _handleValidate();
+  }
+
   Future<void> _handleValidate() async {
     if (_selectedGeste == null) return;
     
@@ -62,22 +78,33 @@ class _ValidationScreenState extends State<ValidationScreen> {
     
     final userId = FirebaseAuth.instance.currentUser?.uid;
     if (userId != null) {
-      await FirebaseFirestore.instance.collection('users').doc(userId).update({
-        'totalPoints': FieldValue.increment(_selectedGeste!.points),
-        'weeklyPoints': FieldValue.increment(_selectedGeste!.points),
-        'completedActionIds': FieldValue.arrayUnion([_selectedGeste!.id]),
-        'lastActionDate': FieldValue.serverTimestamp(),
-      });
-      
-      await _updateStreak(userId);
-      
-      await _addNotification(
-        title: 'Geste valide !',
-        message: 'Tu as gagne ${_selectedGeste!.points} points pour "${_selectedGeste!.title}"',
-      );
-      
-      if (mounted) {
-        context.read<UserCubit>().refresh();
+      try {
+        await FirebaseFirestore.instance.collection('users').doc(userId).update({
+          'totalPoints': FieldValue.increment(_selectedGeste!.points),
+          'weeklyPoints': FieldValue.increment(_selectedGeste!.points),
+          'completedActionIds': FieldValue.arrayUnion([_selectedGeste!.id]),
+          'lastActionDate': FieldValue.serverTimestamp(),
+        });
+        
+        await _updateStreak(userId);
+        
+        await PointsService().addTransaction(
+          gesteId: _selectedGeste!.id,
+          gesteTitle: _selectedGeste!.title,
+          points: _selectedGeste!.points,
+          type: TransactionType.earned,
+        );
+        
+        await _addNotification(
+          title: 'Geste valide !',
+          message: 'Tu as gagne ${_selectedGeste!.points} points pour "${_selectedGeste!.title}"',
+        );
+        
+        if (mounted) {
+          context.read<UserCubit>().refresh();
+        }
+      } catch(e) {
+        debugPrint("Erreur validation geste: \$e");
       }
     }
     
@@ -97,17 +124,21 @@ class _ValidationScreenState extends State<ValidationScreen> {
     final userId = FirebaseAuth.instance.currentUser?.uid;
     if (userId == null) return;
     
-    await FirebaseFirestore.instance
-        .collection('users')
-        .doc(userId)
-        .collection('notifications')
-        .add({
-      'title': title,
-      'message': message,
-      'type': 'points',
-      'createdAt': FieldValue.serverTimestamp(),
-      'isRead': false,
-    });
+    try {
+      await FirebaseFirestore.instance
+          .collection('users')
+          .doc(userId)
+          .collection('notifications')
+          .add({
+        'title': title,
+        'message': message,
+        'type': 'points',
+        'createdAt': FieldValue.serverTimestamp(),
+        'isRead': false,
+      });
+    } catch (e) {
+      debugPrint("Erreur notification: \$e");
+    }
   }
 
   Future<void> _updateStreak(String userId) async {
@@ -141,23 +172,39 @@ class _ValidationScreenState extends State<ValidationScreen> {
   }
 
   Future<void> _takePhoto() async {
-    final XFile? photo = await _picker.pickImage(source: ImageSource.camera);
-    if (photo != null && mounted) {
-      setState(() {
-        _selectedImage = File(photo.path);
-      });
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text('Photo prise avec succes'), backgroundColor: AppColors.success),
-      );
+    try {
+      final XFile? photo = await _picker.pickImage(source: ImageSource.camera);
+      if (photo != null && mounted) {
+        setState(() {
+          _selectedImage = File(photo.path);
+        });
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(content: Text(AppLocalizations.of(context)!.validation_photo_taken), backgroundColor: AppColors.success),
+        );
+      }
+    } catch (e) {
+      if (mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(content: Text('Accès caméra refusé ou non disponible.'), backgroundColor: Colors.red),
+        );
+      }
     }
   }
 
   Future<void> _pickImage() async {
-    final XFile? image = await _picker.pickImage(source: ImageSource.gallery);
-    if (image != null && mounted) {
-      setState(() {
-        _selectedImage = File(image.path);
-      });
+    try {
+      final XFile? image = await _picker.pickImage(source: ImageSource.gallery);
+      if (image != null && mounted) {
+        setState(() {
+          _selectedImage = File(image.path);
+        });
+      }
+    } catch (e) {
+      if (mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(content: Text('Accès galerie refusé ou erreur.'), backgroundColor: Colors.red),
+        );
+      }
     }
   }
 
@@ -165,9 +212,11 @@ class _ValidationScreenState extends State<ValidationScreen> {
   Widget build(BuildContext context) {
     final user = context.watch<UserCubit>().state;
     final completedIds = user?.completedActionIds ?? [];
+    final theme = Theme.of(context);
+    final l10n = AppLocalizations.of(context)!;
 
     return Scaffold(
-      backgroundColor: AppColors.background,
+      backgroundColor: theme.colorScheme.surface,
       body: _isLoading
           ? const Center(child: CircularProgressIndicator())
           : CustomScrollView(
@@ -194,7 +243,7 @@ class _ValidationScreenState extends State<ValidationScreen> {
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
                             Text(
-                              'Valider',
+                              l10n.validation_title,
                               style: GoogleFonts.poppins(
                                 fontSize: 14,
                                 color: Colors.white.withValues(alpha: 0.75),
@@ -202,7 +251,7 @@ class _ValidationScreenState extends State<ValidationScreen> {
                               ),
                             ),
                             Text(
-                              'Un geste',
+                              l10n.validation_subtitle,
                               style: GoogleFonts.poppins(
                                 fontSize: 28,
                                 fontWeight: FontWeight.w700,
@@ -282,19 +331,25 @@ class _ValidationScreenState extends State<ValidationScreen> {
                               backgroundColor: AppColors.primary,
                               shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
                             ),
-                            child: Text('Valider le geste', style: GoogleFonts.poppins(color: Colors.white)),
+                            child: Text(l10n.validation_validate, style: GoogleFonts.poppins(color: Colors.white)),
                           ),
                         ),
                       if (_selectedMethod == 2 && _selectedImage != null)
                         Padding(
                           padding: const EdgeInsets.only(top: 16),
                           child: ElevatedButton(
-                            onPressed: _selectedGeste != null && !_isValidating ? _handleValidate : null,
+                            onPressed: !_isValidating ? _handlePhotoValidate : null,
                             style: ElevatedButton.styleFrom(
                               backgroundColor: AppColors.primary,
                               shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
                             ),
-                            child: Text('Valider avec la photo', style: GoogleFonts.poppins(color: Colors.white)),
+                            child: _isValidating
+                                ? const SizedBox(
+                                    height: 24,
+                                    width: 24,
+                                    child: CircularProgressIndicator(color: Colors.white, strokeWidth: 2.5),
+                                  )
+                                : Text(l10n.validation_validate_with_photo, style: GoogleFonts.poppins(color: Colors.white)),
                           ),
                         ),
                     ]),
@@ -317,18 +372,21 @@ class _MethodSelector extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final theme = Theme.of(context);
+    final isDark = theme.brightness == Brightness.dark;
+    final l10n = AppLocalizations.of(context)!;
     final methods = [
-      {'icon': Icons.edit_note_rounded, 'label': 'Manuel'},
-      {'icon': Icons.qr_code_scanner_rounded, 'label': 'QR Code'},
-      {'icon': Icons.camera_alt_rounded, 'label': 'Photo'},
+      {'icon': Icons.edit_note_rounded, 'label': l10n.validation_manual},
+      {'icon': Icons.qr_code_scanner_rounded, 'label': l10n.validation_qr_code},
+      {'icon': Icons.camera_alt_rounded, 'label': l10n.validation_photo},
     ];
 
     return Container(
       padding: const EdgeInsets.all(6),
       decoration: BoxDecoration(
-        color: AppColors.surface,
+        color: isDark ? AppColors.darkCard : AppColors.surface,
         borderRadius: BorderRadius.circular(20),
-        border: Border.all(color: AppColors.border),
+        border: Border.all(color: isDark ? Colors.white.withValues(alpha: 0.1) : AppColors.border),
         boxShadow: [
           BoxShadow(
             color: Colors.black.withValues(alpha: 0.04),
@@ -370,7 +428,7 @@ class _MethodSelector extends StatelessWidget {
                     Icon(
                       m['icon'] as IconData,
                       size: 22,
-                      color: isSelected ? Colors.white : AppColors.textSecondary,
+                      color: isSelected ? Colors.white : theme.colorScheme.onSurface.withValues(alpha: 0.6),
                     ),
                     const SizedBox(height: 4),
                     Text(
@@ -378,7 +436,7 @@ class _MethodSelector extends StatelessWidget {
                       style: GoogleFonts.poppins(
                         fontSize: 12,
                         fontWeight: FontWeight.w500,
-                        color: isSelected ? Colors.white : AppColors.textSecondary,
+                        color: isSelected ? Colors.white : theme.colorScheme.onSurface.withValues(alpha: 0.6),
                       ),
                     ),
                   ],
@@ -411,15 +469,19 @@ class _ManualSection extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final theme = Theme.of(context);
+    final isDark = theme.brightness == Brightness.dark;
+    final l10n = AppLocalizations.of(context)!;
+
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         Text(
-          'Choisir un geste',
+          l10n.validation_choose_gesture,
           style: GoogleFonts.poppins(
             fontSize: 16,
             fontWeight: FontWeight.w600,
-            color: AppColors.textPrimary,
+            color: theme.colorScheme.onSurface,
           ),
         ),
         const SizedBox(height: 12),
@@ -441,10 +503,10 @@ class _ManualSection extends StatelessWidget {
                 margin: const EdgeInsets.only(bottom: 12),
                 padding: const EdgeInsets.all(14),
                 decoration: BoxDecoration(
-                  color: isSelected ? AppColors.primaryLight : AppColors.surface,
+                  color: isSelected ? AppColors.primaryLight : (isDark ? AppColors.darkCard : AppColors.surface),
                   borderRadius: BorderRadius.circular(16),
                   border: Border.all(
-                    color: isSelected ? AppColors.primary : AppColors.border,
+                    color: isSelected ? AppColors.primary : (isDark ? Colors.white.withValues(alpha: 0.1) : AppColors.border),
                     width: isSelected ? 2 : 1,
                   ),
                 ),
@@ -475,14 +537,14 @@ class _ManualSection extends StatelessWidget {
                             style: GoogleFonts.poppins(
                               fontSize: 14,
                               fontWeight: FontWeight.w600,
-                              color: isSelected ? AppColors.primary : AppColors.textPrimary,
+                              color: isSelected ? AppColors.primary : theme.colorScheme.onSurface,
                             ),
                           ),
                           Text(
                             g.description,
                             style: GoogleFonts.poppins(
                               fontSize: 11,
-                              color: AppColors.textSecondary,
+                              color: theme.colorScheme.onSurface.withValues(alpha: 0.6),
                             ),
                             maxLines: 1,
                             overflow: TextOverflow.ellipsis,
@@ -498,7 +560,7 @@ class _ManualSection extends StatelessWidget {
                           borderRadius: BorderRadius.circular(8),
                         ),
                         child: Text(
-                          'Fait',
+                          l10n.home_done,
                           style: GoogleFonts.poppins(
                             fontSize: 11,
                             fontWeight: FontWeight.w600,
@@ -551,7 +613,7 @@ class _ManualSection extends StatelessWidget {
                     ),
                   )
                 : Text(
-                    'Valider le geste',
+                    l10n.validation_validate,
                     style: GoogleFonts.poppins(
                       fontSize: 16,
                       fontWeight: FontWeight.w600,
@@ -571,12 +633,16 @@ class _QRSection extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final theme = Theme.of(context);
+    final isDark = theme.brightness == Brightness.dark;
+    final l10n = AppLocalizations.of(context)!;
+
     return Container(
       padding: const EdgeInsets.all(32),
       decoration: BoxDecoration(
-        color: AppColors.surface,
+        color: isDark ? AppColors.darkCard : AppColors.surface,
         borderRadius: BorderRadius.circular(20),
-        border: Border.all(color: AppColors.border),
+        border: Border.all(color: isDark ? Colors.white.withValues(alpha: 0.1) : AppColors.border),
         boxShadow: [
           BoxShadow(
             color: Colors.black.withValues(alpha: 0.04),
@@ -603,7 +669,7 @@ class _QRSection extends StatelessWidget {
                     onQrCodeScanned(barcode.rawValue!);
                     ScaffoldMessenger.of(context).showSnackBar(
                       SnackBar(
-                        content: Text('QR Code scanné: ${barcode.rawValue}'),
+                        content: Text('${l10n.validation_qr_scanned}${barcode.rawValue}'),
                         backgroundColor: AppColors.success,
                       ),
                     );
@@ -614,19 +680,19 @@ class _QRSection extends StatelessWidget {
           ),
           const SizedBox(height: 20),
           Text(
-            'Scanner le QR code',
+            l10n.validation_scan_qr,
             style: GoogleFonts.poppins(
               fontSize: 16,
               fontWeight: FontWeight.w600,
-              color: AppColors.textPrimary,
+              color: theme.colorScheme.onSurface,
             ),
           ),
           const SizedBox(height: 6),
           Text(
-            'Pointez vers le code QR du geste',
+            l10n.validation_scan_qr_hint,
             style: GoogleFonts.poppins(
               fontSize: 13,
-              color: AppColors.textSecondary,
+              color: theme.colorScheme.onSurface.withValues(alpha: 0.6),
             ),
           ),
         ],
@@ -648,12 +714,16 @@ class _PhotoSection extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final theme = Theme.of(context);
+    final isDark = theme.brightness == Brightness.dark;
+    final l10n = AppLocalizations.of(context)!;
+
     return Container(
       padding: const EdgeInsets.all(32),
       decoration: BoxDecoration(
-        color: AppColors.surface,
+        color: isDark ? AppColors.darkCard : AppColors.surface,
         borderRadius: BorderRadius.circular(20),
-        border: Border.all(color: AppColors.border),
+        border: Border.all(color: isDark ? Colors.white.withValues(alpha: 0.1) : AppColors.border),
         boxShadow: [
           BoxShadow(
             color: Colors.black.withValues(alpha: 0.04),
@@ -701,19 +771,19 @@ class _PhotoSection extends StatelessWidget {
           const SizedBox(height: 20),
           if (selectedImage == null) ...[
             Text(
-              'Prendre une photo',
+              l10n.validation_take_photo,
               style: GoogleFonts.poppins(
                 fontSize: 16,
                 fontWeight: FontWeight.w600,
-                color: AppColors.textPrimary,
+                color: theme.colorScheme.onSurface,
               ),
             ),
             const SizedBox(height: 6),
             Text(
-              'Prenez en photo votre action écologique',
+              l10n.validation_take_photo_hint,
               style: GoogleFonts.poppins(
                 fontSize: 13,
-                color: AppColors.textSecondary,
+                color: theme.colorScheme.onSurface.withValues(alpha: 0.6),
               ),
             ),
             const SizedBox(height: 16),
@@ -723,13 +793,13 @@ class _PhotoSection extends StatelessWidget {
                 TextButton.icon(
                   onPressed: onTakePhoto,
                   icon: const Icon(Icons.camera_alt),
-                  label: const Text('Appareil photo'),
+                  label: Text(l10n.validation_camera),
                 ),
                 const SizedBox(width: 16),
                 TextButton.icon(
                   onPressed: onPickImage,
                   icon: const Icon(Icons.photo_library),
-                  label: const Text('Galerie'),
+                  label: Text(l10n.validation_gallery),
                 ),
               ],
             ),
@@ -737,7 +807,7 @@ class _PhotoSection extends StatelessWidget {
             Column(
               children: [
                 Text(
-                  'Photo prise !',
+                  l10n.validation_photo_taken,
                   style: GoogleFonts.poppins(
                     fontSize: 14,
                     fontWeight: FontWeight.w600,
@@ -751,7 +821,7 @@ class _PhotoSection extends StatelessWidget {
                     onPickImage();
                   },
                   icon: const Icon(Icons.refresh),
-                  label: const Text('Reprendre une photo'),
+                  label: Text(l10n.validation_retake),
                 ),
               ],
             ),
@@ -768,11 +838,15 @@ class _SuccessSheet extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final theme = Theme.of(context);
+    final isDark = theme.brightness == Brightness.dark;
+    final l10n = AppLocalizations.of(context)!;
+
     return Container(
       padding: const EdgeInsets.all(28),
-      decoration: const BoxDecoration(
-        color: AppColors.surface,
-        borderRadius: BorderRadius.only(
+      decoration: BoxDecoration(
+        color: isDark ? AppColors.darkCard : AppColors.surface,
+        borderRadius: const BorderRadius.only(
           topLeft: Radius.circular(32),
           topRight: Radius.circular(32),
         ),
@@ -802,11 +876,11 @@ class _SuccessSheet extends StatelessWidget {
           ).animate().scale(duration: 400.ms, curve: Curves.elasticOut),
           const SizedBox(height: 20),
           Text(
-            'Geste valide !',
+            l10n.validation_success,
             style: GoogleFonts.poppins(
               fontSize: 24,
               fontWeight: FontWeight.w700,
-              color: AppColors.textPrimary,
+              color: theme.colorScheme.onSurface,
               letterSpacing: -0.5,
             ),
           ),
@@ -815,7 +889,7 @@ class _SuccessSheet extends StatelessWidget {
             geste.title,
             style: GoogleFonts.poppins(
               fontSize: 15,
-              color: AppColors.textSecondary,
+              color: theme.colorScheme.onSurface.withValues(alpha: 0.6),
             ),
           ),
           const SizedBox(height: 16),
@@ -835,7 +909,7 @@ class _SuccessSheet extends StatelessWidget {
                 ),
                 const SizedBox(width: 10),
                 Text(
-                  '+${geste.points} points gagnes !',
+                  '+${geste.points} ${l10n.validation_points_gained}',
                   style: GoogleFonts.poppins(
                     fontSize: 18,
                     fontWeight: FontWeight.w700,
@@ -859,7 +933,7 @@ class _SuccessSheet extends StatelessWidget {
                 ),
               ),
               child: Text(
-                'Super, continuer !',
+                l10n.validation_continue,
                 style: GoogleFonts.poppins(
                   fontSize: 16,
                   fontWeight: FontWeight.w600,

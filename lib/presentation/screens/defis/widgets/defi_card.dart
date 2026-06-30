@@ -32,7 +32,7 @@ class DefiCard extends StatelessWidget {
   Color _getColorFromHex(String hexColor) {
     String hex = hexColor.toUpperCase().replaceAll('#', '');
     if (hex.length == 6) {
-      hex = 'FF$hex';
+      hex = 'FF\$hex';
     }
     return Color(int.parse(hex, radix: 16));
   }
@@ -41,7 +41,7 @@ class DefiCard extends StatelessWidget {
   Widget build(BuildContext context) {
     final iconString = defi['icon'] as String? ?? 'eco';
     final iconData = _getIconFromString(iconString);
-    
+
     final rawColor = defi['color'];
     Color color;
     if (rawColor is Color) {
@@ -51,7 +51,7 @@ class DefiCard extends StatelessWidget {
     } else {
       color = AppColors.primary;
     }
-    
+
     final progress = (defi['progress'] as num?)?.toDouble() ?? 0.0;
     final isCompleted = progress >= 1.0;
 
@@ -60,7 +60,7 @@ class DefiCard extends StatelessWidget {
       child: Container(
         margin: const EdgeInsets.only(bottom: 12),
         decoration: BoxDecoration(
-          color: AppColors.surface,
+          color: Theme.of(context).cardColor,
           borderRadius: BorderRadius.circular(24),
           boxShadow: [
             BoxShadow(
@@ -109,7 +109,7 @@ class DefiCard extends StatelessWidget {
                               style: GoogleFonts.poppins(
                                 fontSize: 16,
                                 fontWeight: FontWeight.w700,
-                                color: AppColors.textPrimary,
+                                color: Theme.of(context).textTheme.bodyLarge?.color ?? AppColors.textPrimary,
                                 letterSpacing: -0.3,
                               ),
                             ),
@@ -118,7 +118,7 @@ class DefiCard extends StatelessWidget {
                               defi['subtitle'] as String? ?? '',
                               style: GoogleFonts.poppins(
                                 fontSize: 12,
-                                color: AppColors.textSecondary,
+                                color: Theme.of(context).textTheme.bodyMedium?.color ?? AppColors.textSecondary,
                               ),
                               maxLines: 2,
                               overflow: TextOverflow.ellipsis,
@@ -162,13 +162,13 @@ class DefiCard extends StatelessWidget {
                               children: [
                                 Row(
                                   children: [
-                                    Icon(Icons.access_time_rounded, size: 12, color: AppColors.textSecondary),
+                                    Icon(Icons.access_time_rounded, size: 12, color: Theme.of(context).textTheme.bodyMedium?.color ?? AppColors.textSecondary),
                                     const SizedBox(width: 4),
                                     Text(
                                       '${defi['daysLeft']}j restants',
                                       style: GoogleFonts.poppins(
                                         fontSize: 11,
-                                        color: AppColors.textSecondary,
+                                        color: Theme.of(context).textTheme.bodyMedium?.color ?? AppColors.textSecondary,
                                       ),
                                     ),
                                   ],
@@ -187,7 +187,7 @@ class DefiCard extends StatelessWidget {
                             Container(
                               height: 8,
                               decoration: BoxDecoration(
-                                color: AppColors.border,
+                                color: Theme.of(context).dividerColor,
                                 borderRadius: BorderRadius.circular(8),
                               ),
                               child: FractionallySizedBox(

@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:go_router/go_router.dart';
 import '../../../core/theme/app_colors.dart';
+import '../../../data/models/social/social_model.dart';
 import '../../../data/services/social_service.dart';
 import 'widgets/leaderboard_tile.dart';
 import 'widgets/friend_tile.dart';
@@ -25,6 +27,9 @@ class _SocialScreenState extends State<SocialScreen>
   void initState() {
     super.initState();
     _tabController = TabController(length: 2, vsync: this);
+    _tabController.addListener(() {
+      setState(() {});
+    });
     _loadData();
   }
 
@@ -47,17 +52,125 @@ class _SocialScreenState extends State<SocialScreen>
     });
   }
 
+  void _showAddFriendDialog() async {
+    final theme = Theme.of(context);
+    final isDark = theme.brightness == Brightness.dark;
+
+    showModalBottomSheet(
+      context: context,
+      backgroundColor: isDark ? AppColors.darkCard : AppColors.surface,
+      isScrollControlled: true,
+      shape: const RoundedRectangleBorder(
+        borderRadius: BorderRadius.vertical(top: Radius.circular(24)),
+      ),
+      builder: (context) {
+        return DraggableScrollableSheet(
+          initialChildSize: 0.6,
+          maxChildSize: 0.9,
+          expand: false,
+          builder: (context, scrollController) {
+            return FutureBuilder<List<UserRankModel>>(
+              future: _socialService.getAllUsers(),
+              builder: (context, snapshot) {
+                if (snapshot.connectionState == ConnectionState.waiting) {
+                  return const Center(child: CircularProgressIndicator());
+                }
+                
+                final users = snapshot.data ?? [];
+                // Filter out users who are already friends
+                final notFriends = users.where((u) => !_friends.any((f) => f.id == u.id)).toList();
+
+                if (notFriends.isEmpty) {
+                  return Center(
+                    child: Text(
+                      'Aucun nouvel utilisateur trouvé',
+                      style: GoogleFonts.poppins(color: theme.colorScheme.onSurface),
+                    ),
+                  );
+                }
+
+                return Column(
+                  children: [
+                    Padding(
+                      padding: const EdgeInsets.all(16.0),
+                      child: Text(
+                        'Ajouter un ami',
+                        style: GoogleFonts.poppins(
+                          fontSize: 18,
+                          fontWeight: FontWeight.w600,
+                          color: theme.colorScheme.onSurface,
+                        ),
+                      ),
+                    ),
+                    Expanded(
+                      child: ListView.builder(
+                        controller: scrollController,
+                        itemCount: notFriends.length,
+                        itemBuilder: (context, index) {
+                          final user = notFriends[index];
+                          return ListTile(
+                            leading: CircleAvatar(
+                              backgroundColor: AppColors.primaryLight,
+                              backgroundImage: user.photoUrl != null && user.photoUrl!.isNotEmpty
+                                  ? (user.photoUrl!.startsWith('http')
+                                      ? NetworkImage(user.photoUrl!) as ImageProvider
+                                      : null)
+                                  : null,
+                              child: user.photoUrl == null || user.photoUrl!.isEmpty
+                                  ? Text(
+                                      user.name.isNotEmpty ? user.name[0].toUpperCase() : '?',
+                                      style: const TextStyle(color: AppColors.primary),
+                                    )
+                                  : null,
+                            ),
+                            title: Text(
+                              user.name,
+                              style: GoogleFonts.poppins(
+                                fontWeight: FontWeight.w500,
+                                color: theme.colorScheme.onSurface,
+                              ),
+                            ),
+                            subtitle: Text('${user.totalPoints} points'),
+                            trailing: IconButton(
+                              icon: const Icon(Icons.person_add_rounded, color: AppColors.primary),
+                              onPressed: () async {
+                                await _socialService.addFriend(user.id);
+                                if (!context.mounted) return;
+                                Navigator.pop(context);
+                                _loadData();
+                              },
+                            ),
+                          );
+                        },
+                      ),
+                    ),
+                  ],
+                );
+              },
+            );
+          },
+        );
+      },
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
+    final isDark = Theme.of(context).brightness == Brightness.dark;
+
     return Scaffold(
-      backgroundColor: AppColors.background,
+      backgroundColor: isDark ? AppColors.darkSurface : AppColors.background,
       appBar: AppBar(
+        leading: IconButton(
+          icon: Icon(Icons.arrow_back_ios_new_rounded, color: isDark ? AppColors.textOnDark : AppColors.textPrimary),
+          onPressed: () => context.pop(),
+        ),
         title: Text(
           'Social',
-          style: GoogleFonts.poppins(
+          style: GoogleFonts.inter(
             fontSize: 20,
             fontWeight: FontWeight.w600,
-            color: AppColors.textPrimary,
+            color: isDark ? AppColors.textOnDark : AppColors.textPrimary,
           ),
         ),
         backgroundColor: Colors.transparent,
@@ -66,7 +179,7 @@ class _SocialScreenState extends State<SocialScreen>
         bottom: TabBar(
           controller: _tabController,
           labelColor: AppColors.primary,
-          unselectedLabelColor: AppColors.textSecondary,
+          unselectedLabelColor: isDark ? AppColors.textSecondary : AppColors.textSecondary,
           indicatorColor: AppColors.primary,
           tabs: const [
             Tab(text: 'Classement', icon: Icon(Icons.leaderboard_rounded)),
@@ -83,10 +196,22 @@ class _SocialScreenState extends State<SocialScreen>
                 _buildFriendsTab(),
               ],
             ),
+      floatingActionButton: _tabController.index == 1
+          ? FloatingActionButton.extended(
+              onPressed: _showAddFriendDialog,
+              backgroundColor: AppColors.primary,
+              icon: const Icon(Icons.person_add_rounded, color: Colors.white),
+              label: Text(
+                'Ajouter',
+                style: GoogleFonts.poppins(color: Colors.white, fontWeight: FontWeight.w600),
+              ),
+            )
+          : null,
     );
   }
 
   Widget _buildLeaderboardTab() {
+
     return Column(
       children: [
         if (_userRank != null)
@@ -96,6 +221,13 @@ class _SocialScreenState extends State<SocialScreen>
             decoration: BoxDecoration(
               gradient: AppColors.primaryGradient,
               borderRadius: BorderRadius.circular(20),
+              boxShadow: [
+                BoxShadow(
+                  color: AppColors.glassShadow,
+                  blurRadius: 16,
+                  offset: const Offset(0, 6),
+                ),
+              ],
             ),
             child: Row(
               children: [
@@ -103,13 +235,14 @@ class _SocialScreenState extends State<SocialScreen>
                   width: 50,
                   height: 50,
                   decoration: BoxDecoration(
-                    color: Colors.white.withValues(alpha: 0.2),
+                    color: AppColors.glassFill,
                     borderRadius: BorderRadius.circular(12),
+                    border: Border.all(color: AppColors.glassBorder, width: 1),
                   ),
                   child: Center(
                     child: Text(
                       '#${_userRank.rank}',
-                      style: GoogleFonts.poppins(
+                      style: GoogleFonts.inter(
                         fontSize: 18,
                         fontWeight: FontWeight.w800,
                         color: Colors.white,
@@ -124,14 +257,14 @@ class _SocialScreenState extends State<SocialScreen>
                     children: [
                       Text(
                         'Ta position',
-                        style: GoogleFonts.poppins(
+                        style: GoogleFonts.inter(
                           fontSize: 12,
                           color: Colors.white.withValues(alpha: 0.8),
                         ),
                       ),
                       Text(
                         '${_userRank.totalPoints} points',
-                        style: GoogleFonts.poppins(
+                        style: GoogleFonts.inter(
                           fontSize: 20,
                           fontWeight: FontWeight.w800,
                           color: Colors.white,
@@ -143,12 +276,13 @@ class _SocialScreenState extends State<SocialScreen>
                 Container(
                   padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
                   decoration: BoxDecoration(
-                    color: Colors.white.withValues(alpha: 0.2),
+                    color: AppColors.glassFill,
                     borderRadius: BorderRadius.circular(20),
+                    border: Border.all(color: AppColors.glassBorder, width: 1),
                   ),
                   child: Text(
                     'Top ${_userRank.rank}',
-                    style: GoogleFonts.poppins(
+                    style: GoogleFonts.inter(
                       fontSize: 12,
                       fontWeight: FontWeight.w600,
                       color: Colors.white,
@@ -177,27 +311,45 @@ class _SocialScreenState extends State<SocialScreen>
   }
 
   Widget _buildFriendsTab() {
+    final isDark = Theme.of(context).brightness == Brightness.dark;
+
     if (_friends.isEmpty) {
       return Center(
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            Icon(Icons.people_outline, size: 64, color: AppColors.textSecondary),
+            Container(
+              width: 80,
+              height: 80,
+              decoration: BoxDecoration(
+                color: isDark ? AppColors.glassFillDark : AppColors.primaryLight,
+                borderRadius: BorderRadius.circular(24),
+                border: Border.all(
+                  color: isDark ? AppColors.glassBorderDark : AppColors.glassBorder,
+                  width: 1,
+                ),
+              ),
+              child: Icon(
+                Icons.people_outline,
+                size: 40,
+                color: isDark ? Colors.white : AppColors.primary,
+              ),
+            ),
             const SizedBox(height: 16),
             Text(
               'Aucun ami',
-              style: GoogleFonts.poppins(
+              style: GoogleFonts.inter(
                 fontSize: 18,
                 fontWeight: FontWeight.w600,
-                color: AppColors.textPrimary,
+                color: isDark ? AppColors.textOnDark : AppColors.textPrimary,
               ),
             ),
             const SizedBox(height: 8),
             Text(
               'Ajoute des amis pour les suivre',
-              style: GoogleFonts.poppins(
+              style: GoogleFonts.inter(
                 fontSize: 14,
-                color: AppColors.textSecondary,
+                color: isDark ? AppColors.textSecondary : AppColors.textSecondary,
               ),
             ),
           ],

@@ -6,7 +6,6 @@ import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:intl/intl.dart' as intl;
 
 import 'app_localizations_en.dart';
-import 'app_localizations_es.dart';
 import 'app_localizations_fr.dart';
 
 // ignore_for_file: type=lint
@@ -93,7 +92,6 @@ abstract class AppLocalizations {
   /// A list of this localizations delegate's supported locales.
   static const List<Locale> supportedLocales = <Locale>[
     Locale('en'),
-    Locale('es'),
     Locale('fr')
   ];
 
@@ -1366,7 +1364,7 @@ abstract class AppLocalizations {
   /// No description provided for @social_add_friend.
   ///
   /// In en, this message translates to:
-  /// **'Add friend'**
+  /// **'Add'**
   String get social_add_friend;
 
   /// No description provided for @social_friend_email.
@@ -1477,6 +1475,30 @@ abstract class AppLocalizations {
   /// **'OK'**
   String get common_ok;
 
+  /// No description provided for @home_streak_desc.
+  ///
+  /// In en, this message translates to:
+  /// **'Continue every day to increase your streak!'**
+  String get home_streak_desc;
+
+  /// No description provided for @home_level_details.
+  ///
+  /// In en, this message translates to:
+  /// **'Level details'**
+  String get home_level_details;
+
+  /// No description provided for @validation_qr_scanned.
+  ///
+  /// In en, this message translates to:
+  /// **'QR Code scanned: '**
+  String get validation_qr_scanned;
+
+  /// No description provided for @common_clear.
+  ///
+  /// In en, this message translates to:
+  /// **'Clear filter'**
+  String get common_clear;
+
   /// No description provided for @errors_connection.
   ///
   /// In en, this message translates to:
@@ -1500,6 +1522,294 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Not found'**
   String get errors_not_found;
+
+  /// No description provided for @settings_admin_panel.
+  ///
+  /// In en, this message translates to:
+  /// **'Admin Panel'**
+  String get settings_admin_panel;
+
+  /// No description provided for @settings_admin_panel_subtitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Manage app data'**
+  String get settings_admin_panel_subtitle;
+
+  /// No description provided for @settings_theme.
+  ///
+  /// In en, this message translates to:
+  /// **'Theme'**
+  String get settings_theme;
+
+  /// No description provided for @settings_theme_subtitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Toggle light / dark'**
+  String get settings_theme_subtitle;
+
+  /// No description provided for @admin_title.
+  ///
+  /// In en, this message translates to:
+  /// **'Admin Console'**
+  String get admin_title;
+
+  /// No description provided for @admin_tab_gestes.
+  ///
+  /// In en, this message translates to:
+  /// **'Gestures'**
+  String get admin_tab_gestes;
+
+  /// No description provided for @admin_tab_defis.
+  ///
+  /// In en, this message translates to:
+  /// **'Challenges'**
+  String get admin_tab_defis;
+
+  /// No description provided for @admin_tab_badges.
+  ///
+  /// In en, this message translates to:
+  /// **'Badges'**
+  String get admin_tab_badges;
+
+  /// No description provided for @admin_tab_shop.
+  ///
+  /// In en, this message translates to:
+  /// **'Shop'**
+  String get admin_tab_shop;
+
+  /// No description provided for @admin_btn_add.
+  ///
+  /// In en, this message translates to:
+  /// **'Add'**
+  String get admin_btn_add;
+
+  /// No description provided for @admin_btn_add_geste.
+  ///
+  /// In en, this message translates to:
+  /// **'Create Gesture'**
+  String get admin_btn_add_geste;
+
+  /// No description provided for @admin_btn_add_defi.
+  ///
+  /// In en, this message translates to:
+  /// **'Create Challenge'**
+  String get admin_btn_add_defi;
+
+  /// No description provided for @admin_btn_add_badge.
+  ///
+  /// In en, this message translates to:
+  /// **'Create Badge'**
+  String get admin_btn_add_badge;
+
+  /// No description provided for @admin_btn_add_reward.
+  ///
+  /// In en, this message translates to:
+  /// **'Add to Shop'**
+  String get admin_btn_add_reward;
+
+  /// No description provided for @admin_success_geste.
+  ///
+  /// In en, this message translates to:
+  /// **'Gesture successfully added'**
+  String get admin_success_geste;
+
+  /// No description provided for @admin_success_defi.
+  ///
+  /// In en, this message translates to:
+  /// **'Challenge successfully added'**
+  String get admin_success_defi;
+
+  /// No description provided for @admin_success_badge.
+  ///
+  /// In en, this message translates to:
+  /// **'Badge successfully added'**
+  String get admin_success_badge;
+
+  /// No description provided for @admin_success_reward.
+  ///
+  /// In en, this message translates to:
+  /// **'Reward successfully added'**
+  String get admin_success_reward;
+
+  /// No description provided for @admin_field_title.
+  ///
+  /// In en, this message translates to:
+  /// **'Title'**
+  String get admin_field_title;
+
+  /// No description provided for @admin_field_desc.
+  ///
+  /// In en, this message translates to:
+  /// **'Description'**
+  String get admin_field_desc;
+
+  /// No description provided for @admin_field_points.
+  ///
+  /// In en, this message translates to:
+  /// **'Points'**
+  String get admin_field_points;
+
+  /// No description provided for @admin_field_cat.
+  ///
+  /// In en, this message translates to:
+  /// **'Category'**
+  String get admin_field_cat;
+
+  /// No description provided for @admin_field_daily.
+  ///
+  /// In en, this message translates to:
+  /// **'Daily Gesture?'**
+  String get admin_field_daily;
+
+  /// No description provided for @admin_field_sub.
+  ///
+  /// In en, this message translates to:
+  /// **'Subtitle'**
+  String get admin_field_sub;
+
+  /// No description provided for @admin_field_days.
+  ///
+  /// In en, this message translates to:
+  /// **'Days left'**
+  String get admin_field_days;
+
+  /// No description provided for @admin_field_stock.
+  ///
+  /// In en, this message translates to:
+  /// **'Stock'**
+  String get admin_field_stock;
+
+  /// No description provided for @stats_title.
+  ///
+  /// In en, this message translates to:
+  /// **'My statistics'**
+  String get stats_title;
+
+  /// No description provided for @stats_points_total.
+  ///
+  /// In en, this message translates to:
+  /// **'Total points'**
+  String get stats_points_total;
+
+  /// No description provided for @stats_streak.
+  ///
+  /// In en, this message translates to:
+  /// **'Current streak'**
+  String get stats_streak;
+
+  /// No description provided for @stats_points_week.
+  ///
+  /// In en, this message translates to:
+  /// **'Weekly points'**
+  String get stats_points_week;
+
+  /// No description provided for @stats_gestures_done.
+  ///
+  /// In en, this message translates to:
+  /// **'Gestures completed'**
+  String get stats_gestures_done;
+
+  /// No description provided for @level_title.
+  ///
+  /// In en, this message translates to:
+  /// **'Level'**
+  String get level_title;
+
+  /// No description provided for @level_max.
+  ///
+  /// In en, this message translates to:
+  /// **'Maximum level reached'**
+  String get level_max;
+
+  /// No description provided for @level_points_next.
+  ///
+  /// In en, this message translates to:
+  /// **'pts to next level'**
+  String get level_points_next;
+
+  /// No description provided for @search_title.
+  ///
+  /// In en, this message translates to:
+  /// **'Search'**
+  String get search_title;
+
+  /// No description provided for @search_hint.
+  ///
+  /// In en, this message translates to:
+  /// **'Title, description...'**
+  String get search_hint;
+
+  /// No description provided for @search_clear.
+  ///
+  /// In en, this message translates to:
+  /// **'Clear'**
+  String get search_clear;
+
+  /// No description provided for @defi_days_left.
+  ///
+  /// In en, this message translates to:
+  /// **'d left'**
+  String get defi_days_left;
+
+  /// No description provided for @defi_completed.
+  ///
+  /// In en, this message translates to:
+  /// **'Completed!'**
+  String get defi_completed;
+
+  /// No description provided for @defi_continue.
+  ///
+  /// In en, this message translates to:
+  /// **'Continue'**
+  String get defi_continue;
+
+  /// No description provided for @defi_start.
+  ///
+  /// In en, this message translates to:
+  /// **'Start challenge'**
+  String get defi_start;
+
+  /// No description provided for @date_today.
+  ///
+  /// In en, this message translates to:
+  /// **'Today'**
+  String get date_today;
+
+  /// No description provided for @date_yesterday.
+  ///
+  /// In en, this message translates to:
+  /// **'Yesterday'**
+  String get date_yesterday;
+
+  /// No description provided for @date_days_ago.
+  ///
+  /// In en, this message translates to:
+  /// **'%d days ago'**
+  String get date_days_ago;
+
+  /// No description provided for @social_tab_leaderboard.
+  ///
+  /// In en, this message translates to:
+  /// **'Leaderboard'**
+  String get social_tab_leaderboard;
+
+  /// No description provided for @social_tab_friends.
+  ///
+  /// In en, this message translates to:
+  /// **'Friends'**
+  String get social_tab_friends;
+
+  /// No description provided for @social_add_friend_title.
+  ///
+  /// In en, this message translates to:
+  /// **'Add a friend'**
+  String get social_add_friend_title;
+
+  /// No description provided for @social_no_users.
+  ///
+  /// In en, this message translates to:
+  /// **'No new user found'**
+  String get social_no_users;
 }
 
 class _AppLocalizationsDelegate extends LocalizationsDelegate<AppLocalizations> {
@@ -1511,7 +1821,7 @@ class _AppLocalizationsDelegate extends LocalizationsDelegate<AppLocalizations> 
   }
 
   @override
-  bool isSupported(Locale locale) => <String>['en', 'es', 'fr'].contains(locale.languageCode);
+  bool isSupported(Locale locale) => <String>['en', 'fr'].contains(locale.languageCode);
 
   @override
   bool shouldReload(_AppLocalizationsDelegate old) => false;
@@ -1523,7 +1833,6 @@ AppLocalizations lookupAppLocalizations(Locale locale) {
   // Lookup logic when only language code is specified.
   switch (locale.languageCode) {
     case 'en': return AppLocalizationsEn();
-    case 'es': return AppLocalizationsEs();
     case 'fr': return AppLocalizationsFr();
   }
 

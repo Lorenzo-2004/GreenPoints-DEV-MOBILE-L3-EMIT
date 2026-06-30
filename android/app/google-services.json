@@ -12,7 +12,12 @@
           "package_name": "com.example.greenpoints"
         }
       },
-      "oauth_client": [],
+      "oauth_client": [
+        {
+          "client_id": "965053537355-s0qa082ef1cvi53tgqumtq99gknstbra.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
       "api_key": [
         {
           "current_key": "AIzaSyChaFX394zuy1hEWxp9yrjoz5MTm4K7R0Y"
@@ -20,7 +25,19 @@
       ],
       "services": {
         "appinvite_service": {
-          "other_platform_oauth_client": []
+          "other_platform_oauth_client": [
+            {
+              "client_id": "965053537355-s0qa082ef1cvi53tgqumtq99gknstbra.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "965053537355-g0tpcp3bd6pmv4i5qp9p1ds5gu4jni0q.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.example.greenpoints"
+              }
+            }
+          ]
         }
       }
     }

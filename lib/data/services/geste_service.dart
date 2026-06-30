@@ -6,9 +6,13 @@ class GesteService {
       FirebaseFirestore.instance.collection('gestes');
 
   Future<List<GesteModel>> getAllGestes() async {
-    final snapshot = await _gestesCollection.get();
-    return snapshot.docs.map((doc) {
-      return GesteModel.fromMap(doc.data() as Map<String, dynamic>, doc.id);
-    }).toList();
+    try {
+      final snapshot = await _gestesCollection.get();
+      return snapshot.docs.map((doc) {
+        return GesteModel.fromMap(doc.data() as Map<String, dynamic>, doc.id);
+      }).toList();
+    } catch(e) {
+      return [];
+    }
   }
 }

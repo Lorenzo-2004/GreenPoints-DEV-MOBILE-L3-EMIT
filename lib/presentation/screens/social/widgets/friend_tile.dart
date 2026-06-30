@@ -14,18 +14,23 @@ class FriendTile extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final isDark = Theme.of(context).brightness == Brightness.dark;
+
     return GestureDetector(
       onTap: onTap,
       child: Container(
         margin: const EdgeInsets.only(bottom: 12),
         padding: const EdgeInsets.all(12),
         decoration: BoxDecoration(
-          color: AppColors.surface,
+          color: isDark ? AppColors.glassFillDark : AppColors.glassFillVibrant,
           borderRadius: BorderRadius.circular(16),
-          border: Border.all(color: AppColors.border),
+          border: Border.all(
+            color: isDark ? AppColors.glassBorderDark : AppColors.glassBorder,
+            width: 1,
+          ),
           boxShadow: [
             BoxShadow(
-              color: Colors.black.withValues(alpha: 0.04),
+              color: isDark ? AppColors.glassShadowDark : AppColors.glassShadow,
               blurRadius: 8,
               offset: const Offset(0, 2),
             ),
@@ -39,11 +44,17 @@ class FriendTile extends StatelessWidget {
               decoration: BoxDecoration(
                 color: AppColors.primaryLight,
                 borderRadius: BorderRadius.circular(25),
+                border: Border.all(
+                  color: isDark ? AppColors.glassBorderDark : AppColors.glassBorder,
+                  width: 1,
+                ),
               ),
               child: Center(
                 child: Text(
-                  friend.name[0].toUpperCase(),
-                  style: GoogleFonts.poppins(
+                  friend.name != null && friend.name.toString().isNotEmpty 
+                      ? friend.name[0].toUpperCase() 
+                      : '?',
+                  style: GoogleFonts.inter(
                     fontSize: 20,
                     fontWeight: FontWeight.w700,
                     color: AppColors.primary,
@@ -58,18 +69,18 @@ class FriendTile extends StatelessWidget {
                 children: [
                   Text(
                     friend.name,
-                    style: GoogleFonts.poppins(
+                    style: GoogleFonts.inter(
                       fontSize: 14,
                       fontWeight: FontWeight.w600,
-                      color: AppColors.textPrimary,
+                      color: isDark ? AppColors.textOnDark : AppColors.textPrimary,
                     ),
                   ),
                   const SizedBox(height: 4),
                   Text(
                     '${friend.totalPoints} points',
-                    style: GoogleFonts.poppins(
+                    style: GoogleFonts.inter(
                       fontSize: 11,
-                      color: AppColors.textSecondary,
+                      color: isDark ? AppColors.textSecondary : AppColors.textSecondary,
                     ),
                   ),
                 ],
@@ -81,7 +92,7 @@ class FriendTile extends StatelessWidget {
                 color: AppColors.primaryLight,
                 borderRadius: BorderRadius.circular(12),
               ),
-              child: const Icon(
+              child: Icon(
                 Icons.chevron_right,
                 size: 16,
                 color: AppColors.primary,

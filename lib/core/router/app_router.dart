@@ -15,6 +15,7 @@ import '../../presentation/screens/points/points_screen.dart';
 import '../../presentation/screens/settings/settings_screen.dart';
 import '../../presentation/screens/marketplace/marketplace_screen.dart';
 import '../../presentation/screens/social/social_screen.dart';
+import '../../presentation/screens/admin/admin_screen.dart';
 import '../../data/models/geste/geste_model.dart';
 
 final appRouter = GoRouter(
@@ -40,6 +41,11 @@ final appRouter = GoRouter(
       path: '/register',
       name: 'register',
       builder: (context, state) => const RegisterScreen(),
+    ),
+    GoRoute(
+      path: '/admin',
+      name: 'admin',
+      builder: (context, state) => const AdminScreen(),
     ),
 
     // Routes avec shell (application principale)

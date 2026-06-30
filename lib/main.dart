@@ -13,8 +13,12 @@ void main() async {
     options: DefaultFirebaseOptions.currentPlatform,
   );
   
+  // On n'attend pas la fin de l'initialisation pour lancer l'app
+  // Sinon, s'il n'y a pas de réseau ou si Firebase bloque, l'app reste sur un écran blanc !
   final initService = InitService();
-  await initService.initAllData();
+  initService.initAllData().catchError((e) {
+    debugPrint("Erreur lors de l'initialisation des données par défaut: \$e");
+  });
   
   runApp(
     MultiProvider(

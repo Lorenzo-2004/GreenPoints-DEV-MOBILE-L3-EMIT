@@ -18,16 +18,16 @@ class ProfilScreen extends StatelessWidget {
     return BlocBuilder<UserCubit, UserModel?>(
       builder: (context, user) {
         if (user == null) {
-          return const Scaffold(
-            backgroundColor: AppColors.background,
-            body: Center(
+          return Scaffold(
+            backgroundColor: Theme.of(context).scaffoldBackgroundColor,
+            body: const Center(
               child: CircularProgressIndicator(),
             ),
           );
         }
 
         return Scaffold(
-          backgroundColor: AppColors.background,
+          backgroundColor: Theme.of(context).scaffoldBackgroundColor,
           body: CustomScrollView(
             slivers: [
               SliverToBoxAdapter(
@@ -65,9 +65,9 @@ class ProfilScreen extends StatelessWidget {
     return Container(
       margin: const EdgeInsets.only(bottom: 20),
       decoration: BoxDecoration(
-        color: AppColors.surface,
+        color: Theme.of(context).cardColor,
         borderRadius: BorderRadius.circular(16),
-        border: Border.all(color: AppColors.border),
+        border: Border.all(color: Theme.of(context).dividerColor),
       ),
       child: Column(
         children: [
@@ -156,19 +156,19 @@ class _MenuTile extends StatelessWidget {
         style: GoogleFonts.poppins(
           fontSize: 15,
           fontWeight: FontWeight.w600,
-          color: AppColors.textPrimary,
+          color: Theme.of(context).textTheme.bodyLarge?.color ?? AppColors.textPrimary,
         ),
       ),
       subtitle: Text(
         subtitle,
         style: GoogleFonts.poppins(
           fontSize: 12,
-          color: AppColors.textSecondary,
+          color: Theme.of(context).textTheme.bodyMedium?.color ?? AppColors.textSecondary,
         ),
       ),
       trailing: Icon(
         Icons.chevron_right,
-        color: AppColors.textSecondary,
+        color: Theme.of(context).textTheme.bodyMedium?.color ?? AppColors.textSecondary,
         size: 20,
       ),
     );
@@ -183,7 +183,7 @@ class _Divider extends StatelessWidget {
     return Container(
       margin: const EdgeInsets.symmetric(horizontal: 16),
       height: 1,
-      color: AppColors.border,
+      color: Theme.of(context).dividerColor,
     );
   }
 }

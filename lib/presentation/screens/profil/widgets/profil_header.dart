@@ -1,16 +1,39 @@
+import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:go_router/go_router.dart';
+import 'package:image_picker/image_picker.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import '../../../../core/theme/app_colors.dart';
 import '../../../../data/models/user/user_model.dart';
+import '../../../blocs/user/user_cubit.dart';
+import '../../../../l10n/app_localizations.dart';
 
 class ProfilHeader extends StatelessWidget {
   final UserModel user;
 
   const ProfilHeader({super.key, required this.user});
 
+  Future<void> _pickImage(BuildContext context) async {
+    final picker = ImagePicker();
+    final pickedFile = await picker.pickImage(source: ImageSource.gallery);
+    if (pickedFile != null && context.mounted) {
+      await context.read<UserCubit>().updateProfilePhoto(pickedFile.path);
+    }
+  }
+
+  String _getInitials() {
+    String first = user.name.isNotEmpty ? user.name[0].toUpperCase() : '';
+    List<String> parts = user.name.split(' ');
+    if (parts.length > 1 && parts[1].isNotEmpty) {
+      return '${parts[0][0]}${parts[1][0]}'.toUpperCase();
+    }
+    return user.name.length >= 2 ? user.name.substring(0, 2).toUpperCase() : first;
+  }
+
   @override
   Widget build(BuildContext context) {
+    final l10n = AppLocalizations.of(context)!;
     return Container(
       padding: EdgeInsets.only(
         top: MediaQuery.of(context).padding.top + 16,
@@ -39,7 +62,7 @@ class ProfilHeader extends StatelessWidget {
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
               Text(
-                'Mon Profil',
+                l10n.profile_title,
                 style: GoogleFonts.poppins(
                   fontSize: 18,
                   fontWeight: FontWeight.w600,
@@ -78,34 +101,51 @@ class ProfilHeader extends StatelessWidget {
           Stack(
             alignment: Alignment.bottomRight,
             children: [
-              Container(
-                width: 100,
-                height: 100,
-                decoration: BoxDecoration(
-                  gradient: LinearGradient(
-                    colors: [
-                      Colors.white.withValues(alpha: 0.25),
-                      Colors.white.withValues(alpha: 0.1),
-                    ],
-                  ),
-                  shape: BoxShape.circle,
-                  border: Border.all(
-                    color: Colors.white,
-                    width: 2.5,
-                  ),
-                  boxShadow: [
-                    BoxShadow(
-                      color: Colors.white.withValues(alpha: 0.25),
-                      blurRadius: 16,
-                      offset: const Offset(0, 6),
+              GestureDetector(
+                onTap: () => _pickImage(context),
+                child: Container(
+                  width: 100,
+                  height: 100,
+                  decoration: BoxDecoration(
+                    gradient: LinearGradient(
+                      colors: [
+                        Colors.white.withValues(alpha: 0.25),
+                        Colors.white.withValues(alpha: 0.1),
+                      ],
                     ),
-                  ],
-                ),
-                child: Center(
-                  child: Text(
-                    user.level.emoji,
-                    style: const TextStyle(fontSize: 52),
+                    shape: BoxShape.circle,
+                    border: Border.all(
+                      color: Colors.white,
+                      width: 2.5,
+                    ),
+                    boxShadow: [
+                      BoxShadow(
+                        color: Colors.white.withValues(alpha: 0.25),
+                        blurRadius: 16,
+                        offset: const Offset(0, 6),
+                      ),
+                    ],
+                    image: user.photoUrl != null && user.photoUrl!.isNotEmpty
+                        ? DecorationImage(
+                            image: user.photoUrl!.startsWith('http')
+                                ? NetworkImage(user.photoUrl!) as ImageProvider
+                                : FileImage(File(user.photoUrl!)),
+                            fit: BoxFit.cover,
+                          )
+                        : null,
                   ),
+                  child: user.photoUrl == null || user.photoUrl!.isEmpty
+                      ? Center(
+                          child: Text(
+                            _getInitials(),
+                            style: GoogleFonts.poppins(
+                              fontSize: 34,
+                              fontWeight: FontWeight.w700,
+                              color: Colors.white,
+                            ),
+                          ),
+                        )
+                      : null,
                 ),
               ),
               Container(
@@ -207,17 +247,17 @@ class ProfilHeader extends StatelessWidget {
             children: [
               _ProfileStat(
                 value: '${user.totalPoints}',
-                label: 'Points',
+                label: l10n.profile_points,
               ),
               const SizedBox(width: 8),
               _ProfileStat(
                 value: '${user.streak}',
-                label: 'Série',
+                label: l10n.profile_streak,
               ),
               const SizedBox(width: 8),
               _ProfileStat(
                 value: '${user.weeklyPoints}',
-                label: 'Semaine',
+                label: l10n.profile_week,
               ),
             ],
           ),
