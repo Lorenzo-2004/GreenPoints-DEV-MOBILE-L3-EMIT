@@ -75,7 +75,7 @@ class RewardCard extends StatelessWidget {
                     ),
                     child: Text(
                       'Stock: ${reward.stock}',
-                      style: GoogleFonts.poppins(
+                      style: GoogleFonts.inter(
                         fontSize: 10,
                         fontWeight: FontWeight.w600,
                         color: AppColors.warning,
@@ -87,7 +87,7 @@ class RewardCard extends StatelessWidget {
             const SizedBox(height: 12),
             Text(
               reward.title,
-              style: GoogleFonts.poppins(
+              style: GoogleFonts.inter(
                 fontSize: 14,
                 fontWeight: FontWeight.w600,
                 color: Theme.of(context).textTheme.bodyLarge?.color ?? AppColors.textPrimary,
@@ -98,7 +98,7 @@ class RewardCard extends StatelessWidget {
             const SizedBox(height: 4),
             Text(
               reward.description,
-              style: GoogleFonts.poppins(
+              style: GoogleFonts.inter(
                 fontSize: 11,
                 color: Theme.of(context).textTheme.bodyMedium?.color ?? AppColors.textSecondary,
               ),
@@ -112,7 +112,7 @@ class RewardCard extends StatelessWidget {
                 const SizedBox(width: 4),
                 Text(
                   '${reward.points} pts',
-                  style: GoogleFonts.poppins(
+                  style: GoogleFonts.inter(
                     fontSize: 12,
                     fontWeight: FontWeight.w600,
                     color: canAfford ? AppColors.warning : (Theme.of(context).textTheme.bodyMedium?.color ?? AppColors.textSecondary),

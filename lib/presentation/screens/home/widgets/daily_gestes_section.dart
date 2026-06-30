@@ -44,7 +44,7 @@ class DailyGestesSection extends StatelessWidget {
                   children: [
                     Text(
                       l10n.home_gestures_of_day,
-                      style: GoogleFonts.poppins(
+                      style: GoogleFonts.inter(
                         fontSize: 17,
                         fontWeight: FontWeight.w700,
                         color: theme.colorScheme.onSurface,
@@ -53,7 +53,7 @@ class DailyGestesSection extends StatelessWidget {
                     ),
                     Text(
                       '$doneCount / ${gestes.length} ${l10n.home_completed}',
-                      style: GoogleFonts.poppins(
+                      style: GoogleFonts.inter(
                         fontSize: 12,
                         color: theme.colorScheme.onSurface.withValues(alpha: 0.6),
                       ),
@@ -70,7 +70,7 @@ class DailyGestesSection extends StatelessWidget {
                     ),
                     child: Text(
                       l10n.home_see_all,
-                      style: GoogleFonts.poppins(
+                      style: GoogleFonts.inter(
                         fontSize: 12,
                         color: AppColors.primary,
                         fontWeight: FontWeight.w600,
@@ -156,7 +156,7 @@ class _GesteCard extends StatelessWidget {
                 children: [
                   Text(
                     geste.title,
-                    style: GoogleFonts.poppins(
+                    style: GoogleFonts.inter(
                       fontSize: 14,
                       fontWeight: FontWeight.w600,
                       color: isDone ? theme.colorScheme.onSurface.withValues(alpha: 0.5) : theme.colorScheme.onSurface,
@@ -168,7 +168,7 @@ class _GesteCard extends StatelessWidget {
                   const SizedBox(height: 3),
                   Text(
                     geste.description,
-                    style: GoogleFonts.poppins(
+                    style: GoogleFonts.inter(
                       fontSize: 11,
                       color: theme.colorScheme.onSurface.withValues(alpha: 0.5),
                       fontWeight: FontWeight.w400,
@@ -188,7 +188,7 @@ class _GesteCard extends StatelessWidget {
               ),
               child: Text(
                 isDone ? l10n.home_done : '+${geste.points}',
-                style: GoogleFonts.poppins(
+                style: GoogleFonts.inter(
                   fontSize: 12,
                   fontWeight: FontWeight.w700,
                   color: isDone ? AppColors.success : AppColors.warning,

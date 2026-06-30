@@ -80,7 +80,7 @@ class GesteCard extends StatelessWidget {
                       Expanded(
                         child: Text(
                           geste.title,
-                          style: GoogleFonts.poppins(
+                          style: GoogleFonts.inter(
                             fontSize: 15,
                             fontWeight: FontWeight.w600,
                             color: isDone 
@@ -101,7 +101,7 @@ class GesteCard extends StatelessWidget {
                           ),
                           child: Text(
                             'Quotidien',
-                            style: GoogleFonts.poppins(
+                            style: GoogleFonts.inter(
                               fontSize: 10,
                               color: isDark ? Colors.white : AppColors.primary,
                               fontWeight: FontWeight.w600,
@@ -113,7 +113,7 @@ class GesteCard extends StatelessWidget {
                   const SizedBox(height: 6),
                   Text(
                     geste.description,
-                    style: GoogleFonts.poppins(
+                    style: GoogleFonts.inter(
                       fontSize: 12,
                       color: theme.colorScheme.onSurface.withValues(alpha: 0.6),
                     ),
@@ -127,7 +127,7 @@ class GesteCard extends StatelessWidget {
                       const SizedBox(width: 6),
                       Text(
                         '+${geste.points} points',
-                        style: GoogleFonts.poppins(
+                        style: GoogleFonts.inter(
                           fontSize: 13,
                           fontWeight: FontWeight.w600,
                           color: AppColors.warning,
@@ -142,7 +142,7 @@ class GesteCard extends StatelessWidget {
                         ),
                         child: Text(
                           geste.category.label,
-                          style: GoogleFonts.poppins(
+                          style: GoogleFonts.inter(
                             fontSize: 11,
                             color: isDark ? geste.category.color.withValues(alpha: 0.9) : geste.category.color,
                             fontWeight: FontWeight.w600,

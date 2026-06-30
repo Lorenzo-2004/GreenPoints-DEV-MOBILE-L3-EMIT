@@ -59,34 +59,34 @@ class _MarketplaceScreenState extends State<MarketplaceScreen> {
       builder: (context) => AlertDialog(
         backgroundColor: isDark ? AppColors.darkCard : AppColors.surface,
         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
-        title: Text(reward.title, style: GoogleFonts.poppins(fontWeight: FontWeight.w700, color: theme.colorScheme.onSurface)),
+        title: Text(reward.title, style: GoogleFonts.inter(fontWeight: FontWeight.w700, color: theme.colorScheme.onSurface)),
         content: Column(
           mainAxisSize: MainAxisSize.min,
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Text(reward.description, style: GoogleFonts.poppins(color: theme.colorScheme.onSurface.withValues(alpha: 0.6))),
+            Text(reward.description, style: GoogleFonts.inter(color: theme.colorScheme.onSurface.withValues(alpha: 0.6))),
             const SizedBox(height: 16),
             Row(children: [
               Icon(Icons.stars_rounded, color: AppColors.warning, size: 20),
               const SizedBox(width: 8),
-              Text('${reward.points} points', style: GoogleFonts.poppins(fontWeight: FontWeight.w600, color: AppColors.warning)),
+              Text('${reward.points} points', style: GoogleFonts.inter(fontWeight: FontWeight.w600, color: AppColors.warning)),
             ]),
             if (reward.stock > 0)
               Padding(
                 padding: const EdgeInsets.only(top: 8),
-                child: Text('${l10n.marketplace_stock}: ${reward.stock}', style: GoogleFonts.poppins(fontSize: 12, color: theme.colorScheme.onSurface.withValues(alpha: 0.6))),
+                child: Text('${l10n.marketplace_stock}: ${reward.stock}', style: GoogleFonts.inter(fontSize: 12, color: theme.colorScheme.onSurface.withValues(alpha: 0.6))),
               ),
           ],
         ),
         actions: [
-          TextButton(onPressed: () => Navigator.pop(context, false), child: Text(l10n.common_cancel, style: GoogleFonts.poppins())),
+          TextButton(onPressed: () => Navigator.pop(context, false), child: Text(l10n.common_cancel, style: GoogleFonts.inter())),
           ElevatedButton(
             onPressed: canAfford ? () => Navigator.pop(context, true) : null,
             style: ElevatedButton.styleFrom(
               backgroundColor: canAfford ? AppColors.primary : (isDark ? Colors.white.withValues(alpha: 0.1) : AppColors.border),
               shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
             ),
-            child: Text(canAfford ? l10n.marketplace_exchange : l10n.marketplace_insufficient_points, style: GoogleFonts.poppins(color: Colors.white)),
+            child: Text(canAfford ? l10n.marketplace_exchange : l10n.marketplace_insufficient_points, style: GoogleFonts.inter(color: Colors.white)),
           ),
         ],
       ),
@@ -129,9 +129,9 @@ class _MarketplaceScreenState extends State<MarketplaceScreen> {
       appBar: AppBar(
         leading: IconButton(
           icon: Icon(Icons.arrow_back_ios_new_rounded, color: theme.textTheme.bodyLarge?.color ?? AppColors.textPrimary),
-          onPressed: () => context.pop(),
+          onPressed: () => context.go('/profil'),
         ),
-        title: Text(l10n.marketplace_title, style: GoogleFonts.poppins(fontSize: 20, fontWeight: FontWeight.w600, color: theme.colorScheme.onSurface)),
+        title: Text(l10n.marketplace_title, style: GoogleFonts.inter(fontSize: 20, fontWeight: FontWeight.w600, color: theme.colorScheme.onSurface)),
         backgroundColor: Colors.transparent,
         elevation: 0,
         centerTitle: true,
@@ -147,8 +147,8 @@ class _MarketplaceScreenState extends State<MarketplaceScreen> {
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
                     Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
-                      Text('Mes points', style: GoogleFonts.poppins(fontSize: 12, color: Colors.white.withValues(alpha: 0.8))),
-                      Text('$userPoints', style: GoogleFonts.poppins(fontSize: 28, fontWeight: FontWeight.w800, color: Colors.white, letterSpacing: -1)),
+                      Text('Mes points', style: GoogleFonts.inter(fontSize: 12, color: Colors.white.withValues(alpha: 0.8))),
+                      Text('$userPoints', style: GoogleFonts.inter(fontSize: 28, fontWeight: FontWeight.w800, color: Colors.white, letterSpacing: -1)),
                     ]),
                     Container(
                       width: 50, height: 50,
@@ -166,7 +166,7 @@ class _MarketplaceScreenState extends State<MarketplaceScreen> {
                   return Padding(
                     padding: const EdgeInsets.only(right: 8),
                     child: FilterChip(
-                      label: Text(category, style: GoogleFonts.poppins(fontSize: 13, color: isSelected ? Colors.white : (theme.textTheme.bodyMedium?.color ?? AppColors.textSecondary))),
+                      label: Text(category, style: GoogleFonts.inter(fontSize: 13, color: isSelected ? Colors.white : (theme.textTheme.bodyMedium?.color ?? AppColors.textSecondary))),
                       selected: isSelected,
                       onSelected: (_) => setState(() => _selectedCategory = category),
                       backgroundColor: theme.cardColor,
@@ -182,7 +182,7 @@ class _MarketplaceScreenState extends State<MarketplaceScreen> {
                     ? Center(child: Column(mainAxisAlignment: MainAxisAlignment.center, children: [
                         Icon(Icons.shopping_bag_outlined, size: 64, color: theme.textTheme.bodyMedium?.color ?? AppColors.textSecondary),
                         const SizedBox(height: 16),
-                        Text('Aucune recompense', style: GoogleFonts.poppins(fontSize: 16, fontWeight: FontWeight.w600, color: theme.textTheme.bodyLarge?.color ?? AppColors.textPrimary)),
+                        Text('Aucune recompense', style: GoogleFonts.inter(fontSize: 16, fontWeight: FontWeight.w600, color: theme.textTheme.bodyLarge?.color ?? AppColors.textPrimary)),
                       ]))
                     : GridView.builder(
                         padding: const EdgeInsets.all(16),

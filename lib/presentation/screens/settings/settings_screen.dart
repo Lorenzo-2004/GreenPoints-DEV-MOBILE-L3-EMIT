@@ -51,8 +51,8 @@ class _SettingsScreenState extends State<SettingsScreen> {
       context: context,
       builder: (context) => AlertDialog(
         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
-        title: Text(l10n.settings_logout, style: GoogleFonts.poppins(fontWeight: FontWeight.w600)),
-        content: Text(l10n.settings_logout_confirm, style: GoogleFonts.poppins()),
+        title: Text(l10n.settings_logout, style: GoogleFonts.inter(fontWeight: FontWeight.w600)),
+        content: Text(l10n.settings_logout_confirm, style: GoogleFonts.inter()),
         actions: [
           TextButton(onPressed: () => Navigator.pop(context, false), child: Text(l10n.settings_no)),
           TextButton(
@@ -91,7 +91,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
           mainAxisSize: MainAxisSize.min,
           children: [
             const SizedBox(height: 16),
-            Text(l10n.settings_help, style: GoogleFonts.poppins(fontSize: 18, fontWeight: FontWeight.w600)),
+            Text(l10n.settings_help, style: GoogleFonts.inter(fontSize: 18, fontWeight: FontWeight.w600)),
             const Divider(),
             _buildHelpItem('Comment gagner des points ?', 'Valide des gestes ecologiques.'),
             _buildHelpItem('Comment debloquer des badges ?', 'Atteins les paliers de points.'),
@@ -106,11 +106,11 @@ class _SettingsScreenState extends State<SettingsScreen> {
   Widget _buildHelpItem(String title, String description) {
     final theme = Theme.of(context);
     return ExpansionTile(
-      title: Text(title, style: GoogleFonts.poppins()),
+      title: Text(title, style: GoogleFonts.inter()),
       children: [
         Padding(
           padding: const EdgeInsets.all(16),
-          child: Text(description, style: GoogleFonts.poppins(color: theme.colorScheme.onSurface.withValues(alpha: 0.6))),
+          child: Text(description, style: GoogleFonts.inter(color: theme.colorScheme.onSurface.withValues(alpha: 0.6))),
         ),
       ],
     );
@@ -130,9 +130,9 @@ class _SettingsScreenState extends State<SettingsScreen> {
       appBar: AppBar(
         leading: IconButton(
           icon: Icon(Icons.arrow_back_ios_new_rounded, color: theme.textTheme.bodyLarge?.color ?? AppColors.textPrimary),
-          onPressed: () => context.pop(),
+          onPressed: () => context.go('/profil'),
         ),
-        title: Text(l10n.settings_title, style: GoogleFonts.poppins(fontSize: 20, fontWeight: FontWeight.w600)),
+        title: Text(l10n.settings_title, style: GoogleFonts.inter(fontSize: 20, fontWeight: FontWeight.w600)),
         backgroundColor: Colors.transparent,
         elevation: 0,
         centerTitle: true,
@@ -246,7 +246,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
           ),
 
           const SizedBox(height: 40),
-          Center(child: Text('${l10n.settings_version} 1.0.0', style: GoogleFonts.poppins(fontSize: 12, color: colorScheme.onSurface.withValues(alpha: 0.5)))),
+          Center(child: Text('${l10n.settings_version} 1.0.0', style: GoogleFonts.inter(fontSize: 12, color: colorScheme.onSurface.withValues(alpha: 0.5)))),
           const SizedBox(height: 20),
         ],
       ),
@@ -256,7 +256,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
   Widget _buildSectionTitle(String title, ThemeData theme) {
     return Padding(
       padding: const EdgeInsets.only(top: 16, bottom: 8),
-      child: Text(title, style: GoogleFonts.poppins(fontSize: 14, fontWeight: FontWeight.w600, color: theme.colorScheme.onSurface.withValues(alpha: 0.6))),
+      child: Text(title, style: GoogleFonts.inter(fontSize: 14, fontWeight: FontWeight.w600, color: theme.colorScheme.onSurface.withValues(alpha: 0.6))),
     );
   }
 
@@ -287,8 +287,8 @@ class _SettingsScreenState extends State<SettingsScreen> {
           decoration: BoxDecoration(color: effectiveIconColor.withValues(alpha: 0.12), borderRadius: BorderRadius.circular(12)),
           child: Icon(icon, color: effectiveIconColor, size: 22),
         ),
-        title: Text(title, style: GoogleFonts.poppins(fontSize: 15, fontWeight: FontWeight.w500, color: effectiveTextColor)),
-        subtitle: Text(subtitle, style: GoogleFonts.poppins(fontSize: 12, color: theme.colorScheme.onSurface.withValues(alpha: 0.6))),
+        title: Text(title, style: GoogleFonts.inter(fontSize: 15, fontWeight: FontWeight.w500, color: effectiveTextColor)),
+        subtitle: Text(subtitle, style: GoogleFonts.inter(fontSize: 12, color: theme.colorScheme.onSurface.withValues(alpha: 0.6))),
         trailing: Icon(Icons.chevron_right, color: theme.colorScheme.onSurface.withValues(alpha: 0.5), size: 20),
       ),
     );
@@ -317,8 +317,8 @@ class _SettingsScreenState extends State<SettingsScreen> {
           decoration: BoxDecoration(color: theme.colorScheme.primary.withValues(alpha: 0.12), borderRadius: BorderRadius.circular(12)),
           child: Icon(icon, color: theme.colorScheme.primary, size: 22),
         ),
-        title: Text(title, style: GoogleFonts.poppins(fontSize: 15, fontWeight: FontWeight.w500, color: theme.colorScheme.onSurface)),
-        subtitle: Text(subtitle, style: GoogleFonts.poppins(fontSize: 12, color: theme.colorScheme.onSurface.withValues(alpha: 0.6))),
+        title: Text(title, style: GoogleFonts.inter(fontSize: 15, fontWeight: FontWeight.w500, color: theme.colorScheme.onSurface)),
+        subtitle: Text(subtitle, style: GoogleFonts.inter(fontSize: 12, color: theme.colorScheme.onSurface.withValues(alpha: 0.6))),
         trailing: Switch(value: value, onChanged: onChanged, activeTrackColor: theme.colorScheme.primary, activeThumbColor: Colors.white),
       ),
     );
@@ -334,7 +334,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
           mainAxisSize: MainAxisSize.min,
           children: [
             const SizedBox(height: 16),
-            Text(l10n.settings_choose_language, style: GoogleFonts.poppins(fontSize: 18, fontWeight: FontWeight.w600)),
+            Text(l10n.settings_choose_language, style: GoogleFonts.inter(fontSize: 18, fontWeight: FontWeight.w600)),
             const Divider(),
             _buildLanguageOption(l10n.settings_french, 'fr', localeProvider),
             _buildLanguageOption(l10n.settings_english, 'en', localeProvider),
@@ -357,7 +357,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
         _saveSettings();
         Navigator.pop(context);
       },
-      title: Text(label, style: GoogleFonts.poppins(fontWeight: isSelected ? FontWeight.w600 : FontWeight.w400)),
+      title: Text(label, style: GoogleFonts.inter(fontWeight: isSelected ? FontWeight.w600 : FontWeight.w400)),
       trailing: isSelected ? Icon(Icons.check_rounded, color: theme.colorScheme.primary) : null,
     );
   }

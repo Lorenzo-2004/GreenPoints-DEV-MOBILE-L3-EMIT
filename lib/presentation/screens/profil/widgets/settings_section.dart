@@ -29,7 +29,7 @@ class SettingsSection extends StatelessWidget {
           shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
           title: Text(
             'Modifier le profil',
-            style: GoogleFonts.poppins(
+            style: GoogleFonts.inter(
               fontWeight: FontWeight.w600,
               color: Theme.of(ctx).textTheme.bodyLarge?.color ?? AppColors.textPrimary,
             ),
@@ -72,7 +72,7 @@ class SettingsSection extends StatelessWidget {
               onPressed: () => Navigator.pop(ctx),
               child: Text(
                 'Annuler',
-                style: GoogleFonts.poppins(color: AppColors.textSecondary),
+                style: GoogleFonts.inter(color: AppColors.textSecondary),
               ),
             ),
             ElevatedButton(
@@ -88,7 +88,7 @@ class SettingsSection extends StatelessWidget {
                 userCubit.updateUser(updatedUser);
                 Navigator.pop(ctx);
               },
-              child: Text('Enregistrer', style: GoogleFonts.poppins(color: Colors.white)),
+              child: Text('Enregistrer', style: GoogleFonts.inter(color: Colors.white)),
             ),
           ],
         );
@@ -118,7 +118,7 @@ class SettingsSection extends StatelessWidget {
             const SizedBox(width: 12),
             Text(
               l10n.settings_title,
-              style: GoogleFonts.poppins(
+              style: GoogleFonts.inter(
                 fontSize: 18,
                 fontWeight: FontWeight.w700,
                 color: Theme.of(context).textTheme.bodyLarge?.color ?? AppColors.textPrimary,
@@ -257,7 +257,7 @@ class _SettingsTile extends StatelessWidget {
                   children: [
                     Text(
                       label,
-                      style: GoogleFonts.poppins(
+                      style: GoogleFonts.inter(
                         fontSize: 15,
                         fontWeight: FontWeight.w600,
                         color: isDestructive ? AppColors.error : Theme.of(context).textTheme.bodyLarge?.color ?? AppColors.textPrimary,
@@ -266,7 +266,7 @@ class _SettingsTile extends StatelessWidget {
                     const SizedBox(height: 2),
                     Text(
                       subtitle,
-                      style: GoogleFonts.poppins(
+                      style: GoogleFonts.inter(
                         fontSize: 12,
                         color: Theme.of(context).textTheme.bodyMedium?.color ?? AppColors.textSecondary,
                       ),

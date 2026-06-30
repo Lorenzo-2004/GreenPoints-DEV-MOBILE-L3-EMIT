@@ -153,7 +153,7 @@ class _MenuTile extends StatelessWidget {
       ),
       title: Text(
         label,
-        style: GoogleFonts.poppins(
+        style: GoogleFonts.inter(
           fontSize: 15,
           fontWeight: FontWeight.w600,
           color: Theme.of(context).textTheme.bodyLarge?.color ?? AppColors.textPrimary,
@@ -161,7 +161,7 @@ class _MenuTile extends StatelessWidget {
       ),
       subtitle: Text(
         subtitle,
-        style: GoogleFonts.poppins(
+        style: GoogleFonts.inter(
           fontSize: 12,
           color: Theme.of(context).textTheme.bodyMedium?.color ?? AppColors.textSecondary,
         ),

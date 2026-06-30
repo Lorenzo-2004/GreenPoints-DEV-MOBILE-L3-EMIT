@@ -40,7 +40,7 @@ class _NotificationsScreenState extends State<NotificationsScreen> {
         appBar: AppBar(
           leading: IconButton(
             icon: Icon(Icons.arrow_back_ios_new_rounded, color: Theme.of(context).textTheme.bodyLarge?.color ?? AppColors.textPrimary),
-            onPressed: () => context.pop(),
+            onPressed: () => context.go('/profil'),
           ),
           title: Text(
             'Notifications',

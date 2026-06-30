@@ -69,11 +69,11 @@ class _BadgesScreenState extends State<BadgesScreen> {
       appBar: AppBar(
         leading: IconButton(
           icon: Icon(Icons.arrow_back_ios_new_rounded, color: isDark ? AppColors.textOnDark : AppColors.textPrimary),
-          onPressed: () => context.pop(),
+          onPressed: () => context.go('/profil'),
         ),
         title: Text(
           'Badges',
-          style: GoogleFonts.poppins(
+          style: GoogleFonts.inter(
             fontSize: 20,
             fontWeight: FontWeight.w600,
             color: isDark ? AppColors.textOnDark : AppColors.textPrimary,
@@ -109,7 +109,7 @@ class _BadgesScreenState extends State<BadgesScreen> {
                         children: [
                           Text(
                             '$unlockedCount/${badgesWithStatus.length}',
-                            style: GoogleFonts.poppins(
+                            style: GoogleFonts.inter(
                               fontSize: 32,
                               fontWeight: FontWeight.w800,
                               color: Colors.white,
@@ -118,7 +118,7 @@ class _BadgesScreenState extends State<BadgesScreen> {
                           ),
                           Text(
                             'Badges debloques',
-                            style: GoogleFonts.poppins(
+                            style: GoogleFonts.inter(
                               fontSize: 14,
                               color: Colors.white.withValues(alpha: 0.8),
                             ),

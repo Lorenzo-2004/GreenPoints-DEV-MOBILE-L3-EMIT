@@ -70,7 +70,7 @@ class PointCard extends StatelessWidget {
                 children: [
                   Text(
                     transaction.gesteTitle,
-                    style: GoogleFonts.poppins(
+                    style: GoogleFonts.inter(
                       fontSize: 14,
                       fontWeight: FontWeight.w600,
                       color: Theme.of(context).textTheme.bodyLarge?.color ?? AppColors.textPrimary,
@@ -79,7 +79,7 @@ class PointCard extends StatelessWidget {
                   const SizedBox(height: 4),
                   Text(
                     _formatDate(transaction.createdAt),
-                    style: GoogleFonts.poppins(
+                    style: GoogleFonts.inter(
                       fontSize: 11,
                       color: Theme.of(context).textTheme.bodyMedium?.color ?? AppColors.textSecondary,
                     ),
@@ -89,7 +89,7 @@ class PointCard extends StatelessWidget {
             ),
             Text(
               '$sign${transaction.points} pts',
-              style: GoogleFonts.poppins(
+              style: GoogleFonts.inter(
                 fontSize: 16,
                 fontWeight: FontWeight.w700,
                 color: iconColor,

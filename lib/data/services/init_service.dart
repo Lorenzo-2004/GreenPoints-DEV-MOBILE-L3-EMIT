@@ -1,65 +1,35 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:flutter/foundation.dart';
 
 class InitService {
   final FirebaseFirestore _firestore = FirebaseFirestore.instance;
 
   Future<void> initAllData() async {
-    await initGestes();
-    await initDefis();
-    await initBadges();
-    await initRecompenses();
+    try {
+      await initGestes();
+      await initDefis();
+      await initBadges();
+      await initRecompenses();
+    } catch (e) {
+      debugPrint('Erreur d\'initialisation globale: $e');
+    }
   }
 
   Future<void> initRecompenses() async {
     final snapshot = await _firestore.collection('recompenses').get();
-    if (snapshot.docs.isNotEmpty) return;
+    for (var doc in snapshot.docs) {
+      await doc.reference.delete();
+    }
 
     final recompenses = [
-      {
-        'id': '1',
-        'title': 'Plante verte',
-        'description': 'Une plante pour ton bureau',
-        'points': 500,
-        'icon': 'local_florist',
-        'category': 'Plantes',
-        'stock': 10,
-      },
-      {
-        'id': '2',
-        'title': 'Gourde isotherme',
-        'description': 'Gourde en acier inoxydable',
-        'points': 1000,
-        'icon': 'water_bottle',
-        'category': 'Accessoires',
-        'stock': 5,
-      },
-      {
-        'id': '3',
-        'title': 'Sac à courses',
-        'description': 'Sac en tissu réutilisable',
-        'points': 300,
-        'icon': 'shopping_bag',
-        'category': 'Éco-produits',
-        'stock': 20,
-      },
-      {
-        'id': '4',
-        'title': 'Composteur',
-        'description': 'Composteur de balcon',
-        'points': 2000,
-        'icon': 'yard',
-        'category': 'Éco-produits',
-        'stock': 3,
-      },
-      {
-        'id': '5',
-        'title': 'Badge exclusif',
-        'description': 'Badge spécial GreenPoints',
-        'points': 1500,
-        'icon': 'emoji_events',
-        'category': 'Exclusifs',
-        'stock': 50,
-      },
+      {'id': 'plante', 'title': 'Plante verte', 'description': 'Une plante pour ton bureau', 'points': 500, 'icon': 'local_florist', 'category': 'Plantes', 'stock': 10},
+      {'id': 'gourde', 'title': 'Gourde isotherme', 'description': 'Gourde en acier inoxydable', 'points': 1000, 'icon': 'water_bottle', 'category': 'Accessoires', 'stock': 5},
+      {'id': 'sac', 'title': 'Sac à courses en coton', 'description': 'Sac en tissu réutilisable écologique', 'points': 300, 'icon': 'shopping_bag', 'category': 'Éco-produits', 'stock': 20},
+      {'id': 'composteur', 'title': 'Composteur de balcon', 'description': 'Transforme tes déchets organiques en engrais', 'points': 2000, 'icon': 'yard', 'category': 'Éco-produits', 'stock': 3},
+      {'id': 'badge_vip', 'title': 'Badge exclusif VIP', 'description': 'Montre à tous ton implication', 'points': 1500, 'icon': 'emoji_events', 'category': 'Exclusifs', 'stock': 50},
+      {'id': 'brosse_dent', 'title': 'Brosse à dents en bambou', 'description': 'Zéro plastique pour tes dents', 'points': 150, 'icon': 'spa', 'category': 'Soins', 'stock': 50},
+      {'id': 'savon', 'title': 'Savon solide artisanal', 'description': 'Savon naturel fait main', 'points': 250, 'icon': 'clean_hands', 'category': 'Soins', 'stock': 30},
+      {'id': 'billet', 'title': 'Billet expo écologie', 'description': 'Entrée gratuite pour le salon local', 'points': 3000, 'icon': 'local_activity', 'category': 'Exclusifs', 'stock': 2},
     ];
 
     for (final rec in recompenses) {
@@ -69,89 +39,26 @@ class InitService {
 
   Future<void> initGestes() async {
     final snapshot = await _firestore.collection('gestes').get();
-    if (snapshot.docs.isNotEmpty) return;
+    for (var doc in snapshot.docs) {
+      await doc.reference.delete();
+    }
 
     final gestes = [
-      {
-        'id': 'velo_travail',
-        'title': 'Aller au travail à vélo',
-        'description': 'Remplace ta voiture par le vélo',
-        'points': 20,
-        'category': 'transport',
-        'isDaily': true,
-      },
-      {
-        'id': 'repas_vege',
-        'title': 'Repas végétarien',
-        'description': 'Mange un repas sans viande aujourd\'hui',
-        'points': 15,
-        'category': 'alimentation',
-        'isDaily': true,
-      },
-      {
-        'id': 'douche_courte',
-        'title': 'Douche de moins de 5 min',
-        'description': 'Limite ta douche à 5 minutes',
-        'points': 10,
-        'category': 'eau',
-        'isDaily': true,
-      },
-      {
-        'id': 'trier_dechets',
-        'title': 'Trier ses déchets',
-        'description': 'Trie correctement tes déchets du jour',
-        'points': 10,
-        'category': 'dechets',
-        'isDaily': true,
-      },
-      {
-        'id': 'eteindre_lumieres',
-        'title': 'Éteindre les lumières',
-        'description': 'Éteins les lumières en quittant une pièce',
-        'points': 5,
-        'category': 'energie',
-        'isDaily': true,
-      },
-      {
-        'id': 'composter',
-        'title': 'Composter',
-        'description': 'Utilise ton composteur pour les déchets organiques',
-        'points': 15,
-        'category': 'dechets',
-        'isDaily': false,
-      },
-      {
-        'id': 'marche_ecolo',
-        'title': 'Marcher au lieu de conduire',
-        'description': 'Fais tes trajets courts à pied',
-        'points': 15,
-        'category': 'transport',
-        'isDaily': true,
-      },
-      {
-        'id': 'eau_robinet',
-        'title': 'Boire l\'eau du robinet',
-        'description': 'Évite les bouteilles en plastique',
-        'points': 10,
-        'category': 'eau',
-        'isDaily': true,
-      },
-      {
-        'id': 'sacs_reutilisables',
-        'title': 'Sacs réutilisables',
-        'description': 'Utilise des sacs réutilisables pour tes courses',
-        'points': 10,
-        'category': 'dechets',
-        'isDaily': false,
-      },
-      {
-        'id': 'jardin_potager',
-        'title': 'Cultiver son potager',
-        'description': 'Plante tes propres légumes',
-        'points': 30,
-        'category': 'nature',
-        'isDaily': false,
-      },
+      {'id': 'velo_travail', 'title': 'Aller au travail à vélo', 'description': 'Remplace ta voiture par le vélo pour ton trajet aller-retour', 'points': 30, 'category': 'transport', 'isDaily': true},
+      {'id': 'repas_vege', 'title': 'Repas végétarien', 'description': 'Mange un repas complet sans viande', 'points': 15, 'category': 'alimentation', 'isDaily': true},
+      {'id': 'douche_courte', 'title': 'Douche de moins de 5 min', 'description': 'Limite ta douche à 5 minutes chrono pour économiser l\'eau', 'points': 10, 'category': 'eau', 'isDaily': true},
+      {'id': 'tri_dechets', 'title': 'Trier ses déchets', 'description': 'Trie correctement tes déchets du jour (verre, carton, plastique)', 'points': 10, 'category': 'dechets', 'isDaily': true},
+      {'id': 'lumiere', 'title': 'Éteindre les lumières', 'description': 'Éteins systématiquement les lumières en quittant une pièce', 'points': 5, 'category': 'energie', 'isDaily': true},
+      {'id': 'compost', 'title': 'Composter ses restes', 'description': 'Jette tes restes alimentaires dans un composteur', 'points': 15, 'category': 'dechets', 'isDaily': true},
+      {'id': 'marche', 'title': 'Trajet à pied (< 2km)', 'description': 'Fais tes trajets courts à pied au lieu de prendre un moteur', 'points': 20, 'category': 'transport', 'isDaily': true},
+      {'id': 'gourde_eau', 'title': 'Utiliser une gourde', 'description': 'Refuse les bouteilles plastiques, utilise ta gourde', 'points': 10, 'category': 'dechets', 'isDaily': true},
+      {'id': 'sac_tissu', 'title': 'Courses en vrac', 'description': 'Fais tes courses avec tes propres sacs en tissu', 'points': 25, 'category': 'dechets', 'isDaily': false},
+      {'id': 'potager', 'title': 'Entretenir son potager', 'description': 'Jardine, plante ou récolte tes légumes maison', 'points': 30, 'category': 'nature', 'isDaily': false},
+      {'id': 'covoiturage', 'title': 'Covoiturage', 'description': 'Partage ton trajet en voiture avec d\'autres personnes', 'points': 40, 'category': 'transport', 'isDaily': false},
+      {'id': 'reparation', 'title': 'Réparer un objet', 'description': 'Au lieu de jeter, répare un appareil ou vêtement abîmé', 'points': 50, 'category': 'dechets', 'isDaily': false},
+      {'id': 'local', 'title': 'Acheter local et de saison', 'description': 'Privilégie les circuits courts pour tes achats', 'points': 20, 'category': 'alimentation', 'isDaily': false},
+      {'id': 'thermostat', 'title': 'Baisser le chauffage', 'description': 'Baisse ton chauffage de 1°C chez toi', 'points': 15, 'category': 'energie', 'isDaily': false},
+      {'id': 'ramassage', 'title': 'Ramasser des déchets', 'description': 'Ramasse au moins 5 déchets trouvés par terre lors d\'une balade', 'points': 50, 'category': 'nature', 'isDaily': false},
     ];
 
     for (final geste in gestes) {
@@ -161,64 +68,18 @@ class InitService {
 
   Future<void> initDefis() async {
     final snapshot = await _firestore.collection('defis').get();
-    if (snapshot.docs.isNotEmpty) return;
+    for (var doc in snapshot.docs) {
+      await doc.reference.delete();
+    }
 
     final defis = [
-      {
-        'id': 'ecowarrior',
-        'title': 'Ecowarrior',
-        'subtitle': '10 gestes ecologiques en une semaine',
-        'points': 500,
-        'progress': 0.0,
-        'daysLeft': 7,
-        'category': 'Hebdomadaire',
-        'icon': 'eco',
-        'color': '#059669',
-      },
-      {
-        'id': 'sans_voiture',
-        'title': 'Sans voiture',
-        'subtitle': 'Transport en commun ou velo pendant 7 jours',
-        'points': 300,
-        'progress': 0.0,
-        'daysLeft': 7,
-        'category': 'Transport',
-        'icon': 'directions_bike',
-        'color': '#3B82F6',
-      },
-      {
-        'id': 'zero_dechet',
-        'title': 'Zero dechet',
-        'subtitle': 'Ne produis aucun dechet plastique cette semaine',
-        'points': 400,
-        'progress': 0.0,
-        'daysLeft': 7,
-        'category': 'Quotidien',
-        'icon': 'recycling',
-        'color': '#10B981',
-      },
-      {
-        'id': 'master_chef_vege',
-        'title': 'Master chef vege',
-        'subtitle': '5 repas vegetariens dans la semaine',
-        'points': 250,
-        'progress': 0.0,
-        'daysLeft': 7,
-        'category': 'Alimentation',
-        'icon': 'restaurant',
-        'color': '#F59E0B',
-      },
-      {
-        'id': 'economiseur_eau',
-        'title': 'Economiseur d\'eau',
-        'subtitle': 'Douches courtes pendant 5 jours',
-        'points': 200,
-        'progress': 0.0,
-        'daysLeft': 5,
-        'category': 'Quotidien',
-        'icon': 'water_drop',
-        'color': '#06B6D4',
-      },
+      {'id': 'ecowarrior', 'title': 'Éco-Guerrier', 'subtitle': 'Valide au moins 10 gestes écologiques différents cette semaine', 'points': 500, 'daysLeft': 7, 'category': 'Hebdomadaire', 'icon': 'eco', 'color': '059669'},
+      {'id': 'sans_voiture', 'title': 'Semaine Sans Voiture', 'subtitle': 'N\'utilise que le vélo, la marche ou les transports en commun pendant 7 jours', 'points': 600, 'daysLeft': 7, 'category': 'Transport', 'icon': 'directions_bike', 'color': '3B82F6'},
+      {'id': 'zero_dechet', 'title': 'Défi Zéro Déchet', 'subtitle': 'Refuse tous les emballages plastiques jetables pendant 3 jours consécutifs', 'points': 400, 'daysLeft': 3, 'category': 'Quotidien', 'icon': 'recycling', 'color': '10B981'},
+      {'id': 'master_chef_vege', 'title': 'Master Chef Végé', 'subtitle': 'Cuisine et valide 5 repas 100% végétariens dans la semaine', 'points': 250, 'daysLeft': 7, 'category': 'Alimentation', 'icon': 'restaurant', 'color': 'F59E0B'},
+      {'id': 'economiseur_eau', 'title': 'Gardien des Océans', 'subtitle': 'Prends uniquement des douches courtes (moins de 5 min) pendant 5 jours', 'points': 300, 'daysLeft': 5, 'category': 'Quotidien', 'icon': 'water_drop', 'color': '06B6D4'},
+      {'id': 'clean_walk', 'title': 'Clean Walk', 'subtitle': 'Fais une marche d\'une heure et ramasse un sac entier de déchets trouvés dans la nature', 'points': 800, 'daysLeft': 2, 'category': 'Nature', 'icon': 'eco', 'color': '8B5CF6'},
+      {'id': 'debranche_tout', 'title': 'Cure de déconnexion', 'subtitle': 'Éteins tous les écrans et le Wi-Fi après 20h pendant le weekend', 'points': 350, 'daysLeft': 2, 'category': 'Énergie', 'icon': 'power_off', 'color': 'EF4444'},
     ];
 
     for (final defi in defis) {
@@ -228,37 +89,18 @@ class InitService {
 
   Future<void> initBadges() async {
     final snapshot = await _firestore.collection('badges').get();
-    if (snapshot.docs.isNotEmpty) return;
+    for (var doc in snapshot.docs) {
+      await doc.reference.delete();
+    }
 
     final badges = [
-      {
-        'id': 'premier_pas',
-        'title': 'Premier pas',
-        'description': 'Valide ton premier geste ecologique',
-        'icon': 'star',
-        'pointsRequired': 10,
-      },
-      {
-        'id': 'eco_warrior',
-        'title': 'Eco warrior',
-        'description': 'Valide 50 gestes ecologiques',
-        'icon': 'shield',
-        'pointsRequired': 500,
-      },
-      {
-        'id': 'green_master',
-        'title': 'Green master',
-        'description': 'Atteins 1000 points',
-        'icon': 'crown',
-        'pointsRequired': 1000,
-      },
-      {
-        'id': 'streak_7',
-        'title': 'Semaine verte',
-        'description': '7 jours consecutifs d\'actions',
-        'icon': 'calendar',
-        'pointsRequired': 7,
-      },
+      {'id': 'premier_pas', 'title': 'Le Premier Pas', 'description': 'Tu as validé ton tout premier geste écologique. Bravo !', 'icon': 'star', 'pointsRequired': 10},
+      {'id': 'dizaine', 'title': 'Apprenti Écolo', 'description': 'Atteins la barre symbolique des 100 points.', 'icon': 'military_tech', 'pointsRequired': 100},
+      {'id': 'centaine', 'title': 'L\'Habitué', 'description': 'Tu as franchi le cap des 500 points accumulés.', 'icon': 'shield', 'pointsRequired': 500},
+      {'id': 'green_master', 'title': 'Green Master', 'description': 'Un modèle à suivre ! Plus de 1000 points générés.', 'icon': 'crown', 'pointsRequired': 1000},
+      {'id': 'streak_7', 'title': 'Semaine Parfaite', 'description': 'Tu as validé au moins un geste pendant 7 jours consécutifs.', 'icon': 'calendar', 'pointsRequired': 500},
+      {'id': 'streak_30', 'title': 'Légende Verte', 'description': 'Un mois complet d\'engagement (30 jours consécutifs).', 'icon': 'whatshot', 'pointsRequired': 2000},
+      {'id': 'sauveur_planete', 'title': 'Sauveur de la Planète', 'description': 'L\'élite de l\'écologie : tu as dépassé les 5000 points.', 'icon': 'public', 'pointsRequired': 5000},
     ];
 
     for (final badge in badges) {

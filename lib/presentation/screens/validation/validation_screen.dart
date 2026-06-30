@@ -244,7 +244,7 @@ class _ValidationScreenState extends State<ValidationScreen> {
                           children: [
                             Text(
                               l10n.validation_title,
-                              style: GoogleFonts.poppins(
+                              style: GoogleFonts.inter(
                                 fontSize: 14,
                                 color: Colors.white.withValues(alpha: 0.75),
                                 fontWeight: FontWeight.w400,
@@ -252,7 +252,7 @@ class _ValidationScreenState extends State<ValidationScreen> {
                             ),
                             Text(
                               l10n.validation_subtitle,
-                              style: GoogleFonts.poppins(
+                              style: GoogleFonts.inter(
                                 fontSize: 28,
                                 fontWeight: FontWeight.w700,
                                 color: Colors.white,
@@ -331,7 +331,7 @@ class _ValidationScreenState extends State<ValidationScreen> {
                               backgroundColor: AppColors.primary,
                               shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
                             ),
-                            child: Text(l10n.validation_validate, style: GoogleFonts.poppins(color: Colors.white)),
+                            child: Text(l10n.validation_validate, style: GoogleFonts.inter(color: Colors.white)),
                           ),
                         ),
                       if (_selectedMethod == 2 && _selectedImage != null)
@@ -349,7 +349,7 @@ class _ValidationScreenState extends State<ValidationScreen> {
                                     width: 24,
                                     child: CircularProgressIndicator(color: Colors.white, strokeWidth: 2.5),
                                   )
-                                : Text(l10n.validation_validate_with_photo, style: GoogleFonts.poppins(color: Colors.white)),
+                                : Text(l10n.validation_validate_with_photo, style: GoogleFonts.inter(color: Colors.white)),
                           ),
                         ),
                     ]),
@@ -433,7 +433,7 @@ class _MethodSelector extends StatelessWidget {
                     const SizedBox(height: 4),
                     Text(
                       m['label'] as String,
-                      style: GoogleFonts.poppins(
+                      style: GoogleFonts.inter(
                         fontSize: 12,
                         fontWeight: FontWeight.w500,
                         color: isSelected ? Colors.white : theme.colorScheme.onSurface.withValues(alpha: 0.6),
@@ -478,7 +478,7 @@ class _ManualSection extends StatelessWidget {
       children: [
         Text(
           l10n.validation_choose_gesture,
-          style: GoogleFonts.poppins(
+          style: GoogleFonts.inter(
             fontSize: 16,
             fontWeight: FontWeight.w600,
             color: theme.colorScheme.onSurface,
@@ -534,7 +534,7 @@ class _ManualSection extends StatelessWidget {
                         children: [
                           Text(
                             g.title,
-                            style: GoogleFonts.poppins(
+                            style: GoogleFonts.inter(
                               fontSize: 14,
                               fontWeight: FontWeight.w600,
                               color: isSelected ? AppColors.primary : theme.colorScheme.onSurface,
@@ -542,7 +542,7 @@ class _ManualSection extends StatelessWidget {
                           ),
                           Text(
                             g.description,
-                            style: GoogleFonts.poppins(
+                            style: GoogleFonts.inter(
                               fontSize: 11,
                               color: theme.colorScheme.onSurface.withValues(alpha: 0.6),
                             ),
@@ -561,7 +561,7 @@ class _ManualSection extends StatelessWidget {
                         ),
                         child: Text(
                           l10n.home_done,
-                          style: GoogleFonts.poppins(
+                          style: GoogleFonts.inter(
                             fontSize: 11,
                             fontWeight: FontWeight.w600,
                             color: AppColors.success,
@@ -577,7 +577,7 @@ class _ManualSection extends StatelessWidget {
                         ),
                         child: Text(
                           '+${g.points}',
-                          style: GoogleFonts.poppins(
+                          style: GoogleFonts.inter(
                             fontSize: 12,
                             fontWeight: FontWeight.w700,
                             color: AppColors.warning,
@@ -614,7 +614,7 @@ class _ManualSection extends StatelessWidget {
                   )
                 : Text(
                     l10n.validation_validate,
-                    style: GoogleFonts.poppins(
+                    style: GoogleFonts.inter(
                       fontSize: 16,
                       fontWeight: FontWeight.w600,
                     ),
@@ -681,7 +681,7 @@ class _QRSection extends StatelessWidget {
           const SizedBox(height: 20),
           Text(
             l10n.validation_scan_qr,
-            style: GoogleFonts.poppins(
+            style: GoogleFonts.inter(
               fontSize: 16,
               fontWeight: FontWeight.w600,
               color: theme.colorScheme.onSurface,
@@ -690,7 +690,7 @@ class _QRSection extends StatelessWidget {
           const SizedBox(height: 6),
           Text(
             l10n.validation_scan_qr_hint,
-            style: GoogleFonts.poppins(
+            style: GoogleFonts.inter(
               fontSize: 13,
               color: theme.colorScheme.onSurface.withValues(alpha: 0.6),
             ),
@@ -772,7 +772,7 @@ class _PhotoSection extends StatelessWidget {
           if (selectedImage == null) ...[
             Text(
               l10n.validation_take_photo,
-              style: GoogleFonts.poppins(
+              style: GoogleFonts.inter(
                 fontSize: 16,
                 fontWeight: FontWeight.w600,
                 color: theme.colorScheme.onSurface,
@@ -781,7 +781,7 @@ class _PhotoSection extends StatelessWidget {
             const SizedBox(height: 6),
             Text(
               l10n.validation_take_photo_hint,
-              style: GoogleFonts.poppins(
+              style: GoogleFonts.inter(
                 fontSize: 13,
                 color: theme.colorScheme.onSurface.withValues(alpha: 0.6),
               ),
@@ -808,7 +808,7 @@ class _PhotoSection extends StatelessWidget {
               children: [
                 Text(
                   l10n.validation_photo_taken,
-                  style: GoogleFonts.poppins(
+                  style: GoogleFonts.inter(
                     fontSize: 14,
                     fontWeight: FontWeight.w600,
                     color: AppColors.success,
@@ -877,7 +877,7 @@ class _SuccessSheet extends StatelessWidget {
           const SizedBox(height: 20),
           Text(
             l10n.validation_success,
-            style: GoogleFonts.poppins(
+            style: GoogleFonts.inter(
               fontSize: 24,
               fontWeight: FontWeight.w700,
               color: theme.colorScheme.onSurface,
@@ -887,7 +887,7 @@ class _SuccessSheet extends StatelessWidget {
           const SizedBox(height: 8),
           Text(
             geste.title,
-            style: GoogleFonts.poppins(
+            style: GoogleFonts.inter(
               fontSize: 15,
               color: theme.colorScheme.onSurface.withValues(alpha: 0.6),
             ),
@@ -910,7 +910,7 @@ class _SuccessSheet extends StatelessWidget {
                 const SizedBox(width: 10),
                 Text(
                   '+${geste.points} ${l10n.validation_points_gained}',
-                  style: GoogleFonts.poppins(
+                  style: GoogleFonts.inter(
                     fontSize: 18,
                     fontWeight: FontWeight.w700,
                     color: AppColors.warning,
@@ -934,7 +934,7 @@ class _SuccessSheet extends StatelessWidget {
               ),
               child: Text(
                 l10n.validation_continue,
-                style: GoogleFonts.poppins(
+                style: GoogleFonts.inter(
                   fontSize: 16,
                   fontWeight: FontWeight.w600,
                 ),

@@ -141,7 +141,7 @@ class _GestesScreenState extends State<GestesScreen> {
                           children: [
                             Text(
                               l10n.gestures_discover,
-                              style: GoogleFonts.poppins(
+                              style: GoogleFonts.inter(
                                 fontSize: 14,
                                 color: Colors.white.withValues(alpha: 0.8),
                                 fontWeight: FontWeight.w500,
@@ -150,7 +150,7 @@ class _GestesScreenState extends State<GestesScreen> {
                             const SizedBox(height: 4),
                             Text(
                               l10n.gestures_title,
-                              style: GoogleFonts.poppins(
+                              style: GoogleFonts.inter(
                                 fontSize: 28,
                                 fontWeight: FontWeight.w700,
                                 color: Colors.white,
@@ -216,7 +216,7 @@ class _GestesScreenState extends State<GestesScreen> {
                               child: Center(
                                 child: Text(
                                   '${_filteredGestesList.length}',
-                                  style: GoogleFonts.poppins(
+                                  style: GoogleFonts.inter(
                                     fontSize: 22,
                                     fontWeight: FontWeight.w800,
                                     color: Colors.white,
@@ -248,7 +248,7 @@ class _GestesScreenState extends State<GestesScreen> {
                           Expanded(
                             child: Text(
                               'Recherche: "$_searchQuery"',
-                              style: GoogleFonts.poppins(fontSize: 12, color: isDark ? Colors.white : AppColors.primary),
+                              style: GoogleFonts.inter(fontSize: 12, color: isDark ? Colors.white : AppColors.primary),
                             ),
                           ),
                           GestureDetector(
@@ -308,7 +308,7 @@ class _GestesScreenState extends State<GestesScreen> {
       builder: (context) => AlertDialog(
         backgroundColor: isDark ? AppColors.darkCard : AppColors.surface,
         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
-        title: Text('Rechercher un geste', style: GoogleFonts.poppins(fontWeight: FontWeight.w600)),
+        title: Text(l10n.common_search, style: GoogleFonts.inter(fontWeight: FontWeight.w600)),
         content: TextField(
           autofocus: true,
           style: TextStyle(color: theme.colorScheme.onSurface),
@@ -317,7 +317,7 @@ class _GestesScreenState extends State<GestesScreen> {
             _applyFilters();
           },
           decoration: InputDecoration(
-            hintText: 'Titre, description...',
+            hintText: l10n.search_hint,
             hintStyle: TextStyle(color: theme.colorScheme.onSurface.withValues(alpha: 0.5)),
             prefixIcon: Icon(Icons.search, color: theme.colorScheme.onSurface),
             border: OutlineInputBorder(borderRadius: BorderRadius.circular(12)),
@@ -337,11 +337,11 @@ class _GestesScreenState extends State<GestesScreen> {
               _clearSearch();
               Navigator.pop(context);
             },
-            child: Text('Effacer', style: GoogleFonts.poppins()),
+            child: Text(l10n.common_clear, style: GoogleFonts.inter()),
           ),
           ElevatedButton(
             onPressed: () => Navigator.pop(context),
-            child: Text(l10n.common_close, style: GoogleFonts.poppins()),
+            child: Text(l10n.common_close, style: GoogleFonts.inter()),
           ),
         ],
       ),

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import '../../../domain/entities/user_entity.dart';
 import '../../../domain/entities/level_entity.dart';
 import '../../../domain/enums/level_type.dart';
@@ -13,14 +14,34 @@ class UserModel extends UserEntity {
     super.photoUrl,
     required super.totalPoints,
     required super.weeklyPoints,
-    required super.level,
     required super.streak,
-    required super.createdAt,
     required super.completedActionIds,
+    required super.createdAt,
+    required super.level,
+    super.defisProgress = const {},
   });
 
   factory UserModel.fromMap(Map<String, dynamic> map, String id) {
     final points = map['totalPoints'] ?? 0;
+    
+    DateTime createdAtDate = DateTime.now();
+    if (map['createdAt'] != null) {
+      final val = map['createdAt'];
+      if (val is Timestamp) {
+        createdAtDate = val.toDate();
+      } else if (val is int) {
+        createdAtDate = DateTime.fromMillisecondsSinceEpoch(val);
+      }
+    }
+
+    Map<String, double> parsedProgress = {};
+    if (map['defisProgress'] != null) {
+      final pMap = map['defisProgress'] as Map;
+      pMap.forEach((key, value) {
+        parsedProgress[key.toString()] = (value as num).toDouble();
+      });
+    }
+
     return UserModel(
       id: id,
       name: map['name'] ?? '',
@@ -31,10 +52,9 @@ class UserModel extends UserEntity {
       weeklyPoints: map['weeklyPoints'] ?? 0,
       level: LevelModel.fromPoints(points),
       streak: map['streak'] ?? 0,
-      createdAt: DateTime.fromMillisecondsSinceEpoch(
-        map['createdAt'] ?? DateTime.now().millisecondsSinceEpoch,
-      ),
+      createdAt: createdAtDate,
       completedActionIds: List<String>.from(map['completedActionIds'] ?? []),
+      defisProgress: parsedProgress,
     );
   }
 
@@ -47,8 +67,9 @@ class UserModel extends UserEntity {
       'totalPoints': totalPoints,
       'weeklyPoints': weeklyPoints,
       'streak': streak,
-      'createdAt': createdAt.millisecondsSinceEpoch,
+      'createdAt': Timestamp.fromDate(createdAt),
       'completedActionIds': completedActionIds,
+      'defisProgress': defisProgress,
     };
   }
 
@@ -62,6 +83,7 @@ class UserModel extends UserEntity {
     LevelEntity? level,
     int? streak,
     List<String>? completedActionIds,
+    Map<String, double>? defisProgress,
   }) {
     return UserModel(
       id: id,
@@ -75,6 +97,7 @@ class UserModel extends UserEntity {
       streak: streak ?? this.streak,
       createdAt: createdAt,
       completedActionIds: completedActionIds ?? this.completedActionIds,
+      defisProgress: defisProgress ?? this.defisProgress,
     );
   }
 }

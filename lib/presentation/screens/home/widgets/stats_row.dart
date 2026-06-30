@@ -67,12 +67,12 @@ class StatsRow extends StatelessWidget {
           mainAxisSize: MainAxisSize.min,
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Text('${l10n.home_streak} - Details', style: GoogleFonts.poppins(fontSize: 18, fontWeight: FontWeight.w600)),
+            Text('${l10n.home_streak} - Details', style: GoogleFonts.inter(fontSize: 18, fontWeight: FontWeight.w600)),
             const SizedBox(height: 16),
             _detailRow(context, '${l10n.home_streak} actuelle', '${user.streak} jours'),
             _detailRow(context, 'Meilleure ${l10n.home_streak.toLowerCase()}', '${user.streak} jours'),
             const SizedBox(height: 8),
-            Text('Continue chaque jour pour augmenter ta serie !', style: GoogleFonts.poppins(fontSize: 12, color: theme.colorScheme.onSurface.withValues(alpha: 0.6))),
+            Text('Continue chaque jour pour augmenter ta serie !', style: GoogleFonts.inter(fontSize: 12, color: theme.colorScheme.onSurface.withValues(alpha: 0.6))),
             const SizedBox(height: 20),
             SizedBox(
               width: double.infinity,
@@ -94,8 +94,8 @@ class StatsRow extends StatelessWidget {
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
-          Text(label, style: GoogleFonts.poppins(color: theme.colorScheme.onSurface.withValues(alpha: 0.6))),
-          Text(value, style: GoogleFonts.poppins(fontWeight: FontWeight.w600, color: theme.colorScheme.onSurface)),
+          Text(label, style: GoogleFonts.inter(color: theme.colorScheme.onSurface.withValues(alpha: 0.6))),
+          Text(value, style: GoogleFonts.inter(fontWeight: FontWeight.w600, color: theme.colorScheme.onSurface)),
         ],
       ),
     );
@@ -159,7 +159,7 @@ class _StatCard extends StatelessWidget {
               const SizedBox(height: 12),
               Text(
                 value,
-                style: GoogleFonts.poppins(
+                style: GoogleFonts.inter(
                   fontSize: 22,
                   fontWeight: FontWeight.w700,
                   color: theme.colorScheme.onSurface,
@@ -170,7 +170,7 @@ class _StatCard extends StatelessWidget {
               const SizedBox(height: 2),
               Text(
                 '$label · $unit',
-                style: GoogleFonts.poppins(
+                style: GoogleFonts.inter(
                   fontSize: 10,
                   color: theme.colorScheme.onSurface.withValues(alpha: 0.5),
                   fontWeight: FontWeight.w500,

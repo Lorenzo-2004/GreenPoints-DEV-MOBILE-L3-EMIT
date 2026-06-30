@@ -13,6 +13,7 @@ class UserEntity extends Equatable {
   final int streak;
   final DateTime createdAt;
   final List<String> completedActionIds;
+  final Map<String, double> defisProgress;
 
   const UserEntity({
     required this.id,
@@ -26,6 +27,7 @@ class UserEntity extends Equatable {
     required this.streak,
     required this.createdAt,
     required this.completedActionIds,
+    this.defisProgress = const {},
   });
 
   @override

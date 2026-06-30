@@ -14,6 +14,14 @@
       },
       "oauth_client": [
         {
+          "client_id": "965053537355-bg29bkfphroi06cvjs9t26s32d4k0pct.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.greenpoints",
+            "certificate_hash": "795e23c7ae760a04d7ea1a68b8211b3439e50bff"
+          }
+        },
+        {
           "client_id": "965053537355-s0qa082ef1cvi53tgqumtq99gknstbra.apps.googleusercontent.com",
           "client_type": 3
         }

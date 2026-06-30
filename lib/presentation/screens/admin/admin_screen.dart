@@ -4,6 +4,7 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:go_router/go_router.dart';
 import '../../../core/theme/app_colors.dart';
 import '../../../l10n/app_localizations.dart';
+import '../../../data/services/init_service.dart';
 
 class AdminScreen extends StatelessWidget {
   const AdminScreen({super.key});
@@ -14,7 +15,7 @@ class AdminScreen extends StatelessWidget {
     final l10n = AppLocalizations.of(context)!;
 
     return DefaultTabController(
-      length: 4,
+      length: 5,
       child: Scaffold(
         backgroundColor: theme.scaffoldBackgroundColor,
         appBar: AppBar(
@@ -23,11 +24,11 @@ class AdminScreen extends StatelessWidget {
           centerTitle: true,
           leading: IconButton(
             icon: Icon(Icons.arrow_back_ios_new_rounded, color: theme.textTheme.bodyLarge?.color ?? AppColors.textPrimary),
-            onPressed: () => context.pop(),
+            onPressed: () => context.go('/profil'),
           ),
           title: Text(
             l10n.admin_title, 
-            style: GoogleFonts.poppins(
+            style: GoogleFonts.inter(
               fontSize: 20, 
               fontWeight: FontWeight.w600, 
               color: theme.textTheme.bodyLarge?.color ?? AppColors.textPrimary
@@ -39,13 +40,14 @@ class AdminScreen extends StatelessWidget {
             unselectedLabelColor: theme.textTheme.bodyMedium?.color ?? AppColors.textSecondary,
             indicatorColor: AppColors.primary,
             indicatorWeight: 3,
-            labelStyle: GoogleFonts.poppins(fontWeight: FontWeight.w600, fontSize: 14),
-            unselectedLabelStyle: GoogleFonts.poppins(fontWeight: FontWeight.w500, fontSize: 14),
+            labelStyle: GoogleFonts.inter(fontWeight: FontWeight.w600, fontSize: 14),
+            unselectedLabelStyle: GoogleFonts.inter(fontWeight: FontWeight.w500, fontSize: 14),
             tabs: [
               Tab(text: l10n.admin_tab_gestes),
               Tab(text: l10n.admin_tab_defis),
               Tab(text: l10n.admin_tab_badges),
               Tab(text: l10n.admin_tab_shop),
+              Tab(text: 'Système'),
             ],
           ),
         ),
@@ -55,6 +57,65 @@ class AdminScreen extends StatelessWidget {
             _AddDefiForm(),
             _AddBadgeForm(),
             _AddRecompenseForm(),
+            _SystemTools(),
+          ],
+        ),
+      ),
+    );
+  }
+}
+
+class _SystemTools extends StatefulWidget {
+  const _SystemTools();
+
+  @override
+  State<_SystemTools> createState() => _SystemToolsState();
+}
+
+class _SystemToolsState extends State<_SystemTools> {
+  bool _isLoading = false;
+
+  void _runInitData() async {
+    setState(() => _isLoading = true);
+    try {
+      await InitService().initAllData();
+      if (!mounted) return;
+      ScaffoldMessenger.of(context).showSnackBar(const SnackBar(content: Text('Base de données réinitialisée avec succès !'), backgroundColor: AppColors.success));
+    } catch(e) {
+      if (!mounted) return;
+      ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text('Erreur: \$e'), backgroundColor: AppColors.error));
+    } finally {
+      if (mounted) {
+        setState(() => _isLoading = false);
+      }
+    }
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Center(
+      child: Padding(
+        padding: const EdgeInsets.all(24.0),
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            const Icon(Icons.warning_amber_rounded, size: 64, color: AppColors.warning),
+            const SizedBox(height: 16),
+            Text(
+              'Réinitialiser les données de base',
+              style: GoogleFonts.inter(fontSize: 18, fontWeight: FontWeight.bold),
+              textAlign: TextAlign.center,
+            ),
+            const SizedBox(height: 8),
+            Text(
+              'Cette action supprimera et recréera les gestes, défis, badges et récompenses par défaut.',
+              style: GoogleFonts.inter(fontSize: 14),
+              textAlign: TextAlign.center,
+            ),
+            const SizedBox(height: 24),
+            _isLoading
+                ? const CircularProgressIndicator()
+                : _buildSubmitButton(context, 'Lancer l\'initialisation', _runInitData),
           ],
         ),
       ),
@@ -79,7 +140,7 @@ Widget _buildModernInput({
       children: [
         Text(
           label,
-          style: GoogleFonts.poppins(
+          style: GoogleFonts.inter(
             fontSize: 13,
             fontWeight: FontWeight.w600,
             color: theme.textTheme.bodyLarge?.color ?? AppColors.textPrimary,
@@ -89,7 +150,7 @@ Widget _buildModernInput({
         TextField(
           controller: controller,
           keyboardType: isNumber ? TextInputType.number : TextInputType.text,
-          style: GoogleFonts.poppins(fontSize: 15, color: theme.textTheme.bodyLarge?.color ?? AppColors.textPrimary),
+          style: GoogleFonts.inter(fontSize: 15, color: theme.textTheme.bodyLarge?.color ?? AppColors.textPrimary),
           decoration: InputDecoration(
             prefixIcon: Icon(icon, color: AppColors.primary, size: 20),
             filled: true,
@@ -133,7 +194,7 @@ Widget _buildSubmitButton(BuildContext context, String text, VoidCallback onPres
       ),
       child: Text(
         text,
-        style: GoogleFonts.poppins(
+        style: GoogleFonts.inter(
           fontSize: 16,
           fontWeight: FontWeight.w600,
         ),
@@ -196,7 +257,7 @@ class _AddGesteFormState extends State<_AddGesteForm> {
             ),
           ),
           child: SwitchListTile(
-            title: Text(l10n.admin_field_daily, style: GoogleFonts.poppins(fontSize: 15, fontWeight: FontWeight.w500, color: Theme.of(context).textTheme.bodyLarge?.color)),
+            title: Text(l10n.admin_field_daily, style: GoogleFonts.inter(fontSize: 15, fontWeight: FontWeight.w500, color: Theme.of(context).textTheme.bodyLarge?.color)),
             value: _isDaily,
             activeTrackColor: AppColors.primary,
             activeThumbColor: Colors.white,

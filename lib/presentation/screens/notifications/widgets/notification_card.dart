@@ -106,7 +106,7 @@ class NotificationCard extends StatelessWidget {
                   const SizedBox(height: 6),
                   Text(
                     _formatDate(notification.createdAt),
-                    style: GoogleFonts.poppins(
+                    style: GoogleFonts.inter(
                       fontSize: 10,
                       color: isDark ? AppColors.textSecondary.withValues(alpha: 0.7) : AppColors.textSecondary.withValues(alpha: 0.7),
                     ),

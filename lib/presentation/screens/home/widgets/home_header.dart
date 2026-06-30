@@ -65,7 +65,7 @@ class HomeHeader extends StatelessWidget {
                 children: [
                   Text(
                     _greeting(context),
-                    style: GoogleFonts.poppins(
+                    style: GoogleFonts.inter(
                       fontSize: 14,
                       color: Colors.white.withValues(alpha: 0.8),
                       fontWeight: FontWeight.w500,
@@ -74,7 +74,7 @@ class HomeHeader extends StatelessWidget {
                   const SizedBox(height: 4),
                   Text(
                     user.name.split(' ').first,
-                    style: GoogleFonts.poppins(
+                    style: GoogleFonts.inter(
                       fontSize: 28,
                       fontWeight: FontWeight.w700,
                       color: Colors.white,
@@ -189,7 +189,7 @@ class _QuickStat extends StatelessWidget {
                 children: [
                   Text(
                     value,
-                    style: GoogleFonts.poppins(
+                    style: GoogleFonts.inter(
                       fontSize: 18,
                       fontWeight: FontWeight.w700,
                       color: Colors.white,
@@ -200,7 +200,7 @@ class _QuickStat extends StatelessWidget {
                     const SizedBox(width: 2),
                     Text(
                       suffix!,
-                      style: GoogleFonts.poppins(
+                      style: GoogleFonts.inter(
                         fontSize: 11,
                         fontWeight: FontWeight.w500,
                         color: Colors.white.withValues(alpha: 0.7),
@@ -211,7 +211,7 @@ class _QuickStat extends StatelessWidget {
               ),
               Text(
                 label,
-                style: GoogleFonts.poppins(
+                style: GoogleFonts.inter(
                   fontSize: 11,
                   color: Colors.white.withValues(alpha: 0.7),
                   fontWeight: FontWeight.w500,

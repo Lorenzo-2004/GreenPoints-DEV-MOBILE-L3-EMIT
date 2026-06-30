@@ -75,7 +75,7 @@ class HomeScreen extends StatelessWidget {
       children: [
         Text(
           l10n.home_quick_actions,
-          style: GoogleFonts.poppins(fontSize: 18, fontWeight: FontWeight.w600, color: theme.colorScheme.onSurface),
+          style: GoogleFonts.inter(fontSize: 18, fontWeight: FontWeight.w600, color: theme.colorScheme.onSurface),
         ),
         const SizedBox(height: 12),
         Row(
@@ -159,7 +159,7 @@ class _QuickActionButton extends StatelessWidget {
               const SizedBox(height: 8),
               Text(
                 label,
-                style: GoogleFonts.poppins(fontSize: 12, fontWeight: FontWeight.w500, color: theme.colorScheme.onSurface.withValues(alpha: 0.6)),
+                style: GoogleFonts.inter(fontSize: 12, fontWeight: FontWeight.w500, color: theme.colorScheme.onSurface.withValues(alpha: 0.6)),
               ),
             ],
           ),

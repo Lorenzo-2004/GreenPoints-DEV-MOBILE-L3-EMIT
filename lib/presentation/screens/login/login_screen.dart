@@ -162,7 +162,7 @@ class _LoginViewState extends State<_LoginView> {
                       Text(
                         'Bienvenue\nsur',
                         textAlign: TextAlign.center,
-                        style: GoogleFonts.poppins(
+                        style: GoogleFonts.inter(
                           fontSize: 28,
                           fontWeight: FontWeight.w600,
                           color: AppColors.textSecondary,
@@ -178,7 +178,7 @@ class _LoginViewState extends State<_LoginView> {
                           children: [
                             TextSpan(
                               text: 'Green',
-                              style: GoogleFonts.poppins(
+                              style: GoogleFonts.inter(
                                 fontSize: 42,
                                 fontWeight: FontWeight.w800,
                                 color: AppColors.primary,
@@ -187,7 +187,7 @@ class _LoginViewState extends State<_LoginView> {
                             ),
                             TextSpan(
                               text: 'Points',
-                              style: GoogleFonts.poppins(
+                              style: GoogleFonts.inter(
                                 fontSize: 42,
                                 fontWeight: FontWeight.w800,
                                 color: AppColors.warning,
@@ -251,7 +251,7 @@ class _LoginViewState extends State<_LoginView> {
                           ),
                           child: Text(
                             'Mot de passe oublié ?',
-                            style: GoogleFonts.poppins(
+                            style: GoogleFonts.inter(
                               fontSize: 13,
                               color: AppColors.primary,
                               fontWeight: FontWeight.w500,
@@ -287,7 +287,7 @@ class _LoginViewState extends State<_LoginView> {
                                 )
                               : Text(
                                   'Se connecter',
-                                  style: GoogleFonts.poppins(
+                                  style: GoogleFonts.inter(
                                     fontSize: 17,
                                     fontWeight: FontWeight.w600,
                                   ),
@@ -305,7 +305,7 @@ class _LoginViewState extends State<_LoginView> {
                             padding: const EdgeInsets.symmetric(horizontal: 16),
                             child: Text(
                               'ou',
-                              style: GoogleFonts.poppins(
+                              style: GoogleFonts.inter(
                                 color: AppColors.textSecondary,
                                 fontSize: 13,
                                 fontWeight: FontWeight.w500,
@@ -344,7 +344,7 @@ class _LoginViewState extends State<_LoginView> {
                               const SizedBox(width: 12),
                               Text(
                                 isLoading ? 'Connexion...' : 'Continuer avec Google',
-                                style: GoogleFonts.poppins(
+                                style: GoogleFonts.inter(
                                   fontSize: 15,
                                   fontWeight: FontWeight.w500,
                                   color: AppColors.textPrimary,
@@ -363,7 +363,7 @@ class _LoginViewState extends State<_LoginView> {
                         children: [
                           Text(
                             'Nouveau ici ? ',
-                            style: GoogleFonts.poppins(
+                            style: GoogleFonts.inter(
                               color: AppColors.textSecondary,
                               fontSize: 14,
                             ),
@@ -374,7 +374,7 @@ class _LoginViewState extends State<_LoginView> {
                               padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
                               child: Text(
                                 'Créer un compte',
-                                style: GoogleFonts.poppins(
+                                style: GoogleFonts.inter(
                                   color: AppColors.primary,
                                   fontWeight: FontWeight.w700,
                                   fontSize: 14,
@@ -413,7 +413,7 @@ class _LoginViewState extends State<_LoginView> {
       children: [
         Text(
           label,
-          style: GoogleFonts.poppins(
+          style: GoogleFonts.inter(
             fontSize: 13,
             fontWeight: FontWeight.w600,
             color: AppColors.textPrimary,
@@ -425,10 +425,10 @@ class _LoginViewState extends State<_LoginView> {
           obscureText: obscure,
           keyboardType: keyboardType,
           validator: validator,
-          style: GoogleFonts.poppins(fontSize: 15),
+          style: GoogleFonts.inter(fontSize: 15),
           decoration: InputDecoration(
             hintText: hint,
-            hintStyle: GoogleFonts.poppins(
+            hintStyle: GoogleFonts.inter(
               color: AppColors.textSecondary,
               fontSize: 14,
             ),

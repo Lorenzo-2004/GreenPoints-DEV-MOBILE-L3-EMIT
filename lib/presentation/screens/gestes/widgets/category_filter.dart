@@ -79,7 +79,7 @@ class CategoryFilter extends StatelessWidget {
                   const SizedBox(width: 8),
                   Text(
                     cat.label,
-                    style: GoogleFonts.poppins(
+                    style: GoogleFonts.inter(
                       fontSize: 13,
                       fontWeight: FontWeight.w600,
                       color: isSelected ? Colors.white : theme.colorScheme.onSurface.withValues(alpha: 0.6),

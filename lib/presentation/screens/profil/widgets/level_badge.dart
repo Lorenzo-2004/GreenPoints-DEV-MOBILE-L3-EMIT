@@ -50,7 +50,7 @@ class LevelBadge extends StatelessWidget {
                   children: [
                     Text(
                       '${l10n.level_title} ${level.name}',
-                      style: GoogleFonts.poppins(
+                      style: GoogleFonts.inter(
                         fontSize: 16,
                         fontWeight: FontWeight.w600,
                         color: Theme.of(context).textTheme.bodyLarge?.color ?? AppColors.textPrimary,
@@ -60,7 +60,7 @@ class LevelBadge extends StatelessWidget {
                       pointsLeft > 0
                           ? '$pointsLeft ${l10n.level_points_next}'
                           : l10n.level_max,
-                      style: GoogleFonts.poppins(
+                      style: GoogleFonts.inter(
                         fontSize: 12,
                         color: Theme.of(context).textTheme.bodyMedium?.color ?? AppColors.textSecondary,
                       ),
@@ -70,7 +70,7 @@ class LevelBadge extends StatelessWidget {
               ),
               Text(
                 '${(progress * 100).toInt()}%',
-                style: GoogleFonts.poppins(
+                style: GoogleFonts.inter(
                   fontSize: 18,
                   fontWeight: FontWeight.w700,
                   color: level.color,

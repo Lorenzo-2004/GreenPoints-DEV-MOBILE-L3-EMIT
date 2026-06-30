@@ -42,11 +42,11 @@ class _PointsScreenState extends State<PointsScreen> {
       appBar: AppBar(
         leading: IconButton(
           icon: Icon(Icons.arrow_back_ios_new_rounded, color: Theme.of(context).textTheme.bodyLarge?.color ?? AppColors.textPrimary),
-          onPressed: () => context.pop(),
+          onPressed: () => context.go('/profil'),
         ),
         title: Text(
           'Historique des points',
-          style: GoogleFonts.poppins(
+          style: GoogleFonts.inter(
             fontSize: 18,
             fontWeight: FontWeight.w600,
             color: Theme.of(context).textTheme.bodyLarge?.color ?? AppColors.textPrimary,
@@ -92,7 +92,7 @@ class _PointsScreenState extends State<PointsScreen> {
                       children: [
                         Text(
                           'Total des points',
-                          style: GoogleFonts.poppins(
+                          style: GoogleFonts.inter(
                             fontSize: 14,
                             color: Colors.white.withValues(alpha: 0.8),
                           ),
@@ -100,7 +100,7 @@ class _PointsScreenState extends State<PointsScreen> {
                         const SizedBox(height: 4),
                         Text(
                           '$userPoints',
-                          style: GoogleFonts.poppins(
+                          style: GoogleFonts.inter(
                             fontSize: 36,
                             fontWeight: FontWeight.w800,
                             color: Colors.white,
@@ -137,7 +137,7 @@ class _PointsScreenState extends State<PointsScreen> {
                       child: FilterChip(
                         label: Text(
                           filter,
-                          style: GoogleFonts.poppins(
+                          style: GoogleFonts.inter(
                             fontSize: 13,
                             color: isSelected ? Colors.white : (Theme.of(context).textTheme.bodyMedium?.color ?? AppColors.textSecondary),
                           ),
@@ -181,7 +181,7 @@ class _PointsScreenState extends State<PointsScreen> {
                             const SizedBox(height: 16),
                             Text(
                               'Aucune transaction',
-                              style: GoogleFonts.poppins(
+                              style: GoogleFonts.inter(
                                 fontSize: 16,
                                 fontWeight: FontWeight.w600,
                                 color: Theme.of(context).textTheme.bodyLarge?.color ?? AppColors.textPrimary,
@@ -190,7 +190,7 @@ class _PointsScreenState extends State<PointsScreen> {
                             const SizedBox(height: 8),
                             Text(
                               'Valide des gestes pour gagner des points',
-                              style: GoogleFonts.poppins(
+                              style: GoogleFonts.inter(
                                 fontSize: 14,
                                 color: Theme.of(context).textTheme.bodyMedium?.color ?? AppColors.textSecondary,
                               ),

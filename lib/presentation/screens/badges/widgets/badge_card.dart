@@ -89,7 +89,7 @@ class BadgeCard extends StatelessWidget {
             const SizedBox(height: 12),
             Text(
               badge.title,
-              style: GoogleFonts.poppins(
+              style: GoogleFonts.inter(
                 fontSize: 14,
                 fontWeight: FontWeight.w600,
                 color: badge.isUnlocked 
@@ -101,7 +101,7 @@ class BadgeCard extends StatelessWidget {
             const SizedBox(height: 4),
             Text(
               badge.description,
-              style: GoogleFonts.poppins(
+              style: GoogleFonts.inter(
                 fontSize: 11,
                 color: isDark ? AppColors.textSecondary : AppColors.textSecondary,
               ),
@@ -123,7 +123,7 @@ class BadgeCard extends StatelessWidget {
               ),
               child: Text(
                 badge.isUnlocked ? 'Debloque' : badge.progressText,
-                style: GoogleFonts.poppins(
+                style: GoogleFonts.inter(
                   fontSize: 10,
                   fontWeight: FontWeight.w600,
                   color: badge.isUnlocked ? badge.color : AppColors.textSecondary,

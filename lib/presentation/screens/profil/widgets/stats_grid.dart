@@ -28,7 +28,7 @@ class StatsGrid extends StatelessWidget {
             const SizedBox(width: 10),
             Text(
               l10n.stats_title,
-              style: GoogleFonts.poppins(
+              style: GoogleFonts.inter(
                 fontSize: 16,
                 fontWeight: FontWeight.w600,
                 color: Theme.of(context).textTheme.bodyLarge?.color ?? AppColors.textPrimary,
@@ -126,7 +126,7 @@ class _StatTile extends StatelessWidget {
                   children: [
                     Text(
                       value,
-                      style: GoogleFonts.poppins(
+                      style: GoogleFonts.inter(
                         fontSize: 16,
                         fontWeight: FontWeight.w700,
                         color: Theme.of(context).textTheme.bodyLarge?.color ?? AppColors.textPrimary,
@@ -136,7 +136,7 @@ class _StatTile extends StatelessWidget {
                       const SizedBox(width: 2),
                       Text(
                         suffix,
-                        style: GoogleFonts.poppins(
+                        style: GoogleFonts.inter(
                           fontSize: 10,
                           fontWeight: FontWeight.w500,
                           color: Theme.of(context).textTheme.bodyMedium?.color ?? AppColors.textSecondary,
@@ -147,7 +147,7 @@ class _StatTile extends StatelessWidget {
                 ),
                 Text(
                   label,
-                  style: GoogleFonts.poppins(
+                  style: GoogleFonts.inter(
                     fontSize: 10,
                     color: Theme.of(context).textTheme.bodyMedium?.color ?? AppColors.textSecondary,
                   ),

@@ -84,7 +84,7 @@ class _SocialScreenState extends State<SocialScreen>
                   return Center(
                     child: Text(
                       'Aucun nouvel utilisateur trouvé',
-                      style: GoogleFonts.poppins(color: theme.colorScheme.onSurface),
+                      style: GoogleFonts.inter(color: theme.colorScheme.onSurface),
                     ),
                   );
                 }
@@ -95,7 +95,7 @@ class _SocialScreenState extends State<SocialScreen>
                       padding: const EdgeInsets.all(16.0),
                       child: Text(
                         'Ajouter un ami',
-                        style: GoogleFonts.poppins(
+                        style: GoogleFonts.inter(
                           fontSize: 18,
                           fontWeight: FontWeight.w600,
                           color: theme.colorScheme.onSurface,
@@ -125,7 +125,7 @@ class _SocialScreenState extends State<SocialScreen>
                             ),
                             title: Text(
                               user.name,
-                              style: GoogleFonts.poppins(
+                              style: GoogleFonts.inter(
                                 fontWeight: FontWeight.w500,
                                 color: theme.colorScheme.onSurface,
                               ),
@@ -163,7 +163,7 @@ class _SocialScreenState extends State<SocialScreen>
       appBar: AppBar(
         leading: IconButton(
           icon: Icon(Icons.arrow_back_ios_new_rounded, color: isDark ? AppColors.textOnDark : AppColors.textPrimary),
-          onPressed: () => context.pop(),
+          onPressed: () => context.go('/profil'),
         ),
         title: Text(
           'Social',
@@ -203,7 +203,7 @@ class _SocialScreenState extends State<SocialScreen>
               icon: const Icon(Icons.person_add_rounded, color: Colors.white),
               label: Text(
                 'Ajouter',
-                style: GoogleFonts.poppins(color: Colors.white, fontWeight: FontWeight.w600),
+                style: GoogleFonts.inter(color: Colors.white, fontWeight: FontWeight.w600),
               ),
             )
           : null,

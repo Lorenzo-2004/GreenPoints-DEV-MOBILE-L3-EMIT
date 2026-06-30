@@ -156,7 +156,7 @@ class _RegisterViewState extends State<_RegisterView> {
                       Text(
                         'Créer un compte',
                         textAlign: TextAlign.center,
-                        style: GoogleFonts.poppins(
+                        style: GoogleFonts.inter(
                           fontSize: 32,
                           fontWeight: FontWeight.w800,
                           color: AppColors.textPrimary,
@@ -260,7 +260,7 @@ class _RegisterViewState extends State<_RegisterView> {
                                 )
                               : Text(
                                   "S'inscrire",
-                                  style: GoogleFonts.poppins(
+                                  style: GoogleFonts.inter(
                                     fontSize: 16,
                                     fontWeight: FontWeight.w600,
                                   ),
@@ -278,7 +278,7 @@ class _RegisterViewState extends State<_RegisterView> {
                             padding: const EdgeInsets.symmetric(horizontal: 16),
                             child: Text(
                               'ou',
-                              style: GoogleFonts.poppins(
+                              style: GoogleFonts.inter(
                                 color: AppColors.textSecondary,
                                 fontSize: 13,
                               ),
@@ -316,7 +316,7 @@ class _RegisterViewState extends State<_RegisterView> {
                               const SizedBox(width: 12),
                               Text(
                                 isLoading ? 'Connexion...' : 'Continuer avec Google',
-                                style: GoogleFonts.poppins(
+                                style: GoogleFonts.inter(
                                   fontSize: 15,
                                   fontWeight: FontWeight.w500,
                                   color: AppColors.textPrimary,
@@ -335,7 +335,7 @@ class _RegisterViewState extends State<_RegisterView> {
                         children: [
                           Text(
                             'Déjà un compte ? ',
-                            style: GoogleFonts.poppins(
+                            style: GoogleFonts.inter(
                               color: AppColors.textSecondary,
                               fontSize: 14,
                             ),
@@ -344,7 +344,7 @@ class _RegisterViewState extends State<_RegisterView> {
                             onTap: () => context.go('/login'),
                             child: Text(
                               'Se connecter',
-                              style: GoogleFonts.poppins(
+                              style: GoogleFonts.inter(
                                 color: AppColors.primary,
                                 fontWeight: FontWeight.w600,
                                 fontSize: 14,
@@ -382,7 +382,7 @@ class _RegisterViewState extends State<_RegisterView> {
       children: [
         Text(
           label,
-          style: GoogleFonts.poppins(
+          style: GoogleFonts.inter(
             fontSize: 13,
             fontWeight: FontWeight.w600,
             color: AppColors.textPrimary,
@@ -394,12 +394,12 @@ class _RegisterViewState extends State<_RegisterView> {
           obscureText: obscure,
           keyboardType: keyboardType,
           validator: validator,
-          style: GoogleFonts.poppins(
+          style: GoogleFonts.inter(
             fontSize: 15,
           ),
           decoration: InputDecoration(
             hintText: hint,
-            hintStyle: GoogleFonts.poppins(
+            hintStyle: GoogleFonts.inter(
               color: AppColors.textSecondary,
               fontSize: 14,
             ),

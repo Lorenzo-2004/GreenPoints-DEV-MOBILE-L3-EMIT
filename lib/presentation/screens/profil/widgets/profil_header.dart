@@ -63,7 +63,7 @@ class ProfilHeader extends StatelessWidget {
             children: [
               Text(
                 l10n.profile_title,
-                style: GoogleFonts.poppins(
+                style: GoogleFonts.inter(
                   fontSize: 18,
                   fontWeight: FontWeight.w600,
                   color: Colors.white,
@@ -138,7 +138,7 @@ class ProfilHeader extends StatelessWidget {
                       ? Center(
                           child: Text(
                             _getInitials(),
-                            style: GoogleFonts.poppins(
+                            style: GoogleFonts.inter(
                               fontSize: 34,
                               fontWeight: FontWeight.w700,
                               color: Colors.white,
@@ -162,7 +162,7 @@ class ProfilHeader extends StatelessWidget {
                 ),
                 child: Text(
                   (user.level as LevelModel).name,
-                  style: GoogleFonts.poppins(
+                  style: GoogleFonts.inter(
                     fontSize: 9,
                     fontWeight: FontWeight.w700,
                     color: Colors.white,
@@ -176,7 +176,7 @@ class ProfilHeader extends StatelessWidget {
 
           Text(
             user.name,
-            style: GoogleFonts.poppins(
+            style: GoogleFonts.inter(
               fontSize: 20,
               fontWeight: FontWeight.w700,
               color: Colors.white,
@@ -203,7 +203,7 @@ class ProfilHeader extends StatelessWidget {
                 const SizedBox(width: 4),
                 Text(
                   user.email,
-                  style: GoogleFonts.poppins(
+                  style: GoogleFonts.inter(
                     fontSize: 11,
                     color: Colors.white.withValues(alpha: 0.7),
                   ),
@@ -231,7 +231,7 @@ class ProfilHeader extends StatelessWidget {
                   const SizedBox(width: 4),
                   Text(
                     user.phoneNumber!,
-                    style: GoogleFonts.poppins(
+                    style: GoogleFonts.inter(
                       fontSize: 11,
                       color: Colors.white.withValues(alpha: 0.7),
                     ),
@@ -297,7 +297,7 @@ class _ProfileStat extends StatelessWidget {
           children: [
             Text(
               value,
-              style: GoogleFonts.poppins(
+              style: GoogleFonts.inter(
                 fontSize: 18,
                 fontWeight: FontWeight.w700,
                 color: Colors.white,
@@ -306,7 +306,7 @@ class _ProfileStat extends StatelessWidget {
             const SizedBox(height: 2),
             Text(
               label,
-              style: GoogleFonts.poppins(
+              style: GoogleFonts.inter(
                 fontSize: 11,
                 color: Colors.white.withValues(alpha: 0.7),
               ),

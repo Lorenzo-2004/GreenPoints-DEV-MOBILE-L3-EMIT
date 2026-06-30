@@ -55,19 +55,9 @@ class _SplashScreenState extends State<SplashScreen> {
             children: [
               const Spacer(),
 
-              Container(
+              SizedBox(
                 width: 150,
                 height: 150,
-                decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(35),
-                  boxShadow: [
-                    BoxShadow(
-                      color: Colors.white.withValues(alpha: 0.15),
-                      blurRadius: 25,
-                      offset: const Offset(0, 10),
-                    ),
-                  ],
-                ),
                 child: ClipRRect(
                   borderRadius: BorderRadius.circular(35),
                   child: Image.asset(
@@ -94,7 +84,7 @@ class _SplashScreenState extends State<SplashScreen> {
 
               Text(
                 'Version 1.0.0',
-                style: GoogleFonts.poppins(
+                style: GoogleFonts.inter(
                   fontSize: 11,
                   color: Colors.white.withValues(alpha: 0.3),
                   fontWeight: FontWeight.w500,

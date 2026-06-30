@@ -68,7 +68,7 @@ class LevelProgressCard extends StatelessWidget {
                     children: [
                       Text(
                         '${l10n.home_level} ${level.name}',
-                        style: GoogleFonts.poppins(
+                        style: GoogleFonts.inter(
                           fontSize: 16,
                           fontWeight: FontWeight.w700,
                           color: theme.colorScheme.onSurface,
@@ -79,7 +79,7 @@ class LevelProgressCard extends StatelessWidget {
                         pointsLeft > 0
                             ? '$pointsLeft pts → ${nextLevel?.name ?? ""}'
                             : l10n.home_max_level,
-                        style: GoogleFonts.poppins(
+                        style: GoogleFonts.inter(
                           fontSize: 12,
                           color: theme.colorScheme.onSurface.withValues(alpha: 0.6),
                           fontWeight: FontWeight.w400,
@@ -96,7 +96,7 @@ class LevelProgressCard extends StatelessWidget {
                   ),
                   child: Text(
                     '${(progress * 100).toInt()}%',
-                    style: GoogleFonts.poppins(
+                    style: GoogleFonts.inter(
                       fontSize: 14,
                       fontWeight: FontWeight.w700,
                       color: level.color,
@@ -177,7 +177,7 @@ class LevelProgressCard extends StatelessWidget {
           mainAxisSize: MainAxisSize.min,
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Text('Details du niveau', style: GoogleFonts.poppins(fontSize: 18, fontWeight: FontWeight.w600)),
+            Text('Details du niveau', style: GoogleFonts.inter(fontSize: 18, fontWeight: FontWeight.w600)),
             const SizedBox(height: 16),
             _detailRow(context, 'Niveau actuel', level.name),
             _detailRow(context, 'Points actuels', '$points'),
@@ -207,8 +207,8 @@ class LevelProgressCard extends StatelessWidget {
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
-          Text(label, style: GoogleFonts.poppins(color: theme.colorScheme.onSurface.withValues(alpha: 0.6))),
-          Text(value, style: GoogleFonts.poppins(fontWeight: FontWeight.w600, color: theme.colorScheme.onSurface)),
+          Text(label, style: GoogleFonts.inter(color: theme.colorScheme.onSurface.withValues(alpha: 0.6))),
+          Text(value, style: GoogleFonts.inter(fontWeight: FontWeight.w600, color: theme.colorScheme.onSurface)),
         ],
       ),
     );
@@ -267,7 +267,7 @@ class _LevelDot extends StatelessWidget {
         const SizedBox(height: 6),
         Text(
           level.name,
-          style: GoogleFonts.poppins(
+          style: GoogleFonts.inter(
             fontSize: 9,
             color: isReached ? theme.colorScheme.onSurface : theme.colorScheme.onSurface.withValues(alpha: 0.5),
             fontWeight: isCurrent ? FontWeight.w700 : FontWeight.w400,

@@ -121,7 +121,7 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
                         onPressed: _completeOnboarding,
                         child: Text(
                           'Passer',
-                          style: GoogleFonts.poppins(
+                          style: GoogleFonts.inter(
                             fontSize: 14,
                             color: Colors.white.withValues(alpha: 0.7),
                             fontWeight: FontWeight.w500,
@@ -155,7 +155,7 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
                           _currentPage == onboardingData.length - 1
                               ? 'Commencer'
                               : 'Suivant',
-                          style: GoogleFonts.poppins(
+                          style: GoogleFonts.inter(
                             fontSize: 15,
                             fontWeight: FontWeight.w600,
                             color: AppColors.primary,
@@ -256,7 +256,7 @@ class _AnimatedOnboardingPage extends StatelessWidget {
                         child: Text(
                           data.title,
                           textAlign: TextAlign.center,
-                          style: GoogleFonts.poppins(
+                          style: GoogleFonts.inter(
                             fontSize: 28,
                             fontWeight: FontWeight.w700,
                             color: Colors.white,
@@ -282,7 +282,7 @@ class _AnimatedOnboardingPage extends StatelessWidget {
                         child: Text(
                           data.description,
                           textAlign: TextAlign.center,
-                          style: GoogleFonts.poppins(
+                          style: GoogleFonts.inter(
                             fontSize: 15,
                             color: Colors.white.withValues(alpha: 0.85),
                             height: 1.4,

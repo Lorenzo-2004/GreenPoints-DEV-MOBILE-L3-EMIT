@@ -44,7 +44,7 @@ class _DefisScreenState extends State<DefisScreen> {
     }
     
     if (_showOnlyActive) {
-      filtered = filtered.where((d) => (d['progress'] as double) < 1.0).toList();
+      filtered = filtered.where((d) => ((d['progress'] as num?)?.toDouble() ?? 0.0) < 1.0).toList();
     }
     
     if (_searchQuery.isNotEmpty) {
@@ -81,7 +81,7 @@ class _DefisScreenState extends State<DefisScreen> {
       builder: (context) => AlertDialog(
         backgroundColor: AppColors.surface,
         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
-        title: Text('Rechercher un defi', style: GoogleFonts.poppins(fontWeight: FontWeight.w600)),
+        title: Text('Rechercher un defi', style: GoogleFonts.inter(fontWeight: FontWeight.w600)),
         content: TextField(
           autofocus: true,
           onChanged: (value) {
@@ -101,11 +101,11 @@ class _DefisScreenState extends State<DefisScreen> {
               _clearSearch();
               Navigator.pop(context);
             },
-            child: Text('Effacer', style: GoogleFonts.poppins()),
+            child: Text('Effacer', style: GoogleFonts.inter()),
           ),
           ElevatedButton(
             onPressed: () => Navigator.pop(context),
-            child: Text('Fermer', style: GoogleFonts.poppins()),
+            child: Text('Fermer', style: GoogleFonts.inter()),
           ),
         ],
       ),
@@ -113,9 +113,10 @@ class _DefisScreenState extends State<DefisScreen> {
   }
 
   void _shareDefi(Map<String, dynamic> defi) {
+    final progress = (defi['progress'] as num?)?.toDouble() ?? 0.0;
     Share.share(
       'Je viens de progresser sur le defi "${defi['title']}" sur GreenPoints !\n'
-      '${((defi['progress'] as double) * 100).toInt()}% complete.\n\n'
+      '${(progress * 100).toInt()}% complete.\n\n'
       'Telecharge GreenPoints et deviens eco-responsable !',
     );
   }
@@ -123,6 +124,7 @@ class _DefisScreenState extends State<DefisScreen> {
   void _showDefiDetails(Map<String, dynamic> defi) {
     final theme = Theme.of(context);
     final isDark = theme.brightness == Brightness.dark;
+    final progress = (defi['progress'] as num?)?.toDouble() ?? 0.0;
 
     showModalBottomSheet(
       context: context,
@@ -136,12 +138,12 @@ class _DefisScreenState extends State<DefisScreen> {
           mainAxisSize: MainAxisSize.min,
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Text(defi['title'], style: GoogleFonts.poppins(fontSize: 20, fontWeight: FontWeight.w700, color: theme.textTheme.bodyLarge?.color ?? AppColors.textPrimary)),
+            Text(defi['title'], style: GoogleFonts.inter(fontSize: 20, fontWeight: FontWeight.w700, color: theme.textTheme.bodyLarge?.color ?? AppColors.textPrimary)),
             const SizedBox(height: 8),
-            Text(defi['subtitle'], style: GoogleFonts.poppins(color: theme.textTheme.bodyMedium?.color ?? AppColors.textSecondary)),
+            Text(defi['subtitle'], style: GoogleFonts.inter(color: theme.textTheme.bodyMedium?.color ?? AppColors.textSecondary)),
             const SizedBox(height: 16),
             _detailRow('Points', '+${defi['points']} pts', theme),
-            _detailRow('Progression', '${((defi['progress'] as double) * 100).toInt()}%', theme),
+            _detailRow('Progression', '${(progress * 100).toInt()}%', theme),
             _detailRow('Jours restants', '${defi['daysLeft']} jours', theme),
             _detailRow('Categorie', defi['category'], theme),
             const SizedBox(height: 20),
@@ -164,8 +166,8 @@ class _DefisScreenState extends State<DefisScreen> {
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
-          Text(label, style: GoogleFonts.poppins(color: theme.textTheme.bodyMedium?.color ?? AppColors.textSecondary)),
-          Text(value, style: GoogleFonts.poppins(fontWeight: FontWeight.w600, color: theme.textTheme.bodyLarge?.color ?? AppColors.textPrimary)),
+          Text(label, style: GoogleFonts.inter(color: theme.textTheme.bodyMedium?.color ?? AppColors.textSecondary)),
+          Text(value, style: GoogleFonts.inter(fontWeight: FontWeight.w600, color: theme.textTheme.bodyLarge?.color ?? AppColors.textPrimary)),
         ],
       ),
     );
@@ -206,7 +208,7 @@ class _DefisScreenState extends State<DefisScreen> {
                           children: [
                             Text(
                               'Defis',
-                              style: GoogleFonts.poppins(
+                              style: GoogleFonts.inter(
                                 fontSize: 14,
                                 color: Colors.white.withValues(alpha: 0.75),
                                 fontWeight: FontWeight.w400,
@@ -214,7 +216,7 @@ class _DefisScreenState extends State<DefisScreen> {
                             ),
                             Text(
                               'Mes Defis',
-                              style: GoogleFonts.poppins(
+                              style: GoogleFonts.inter(
                                 fontSize: 28,
                                 fontWeight: FontWeight.w700,
                                 color: Colors.white,
@@ -274,7 +276,7 @@ class _DefisScreenState extends State<DefisScreen> {
                               child: Center(
                                 child: Text(
                                   '${_filtered.length}',
-                                  style: GoogleFonts.poppins(
+                                  style: GoogleFonts.inter(
                                     fontSize: 20,
                                     fontWeight: FontWeight.w700,
                                     color: Colors.white,
@@ -305,7 +307,7 @@ class _DefisScreenState extends State<DefisScreen> {
                           Expanded(
                             child: Text(
                               'Recherche: "$_searchQuery"',
-                              style: GoogleFonts.poppins(fontSize: 12, color: isDark ? Colors.white : AppColors.primary),
+                              style: GoogleFonts.inter(fontSize: 12, color: isDark ? Colors.white : AppColors.primary),
                             ),
                           ),
                           GestureDetector(
